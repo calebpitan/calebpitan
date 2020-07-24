@@ -1,0 +1,75 @@
+@import '../../styles/variables';
+
+$image-wrapper-width-sm: 250px;
+$image-wrapper-width-md: 270px;
+$image-wrapper-width-lg: 300px;
+
+$image-wrapper-height-sm: $image-wrapper-width-sm;
+$image-wrapper-height-md: $image-wrapper-width-md;
+$image-wrapper-height-lg: $image-wrapper-width-lg;
+
+.image-wrapper {
+  position: relative;
+  padding: 0.5rem;
+  width: $image-wrapper-width-sm;
+  height: $image-wrapper-height-sm;
+  @media (min-width: $md) and (max-width: $llg) {
+    width: $image-wrapper-width-md;
+    height: $image-wrapper-height-md;
+  }
+  @media (min-width: $lg) {
+    width: $image-wrapper-width-lg;
+    height: $image-wrapper-height-lg;
+  }
+}
+
+.image-wrapper-inner {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.outline {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.liner {
+  stroke: var(--theme-color-alt);
+  stroke-width: 5px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 990;
+  // stroke-dasharray: 148;
+  // stroke-dashoffset: -95;
+  transform-origin: center;
+}
+
+.liner-animate-draw {
+  animation: draw calc(var(--trans-time) * 5) ease 0.1s forwards;
+}
+
+.liner-animate-draw-2 {
+  animation: draw2 calc(var(--trans-time) * 5) ease 0.1s forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke: var(--theme-color);
+    stroke-dasharray: 500;
+    stroke-dashoffset: 10;
+    transform: rotateZ(108deg);
+  }
+}
+
+@keyframes draw2 {
+  to {
+    stroke: var(--theme-color);
+    stroke-dasharray: 500;
+    stroke-dashoffset: 10;
+    transform: rotateZ(110deg);
+  }
+}
