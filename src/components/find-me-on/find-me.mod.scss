@@ -1,0 +1,23 @@
+.find-me-link {
+  color: inherit;
+  background: var(--bg-alt);
+  border: 1px solid var(--shade);
+  padding: 0.5em;
+  border-radius: 50%;
+  line-height: 0;
+  transition: background linear var(--trans-time), box-shadow linear var(--trans-time);
+
+  &:not(:last-of-type) {
+    margin: 0 2em 0 0;
+  }
+
+  &:hover {
+    background: var(--bg);
+    color: inherit;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.1em var(--theme-color-shade);
+  }
+}
