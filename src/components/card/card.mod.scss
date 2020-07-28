@@ -1,0 +1,43 @@
+.card {
+  background: var(--bg-alt);
+  background: linear-gradient(to right, var(--bg), var(--bg-alt));
+  padding: 1rem;
+  border-radius: 7px;
+  min-width: 12.5rem;
+  max-width: 12.5rem;
+  border: 1px solid var(--shade);
+  box-shadow: 5px 5px 15px var(--card-shade);
+
+  &:not(:last-of-type) {
+    margin-right: 1.5rem;
+  }
+}
+
+.card-link {
+  color: inherit;
+  display: block;
+  font-weight: 700;
+  line-height: 1.5;
+  transition: color linear var(--trans-time);
+  &:hover {
+    text-decoration: none;
+    color: var(--fg-muted);
+  }
+}
+
+.card-author {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.card-avatar {
+  width: 48px;
+  height: 48px;
+  margin-left: -0.5rem !important;
+  margin-bottom: -0.5rem !important;
+  svg {
+    ellipse {
+      stroke-width: 2px;
+    }
+  }
+}
