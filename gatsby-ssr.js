@@ -1,9 +1,17 @@
-import "./src/components/layouts/layout.global.scss"
+/**
+ * Implement Gatsby's SSR APIs in this file.
+ *
+ * See: https://www.gatsbyjs.org/docs/ssr-apis/
+ */
 
-import React from "react"
-import BlogWrapper from "./src/components/wrapper"
+// You can delete this file if you're not using it
+
+import 'whatwg-fetch'
+import './src/styles/root.global.scss'
+
+import React from 'react'
+import BlogWrapper from './src/components/wrapper'
 
 export const wrapPageElement = ({ element, props }) => (
   <BlogWrapper {...props}>{element}</BlogWrapper>
 )
-
