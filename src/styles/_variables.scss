@@ -1,0 +1,93 @@
+$theme-color: palevioletred;// yellow;
+$theme-color: yellow;
+$theme-color-alt: palevioletred;//sienna;
+
+$theme-color-shade: darken(
+  $color: $theme-color,
+  $amount: 5,
+);
+$theme-color-alt-shade: darken(
+  $color: $theme-color-alt,
+  $amount: 5,
+);
+
+$theme-color-hued: adjust-hue(
+  $color: $theme-color,
+  $degrees: -15,
+);
+$theme-color-alt-hued: adjust-hue(
+  $color: $theme-color-alt,
+  $degrees: -15,
+);
+
+$selection-color: rgba(
+  $color: $theme-color-shade,
+  $alpha: 0.1,
+);
+
+$selection-color-alt: rgba(
+  $color: $theme-color-alt,
+  $alpha: 0.1,
+);
+
+$softwhite: #fcf8e3;
+$white: #ffffff;
+$black: #000000;
+
+$bg-day: $white;
+
+$bg-night: lighten(
+  $color: $black,
+  $amount: 5,
+);
+
+$bg-day-shade: darken(
+  $color: $white,
+  $amount: 5,
+);
+
+$bg-night-tint: lighten(
+  $color: $black,
+  $amount: 10,
+);
+
+$fg-day: $black;
+$fg-night: $white;
+
+$fg-muted-day: #52626d;
+$fg-muted-night: #babfc0;
+
+$fg-alt-day: lighten(
+  $color: $black,
+  $amount: 20,
+);
+
+$fg-alt-night: darken(
+  $color: $white,
+  $amount: 20,
+);
+
+$shade-day: transparentize(
+  $color: $fg-day,
+  $amount: 0.9,
+);
+$shade-night: transparentize(
+  $color: $fg-night,
+  $amount: 0.9,
+);
+
+$padding: 1em;
+$header-padding-y: 0.8em;
+$header-padding: 0.7em 1em;
+
+$trans-timing: 0.35s;
+
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+
+$lsm: 576px - 0.02px;
+$lmd: 768px - 0.02px;
+$llg: 992px - 0.02px;

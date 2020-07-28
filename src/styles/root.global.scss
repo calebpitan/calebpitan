@@ -1,0 +1,122 @@
+@import './variables';
+@import '~bootstrap/scss/bootstrap-reboot';
+
+:root {
+  --font-xxxlarge: 2.5rem;
+  --font-xxlarge: 2rem;
+  --font-xlarge: 1.5rem;
+  --font-large: 1.2rem;
+  --font-size: 1rem;
+  --font-small: 0.9rem;
+  --font-xsmall: 0.85rem;
+  --font-xxsmall: 0.8rem;
+  --font-xxxsmall: 0.75rem;
+}
+
+html.light {
+  --theme-color: #{$theme-color-alt};
+  --theme-color-shade: #{$theme-color-alt-shade};
+  --theme-color-hued: #{$theme-color-alt-hued};
+  --theme-color-alt: #{darken($theme-color-alt, 50)};
+  --bg: #{$bg-day};
+  --bg-alt: #{$bg-day-shade};
+  --bg-alpha: #{$white};
+  --fg: #{$fg-day};
+  --fg-alt: #{$fg-alt-day};
+  --fg-muted: #{$fg-muted-day};
+  --trans-time: #{$trans-timing};
+  --selection: #{$selection-color-alt};
+  --shade: #{$shade-day};
+  --card-shade: #{transparentize($black, 0.8)};
+  --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
+  --presentation-stop-beta: #{transparentize($bg-day, 0.1)};
+  --presentation-stop-gamma: var(--bg);
+  --presentation-blend-mode: hard-light;
+}
+
+html {
+  --theme-color: #{$theme-color};
+  --theme-color-shade: #{$theme-color-shade};
+  --theme-color-hued: #{$theme-color-hued};
+  --theme-color-alt: #{$theme-color-alt};
+  --bg: #{$bg-night};
+  --bg-alt: #{$bg-night-tint};
+  --bg-alpha: #{$black};
+  --fg: #{$fg-night};
+  --fg-alt: #{$fg-alt-night};
+  --fg-muted: #{$fg-muted-night};
+  --trans-time: #{$trans-timing};
+  --selection: #{$selection-color};
+  --shade: #{$shade-night};
+  --shade-alt: #{$shade-day};
+  --card-shade: var(--bg-alpha);
+  --presentation-stop-alpha: #{transparentize($bg-night, 0.5)};
+  --presentation-stop-beta: #{transparentize($bg-night, 0.1)};
+  --presentation-stop-gamma: var(--bg);
+  --presentation-blend-mode: multiply;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+
+  &-track {
+    background: var(--bg-alpha);
+  }
+
+  &-thumb {
+    background: var(--theme-color-shade);
+    border-radius: 50px;
+  }
+}
+
+*,
+html {
+  @supports (scrollbar-width: thin) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-color-shade) var(--bg-alpha);
+  }
+}
+
+h1 {
+  margin: 0 !important;
+}
+
+a {
+  &:hover {
+    text-decoration: none;
+  }
+  &:not([class]) {
+    color: inherit;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px var(--bg-alpha);
+    transition: box-shadow linear var(--trans-time);
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 5px;
+      height: 100%;
+      width: 100%;
+      opacity: 0.3;
+      box-shadow: 0 5px 0 0 var(--theme-color-hued);
+      z-index: -1;
+    }
+
+    &:hover {
+      color: var(--fg);
+      box-shadow: 0 2px 0 0 var(--theme-color-shade);
+    }
+  }
+}
+
+.compact-content {
+  overflow: hidden;
+}
