@@ -38,13 +38,12 @@ $image-wrapper-height-lg: $image-wrapper-width-lg;
 
 .liner {
   stroke: var(--theme-color-alt);
-  stroke-width: 5px;
+  stroke-width: 0.3px;
   fill: none;
   stroke-linecap: round;
   stroke-dasharray: 1000;
-  stroke-dashoffset: 990;
-  // stroke-dasharray: 148;
-  // stroke-dashoffset: -95;
+  stroke-dashoffset: 999;
+  transform: rotateZ(-90deg);
   transform-origin: center;
 }
 
@@ -59,17 +58,17 @@ $image-wrapper-height-lg: $image-wrapper-width-lg;
 @keyframes draw {
   to {
     stroke: var(--theme-color);
-    stroke-dasharray: 500;
-    stroke-dashoffset: 10;
-    transform: rotateZ(108deg);
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 972;
+    transform: rotateZ(0);
   }
 }
 
 @keyframes draw2 {
   to {
     stroke: var(--theme-color);
-    stroke-dasharray: 500;
-    stroke-dashoffset: 10;
-    transform: rotateZ(110deg);
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 972;
+    transform: rotateZ(0);
   }
 }
