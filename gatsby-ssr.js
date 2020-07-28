@@ -6,7 +6,7 @@
 
 // You can delete this file if you're not using it
 
-import 'whatwg-fetch'
+import 'node-fetch'
 import './src/styles/root.global.scss'
 
 import React from 'react'
