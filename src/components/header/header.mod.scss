@@ -26,7 +26,8 @@
       transform ease-in calc(var(--trans-time) / 2);
   }
 
-  &:hover {
+  &:hover,
+  &.active {
     color: inherit;
     text-decoration: none;
 

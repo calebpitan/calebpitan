@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { FiFolder, FiMail, FiMessageCircle, FiPenTool } from 'react-icons/fi'
+import { Link } from 'gatsby'
+
 import { gcx } from '../../utils'
 
 import header from './header.mod.scss'
-import { Link } from 'gatsby'
 
 const cx = gcx(header)
 
@@ -19,7 +20,7 @@ export const links = [
     icon: FiFolder,
   },
   {
-    to: '/my-art',
+    to: '/art',
     text: 'My Art',
     icon: FiPenTool,
   },
@@ -45,6 +46,8 @@ const HeaderLink = ({ to, text, children, className, icon: Icon, ...rest }) => {
         'mxMd3',
         className
       )}
+      activeClassName={cx('active')}
+      partiallyActive
       {...rest}
     >
       {Icon && (
