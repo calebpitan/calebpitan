@@ -17,5 +17,5 @@ const utilStyles = {
 }
 
 export const gcx = (style) => {
-  return classNames.bind(Object.assign(utilStyles, style || {}))
+  return classNames.bind(Object.assign({}, utilStyles, style || {}))
 }
