@@ -10,22 +10,22 @@ const cx = gcx(header)
 
 export const links = [
   {
-    to: '/blog',
+    to: '/blog/',
     text: 'Blog',
     icon: FiMessageCircle,
   },
   {
-    to: '/projects',
+    to: '/projects/',
     text: 'Projects',
     icon: FiFolder,
   },
   {
-    to: '/art',
+    to: '/art/',
     text: 'My Art',
     icon: FiPenTool,
   },
   {
-    to: '/contact',
+    to: '/contact/',
     text: 'Contact',
     icon: FiMail,
   },
