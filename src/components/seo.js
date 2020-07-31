@@ -9,6 +9,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
+import { useIcon } from './hooks'
 
 const HOST = `https://calebpitan.dev`
 const TWITTER_USER = `@realongman`
@@ -28,6 +29,9 @@ function SEO({ description, lang, meta, keywords = [], title, image, isHome }) {
       }
     `
   )
+
+  const { icon } = useIcon()
+  const defaultImage = icon.childImageSharp.fixed.src
 
   const host = site.siteMetadata.siteUrl || HOST
   const metaDescription = description || site.siteMetadata.description
@@ -67,6 +71,9 @@ function SEO({ description, lang, meta, keywords = [], title, image, isHome }) {
       content: metaDescription,
     },
   ]
+
+  image = image ? image : defaultImage
+  
   if (image) {
     twitter.push({
       name: `twitter:image`,
