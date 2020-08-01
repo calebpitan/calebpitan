@@ -1,0 +1,27 @@
+@import '../../styles/variables';
+
+.blog {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.blog-post-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 2rem;
+  column-gap: 3rem;
+
+  & > * {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  @media (max-width: $lmd) {
+    grid-template-columns: auto;
+  }
+
+  @media (min-width: $md) and (max-width: $llg) {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 5rem;
+  }
+}
