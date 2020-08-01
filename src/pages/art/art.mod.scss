@@ -1,0 +1,66 @@
+@import '../../styles/variables';
+
+.art-hero {
+  --max-width: calc(100% - 25vw);
+  --font-para: var(--font-large);
+
+  @media (max-width: $lsm) {
+    --max-width: 95%;
+    --font-para: var(--font-small);
+  }
+
+  @media (min-width: $sm) and (max-width: $llg) {
+    --max-width: 85%;
+    --font-para: 1rem;
+  }
+
+  max-width: var(--max-width);
+
+  .action-buttons {
+    max-width: calc(var(--max-width) - 5vw);
+  }
+
+  p {
+    font-size: var(--font-para);
+    margin: 2rem auto 0;
+    text-align: center;
+    max-width: var(--max-width);
+  }
+}
+
+.hero-heading {
+  @media (min-width: $md) and (max-width: $llg) {
+    font-size: var(--font-xxlarge);
+  }
+  @media (min-width: $lg) {
+    font-size: calc(var(--font-xxlarge) * 2);
+  }
+}
+
+.art-layer {
+  background: var(--bg);
+}
+
+.art-images {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  grid-gap: 1.5rem;
+}
+
+.art-image-view {
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 1px solid var(--shade);
+  background: var(--bg);
+}
+
+.art-image-caption {
+  padding: 1em 1em;
+  font-size: var(--font-xxxsmall);
+  span {
+    display: inline-flex;
+    max-height: calc(1.5em);
+    overflow: hidden;
+  }
+}
