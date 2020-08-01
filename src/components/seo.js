@@ -73,7 +73,7 @@ function SEO({ description, lang, meta, keywords = [], title, image, isHome }) {
   ]
 
   image = image ? image : defaultImage
-  
+
   if (image) {
     twitter.push({
       name: `twitter:image`,
