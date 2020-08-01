@@ -11,7 +11,7 @@ import Img from 'gatsby-image'
 
 const cx = gcx(card)
 
-const Card = ({ title, author, avatar, slug, className }) => {
+const Card = ({ title, excerpt, author, avatar, slug, date, className }) => {
   return (
     <div className={cx('card', 'dFlex', 'flexColumn', className)}>
       <div className={cx('cardMain')}>
@@ -20,12 +20,18 @@ const Card = ({ title, author, avatar, slug, className }) => {
             {title}
           </Link>
         </H>
+        {excerpt && <div className={cx('cardExcerpt', 'py2')}>{excerpt}</div>}
       </div>
+
       <div className={cx('dFlex', 'alignItemsCenter', 'cardMeta', 'mtAuto')}>
         <SubjectImage className={cx('cardAvatar')} avatar>
           <Img fluid={avatar.childImageSharp.fluid} draggable={false} />
         </SubjectImage>
-        <span className={cx('cardAuthor')}>{author}</span>
+
+        <div className={cx('dFlex', 'flexColumn', 'mt3')}>
+          <span className={cx('cardFooter', 'flexShrink0')}>{author}</span>
+          <span className={cx('cardFooter', 'flexShrink0')}>{date}</span>
+        </div>
       </div>
     </div>
   )

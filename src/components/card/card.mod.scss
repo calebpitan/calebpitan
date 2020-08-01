@@ -25,9 +25,10 @@
   }
 }
 
-.card-author {
+.card-footer {
   font-size: 0.7rem;
   font-weight: 500;
+  margin: 0 1em;
 }
 
 .card-avatar {
@@ -40,4 +41,8 @@
       stroke-width: 2px;
     }
   }
+}
+
+.card-excerpt {
+  font-size: var(--font-xxsmall);
 }
