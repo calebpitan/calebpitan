@@ -11,41 +11,30 @@
   --font-xsmall: 0.85rem;
   --font-xxsmall: 0.8rem;
   --font-xxxsmall: 0.75rem;
-}
-
-html.light {
-  --theme-color: #{$theme-color-alt};
-  --theme-color-shade: #{$theme-color-alt-shade};
-  --theme-color-hued: #{$theme-color-alt-hued};
-  --theme-color-alt: #{darken($theme-color-alt, 50)};
-  --bg: #{$bg-day};
-  --bg-alt: #{$bg-day-shade};
-  --bg-alpha: #{$white};
-  --fg: #{$fg-day};
-  --fg-alt: #{$fg-alt-day};
-  --fg-muted: #{$fg-muted-day};
+  --btn-pad-x: 1em;
+  --btn-pad-y: 0.625em;
+  --btn-pad-x-sm: 0.625em;
+  --btn-pad-y-sm: 0.375em;
+  --btn-pad-x-md: 1.25em;
+  --btn-pad-y-md: 0.75em;
+  --btn-pad-x-lg: 2em;
+  --btn-pad-y-lg: 1.25em;
   --trans-time: #{$trans-timing};
-  --selection: #{$selection-color-alt};
-  --shade: #{$shade-day};
-  --card-shade: #{transparentize($black, 0.8)};
-  --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
-  --presentation-stop-beta: #{transparentize($bg-day, 0.1)};
-  --presentation-stop-gamma: var(--bg);
-  --presentation-blend-mode: hard-light;
 }
 
-html {
+@mixin night-theme {
   --theme-color: #{$theme-color};
   --theme-color-shade: #{$theme-color-shade};
   --theme-color-hued: #{$theme-color-hued};
+  --theme-color-sat: #{desaturate($color: $theme-color, $amount: 40)};
   --theme-color-alt: #{$theme-color-alt};
   --bg: #{$bg-night};
   --bg-alt: #{$bg-night-tint};
   --bg-alpha: #{$black};
+  --bg-revert: #{$white};
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
-  --trans-time: #{$trans-timing};
   --selection: #{$selection-color};
   --shade: #{$shade-night};
   --shade-alt: #{$shade-day};
@@ -54,6 +43,71 @@ html {
   --presentation-stop-beta: #{transparentize($bg-night, 0.1)};
   --presentation-stop-gamma: var(--bg);
   --presentation-blend-mode: multiply;
+}
+
+@mixin light-theme {
+  --theme-color: #{$theme-color-alt};
+  --theme-color-shade: #{$theme-color-alt-shade};
+  --theme-color-hued: #{$theme-color-alt-hued};
+  --theme-color-sat: #{saturate($theme-color-alt, 30)};
+  --theme-color-alt: #{darken($theme-color-alt, 50)};
+  --bg: #{$bg-day};
+  --bg-alt: #{$bg-day-shade};
+  --bg-alpha: #{$white};
+  --bg-revert: #{$black};
+  --fg: #{$fg-day};
+  --fg-alt: #{$fg-alt-day};
+  --fg-muted: #{$fg-muted-day};
+  --selection: #{$selection-color-alt};
+  --shade: #{$shade-day};
+  --shade-alt: #{$shade-night};
+  --card-shade: #{transparentize($black, 0.8)};
+  --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
+  --presentation-stop-beta: #{transparentize($bg-day, 0.1)};
+  --presentation-stop-gamma: var(--bg);
+  --presentation-blend-mode: hard-light;
+}
+
+html {
+  &.dark {
+    @include night-theme;
+  }
+
+  &.light {
+    @include light-theme;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    @include night-theme;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    @include light-theme;
+  }
+}
+
+@media (prefers-color-scheme: no-preference) {
+  html {
+    @include night-theme;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    --trans-time: 0s;
+    transition: none !important;
+
+    &:hover {
+      --trans-time: 0s;
+      transition: none !important;
+    }
+  }
 }
 
 ::selection {
@@ -80,10 +134,6 @@ html {
     scrollbar-width: thin;
     scrollbar-color: var(--theme-color-shade) var(--bg-alpha);
   }
-}
-
-h1 {
-  margin: 0 !important;
 }
 
 a {
@@ -119,4 +169,9 @@ a {
 
 .compact-content {
   overflow: hidden;
+}
+
+.global-alt-text {
+  color: var(--theme-color-shade);
+  font-family: monospace;
 }
