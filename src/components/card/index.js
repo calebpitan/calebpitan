@@ -14,7 +14,7 @@ const cx = gcx(card)
 const Card = ({ title, excerpt, author, avatar, slug, date, className }) => {
   return (
     <div className={cx('card', 'dFlex', 'flexColumn', className)}>
-      <div className={cx('cardMain')}>
+      <div>
         <H as="5">
           <Link to={slug} className={cx('cardLink')}>
             {title}
