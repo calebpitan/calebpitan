@@ -1,4 +1,3 @@
-$theme-color: palevioletred;// yellow;
 $theme-color: yellow;
 $theme-color-alt: palevioletred;//sienna;
 
@@ -38,7 +37,7 @@ $bg-day: $white;
 
 $bg-night: lighten(
   $color: $black,
-  $amount: 5,
+  $amount: 4.5,
 );
 
 $bg-day-shade: darken(
