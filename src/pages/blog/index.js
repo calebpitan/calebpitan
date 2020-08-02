@@ -35,13 +35,11 @@ const Blog = ({ data }) => {
               },
             }) => {
               return (
-                <>
-                  <Card
-                    {...{ title, author, slug, avatar, date }}
-                    className={cx('mb3')}
-                    key={`${title}-${author}-${id}`}
-                  />
-                </>
+                <Card
+                  {...{ title, author, slug, avatar, date }}
+                  className={cx('mb3')}
+                  key={`${title}-${author}-${id}`}
+                />
               )
             }
           )}
