@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { gcx } from '../../utils'
 
 import button from './button.mod.scss'
+import { Link } from 'gatsby'
 
 const cx = gcx(button)
 
@@ -12,14 +13,32 @@ const BUTTONS = {
   LARGE: 'btnLarge',
 }
 
-const Button = ({ children, className, text, size, alt, disabled }) => {
-  return (
+const Button = ({
+  children,
+  className,
+  text,
+  size,
+  alt,
+  link,
+  to,
+  disabled,
+  ...rest
+}) => {
+  return !link ? (
     <button
       className={cx('btn', size, { default: alt }, className)}
       disabled={disabled}
     >
       {children || text}
     </button>
+  ) : (
+    <Link
+      to={to}
+      className={cx('btn', size, { link, default: alt }, className)}
+      {...rest}
+    >
+      {children || text}
+    </Link>
   )
 }
 
@@ -37,6 +56,8 @@ Button.propTypes = {
     BUTTONS.DEFAULT,
   ]),
   alt: PropTypes.bool,
+  link: PropTypes.bool,
+  to: PropTypes.string,
   disabled: PropTypes.bool,
 }
 

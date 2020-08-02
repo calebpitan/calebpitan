@@ -11,9 +11,11 @@
   background: var(--theme-color-sat);
   color: var(--bg-alpha);
   box-shadow: 0 4px 8px var(--card-shade);
+  text-decoration: none;
 
   &:hover {
     box-shadow: none;
+    text-decoration: none;
   }
 
   &:focus {
@@ -26,6 +28,14 @@
   &:active {
     background: var(--theme-color-shade);
     box-shadow: none;
+  }
+}
+
+.link {
+  color: var(--bg-alpha);
+
+  &:hover {
+    color: var(--theme-color-sat);
   }
 }
 
