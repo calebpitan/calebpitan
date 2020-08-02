@@ -51,10 +51,6 @@ $image-wrapper-height-lg: $image-wrapper-width-lg;
   animation: draw calc(var(--trans-time) * 5) ease 0.1s forwards;
 }
 
-.liner-animate-draw-2 {
-  animation: draw2 calc(var(--trans-time) * 5) ease 0.1s forwards;
-}
-
 @keyframes draw {
   to {
     stroke: var(--theme-color);

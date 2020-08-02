@@ -33,12 +33,6 @@ const SubjectImage = ({ children, className }) => {
       const width = wrapperRef.current.offsetWidth
       const height = wrapperRef.current.offsetHeight
       setSize([width, height])
-      setClass((current) => {
-        if (current === animationClass) {
-          return 'linerAnimateDraw2'
-        }
-        return animationClass
-      })
     }
 
     window.addEventListener('resize', handler)
