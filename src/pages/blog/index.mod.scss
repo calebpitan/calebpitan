@@ -1,7 +1,7 @@
 @import '../../styles/variables';
 
 .blog {
-  max-width: 960px;
+  max-width: var(--compact-width);
   margin: 0 auto;
 }
 
