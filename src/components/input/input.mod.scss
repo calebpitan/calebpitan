@@ -1,0 +1,21 @@
+.input {
+  padding: 0.75em 1em;
+  border-radius: 3px;
+  border: 1px solid var(--shade);
+  background-color: var(--bg-alt);
+  color: var(--fg-alt);
+  box-shadow: 0 3px 5px 0 var(--card-shade);
+
+  &:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 0.1em var(--theme-color);
+  }
+
+  &:-webkit-autofill {
+    background: var(--bg-alt) !important;
+    background-color: var(--bg-alt) !important;
+    appearance: textfield !important;
+    color: var(--fg-alt) !important;
+  }
+}
