@@ -19,6 +19,8 @@
   --btn-pad-y-md: 0.75em;
   --btn-pad-x-lg: 2em;
   --btn-pad-y-lg: 1.25em;
+  --compact-width: 960px;
+  --compact-width-small: 768px;
   --trans-time: #{$trans-timing};
 }
 
@@ -32,6 +34,7 @@
   --bg-alt: #{$bg-night-tint};
   --bg-alpha: #{$black};
   --bg-revert: #{$white};
+  --bg-article: #{lighten($black, 5.5)};
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
@@ -41,8 +44,8 @@
   --card-shade: var(--bg-alpha);
   --presentation-stop-alpha: #{transparentize($bg-night, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-night, 0.1)};
-  --presentation-stop-gamma: var(--bg);
-  --presentation-blend-mode: multiply;
+  --presentation-stop-gamma: var(--bg-article);
+  --presentation-blend-mode: normal;
 }
 
 @mixin light-theme {
@@ -55,6 +58,7 @@
   --bg-alt: #{$bg-day-shade};
   --bg-alpha: #{$white};
   --bg-revert: #{$black};
+  --bg-article: #{$white};
   --fg: #{$fg-day};
   --fg-alt: #{$fg-alt-day};
   --fg-muted: #{$fg-muted-day};
@@ -123,7 +127,7 @@ html {
   }
 
   &-thumb {
-    background: var(--theme-color-shade);
+    background: var(--theme-color-sat);
     border-radius: 50px;
   }
 }
@@ -132,7 +136,7 @@ html {
 html {
   @supports (scrollbar-width: thin) {
     scrollbar-width: thin;
-    scrollbar-color: var(--theme-color-shade) var(--bg-alpha);
+    scrollbar-color: var(--theme-color-sat) var(--bg-alpha);
   }
 }
 
@@ -140,6 +144,7 @@ a {
   &:hover {
     text-decoration: none;
   }
+
   &:not([class]) {
     color: inherit;
     position: relative;
@@ -171,7 +176,17 @@ a {
   overflow: hidden;
 }
 
+.global-compact--layout {
+  max-width: var(--compact-width);
+  margin: 0 auto;
+}
+
+.global-compact--layout--sm {
+  max-width: var(--compact-width-small);
+  margin: 0 auto;
+}
+
 .global-alt-text {
-  color: var(--theme-color-shade);
+  color: var(--theme-color-alt);
   font-family: monospace;
 }
