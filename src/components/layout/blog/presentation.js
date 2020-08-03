@@ -72,7 +72,7 @@ const Presentation = ({
               </div>
 
               <div className={cx('dFlex', 'flexWrap')}>
-                <div className={cx('metaItem', 'fontWeightBold')}>
+                <div className={cx('metaItem')}>
                   <div className={cx('metaItemItem', 'textMuted')}>Author</div>
                   <a
                     href={findMeOn.find(({ name }) => name === 'Twitter')?.link}
