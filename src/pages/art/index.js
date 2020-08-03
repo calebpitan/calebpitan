@@ -7,8 +7,6 @@ import H from '../../components/heading'
 import Layout from '../../components/layout'
 import Button, { BUTTONS } from '../../components/button'
 
-import star from '../../images/gif/star.gif'
-
 import art from './art.mod.scss'
 
 const cx = gcx(art)
@@ -50,7 +48,7 @@ const ArtPage = ({ data }) => {
       <style>
         {`
           .${cx('galaxy')} {
-            background-image: url(${star}),;
+            background-image: url(''),;
             background-size: 300px;
             background-repeat: repeat;
             background-position: center center;
