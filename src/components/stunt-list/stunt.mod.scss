@@ -1,0 +1,64 @@
+@import '../../styles/variables';
+
+.stuntlist {
+  position: relative;
+}
+
+.stuntlist-wrapper {
+  vertical-align: initial;
+}
+
+.stunt-scroll-button {
+  $size: 42px;
+  $half-size: $size / 2;
+  position: absolute;
+  top: calc(-#{$half-size} + 50%);
+  width: $size;
+  height: $size;
+  font-size: 1.5rem;
+  background: var(--bg-alt);
+  border-radius: 50%;
+  border: 1px solid transparent;
+  color: inherit;
+  box-shadow: 0 3px 10px var(--bg-alpha);
+  box-shadow: 0 3px 10px var(--card-shade);
+  z-index: 1;
+  transition: border linear var(--trans-time),
+    background linear var(--trans-time);
+
+  &:hover {
+    background: var(--bg);
+  }
+
+  &:focus {
+    outline: none;
+    border: 2px solid var(--theme-color);
+  }
+}
+
+.scroll-left {
+  left: -1rem;
+}
+
+.scroll-right {
+  right: -1rem;
+}
+
+.stunt-link {
+  color: inherit;
+  padding: 0.5em;
+  border-left: 5px solid var(--fg-muted);
+  transition: all linear var(--trans-time);
+
+  &:not(:last-of-type) {
+    margin-bottom: 1em;
+  }
+  
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+    border-left-color: var(--theme-color-shade);
+    background: var(--selection);
+    margin-left: 0;
+  }
+}
