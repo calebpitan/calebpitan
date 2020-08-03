@@ -28,6 +28,7 @@ const Button = ({
     <button
       className={cx('btn', size, { default: alt }, className)}
       disabled={disabled}
+      {...rest}
     >
       {children || text}
     </button>
