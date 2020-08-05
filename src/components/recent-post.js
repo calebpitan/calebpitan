@@ -2,23 +2,25 @@ import * as React from 'react'
 import { First6ixPosts } from './graphql'
 import StuntList from './stunt-list'
 
-const RecentPost = () => {
+const RecentPost = ({ except }) => {
   return (
     <First6ixPosts>
       {({ allMdx }) => {
-        const stunts = allMdx.edges.map(
-          ({
-            node: {
-              frontmatter: { title, author, date },
-              fields: { slug },
-            },
-          }) => ({
-            title,
-            author,
-            date,
-            slug,
-          })
-        )
+        const stunts = allMdx.edges
+          .filter(({ node: { id } }) => id !== except)
+          .map(
+            ({
+              node: {
+                frontmatter: { title, author, date },
+                fields: { slug },
+              },
+            }) => ({
+              title,
+              author,
+              date,
+              slug,
+            })
+          )
         return <StuntList data={stunts} />
       }}
     </First6ixPosts>
