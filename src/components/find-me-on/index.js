@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FiGithub, FiTwitter, FiLinkedin } from 'react-icons/fi'
+import { FiGithub, FiTwitter, FiLinkedin, FiCodepen } from 'react-icons/fi'
 
 import { gcx } from '../../utils'
 
@@ -12,6 +12,11 @@ export const findMeOn = [
     link: 'https://github.com/calebpitan',
     name: 'Github',
     Icon: FiGithub,
+  },
+  {
+    link: 'https://codepen.io/calebpitan',
+    name: 'CodePen',
+    Icon: FiCodepen,
   },
   {
     link: 'https://twitter.com/realongman',
