@@ -8,6 +8,7 @@ import Layout from '../../components/layout'
 import Button, { BUTTONS } from '../../components/button'
 
 import art from './art.mod.scss'
+import SEO from '../../components/seo'
 
 const cx = gcx(art)
 
@@ -45,10 +46,11 @@ const ArtPage = ({ data }) => {
 
   return (
     <Layout>
+      <SEO title={`Explore my artworks`} />
       <style>
         {`
           .${cx('galaxy')} {
-            background-image: url(''),;
+            background-image: url('');
             background-size: 300px;
             background-repeat: repeat;
             background-position: center center;
