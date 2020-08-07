@@ -8,6 +8,8 @@
 
 import 'whatwg-fetch'
 import './src/styles/root.global.scss'
+import './src/styles/prism-one-dark.css'
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
 
 import React from 'react'
 import BlogWrapper from './src/components/wrapper'

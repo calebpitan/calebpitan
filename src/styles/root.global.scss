@@ -172,6 +172,13 @@ a {
   }
 }
 
+code {
+  background: var(--bg-alt);
+  color: var(--fg-inline-code);
+  padding: 0.085rem 0.175rem;
+  border-radius: 5px;
+}
+
 .compact-content {
   overflow: hidden;
 }
@@ -188,5 +195,105 @@ a {
 
 .global-alt-text {
   color: var(--theme-color-alt);
-  font-family: monospace;
+  font-family: 'Inconsolata', 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono',
+    'Lucida Console', $font-family-monospace;
+}
+
+
+/**
+ * Styles affecting blog post layout and elements within
+ * the <article> element <main> child
+ */
+
+main {
+  p,
+  ul,
+  ol {
+    margin-bottom: 1.75rem;
+  }
+
+  h2[id],
+  h3[id],
+  h4[id],
+  h5[id],
+  h6[id] {
+    font-family: 'Domine';
+    margin-bottom: 1.75rem;
+
+    & svg,
+    & a {
+      opacity: 0;
+      visibility: hidden;
+      display: inline-block;
+      color: var(--fg-alt);
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-left: -1.5rem;
+    }
+    &:hover a {
+      opacity: 1;
+      color: var(--fg);
+      visibility: visible;
+      transition: opacity linear calc(var(--trans-time) * 2);
+    }
+  }
+
+  .gatsby-resp-image-wrapper {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+/**
+ * Code styling
+ */
+
+.gatsby-highlight {
+  border-radius: 10px;
+}
+
+.gatsby-highlight-code-line {
+  background-color: var(--shade-alt);
+  display: block;
+  margin-right: -1em;
+  margin-left: -1em;
+  padding-right: 1em;
+  padding-left: 0.75em;
+  border-left: 0.25em solid var(--theme-color-sat);
+}
+
+pre[class*='language-'] {
+  font-size: 1rem;
+  border-radius: 10px;
+  margin: 0 0 1.75rem !important;
+  padding: 1em;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: revert;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(120, 120, 120, .7);
+    border-radius: 0;
+  }
+}
+
+/**
+ * If you only want to use line numbering
+ */
+
+.gatsby-highlight pre[class*='language-'].line-numbers {
+  padding: 0 5em;
+  padding-left: 2.8em;
+  overflow: initial;
+}
+
+.line-numbers .line-numbers-rows {
+  padding: 0 0 0 0.625em;
 }

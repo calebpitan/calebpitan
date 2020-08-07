@@ -49,6 +49,13 @@ module.exports = {
               maxWidth: 1200,
             },
           },
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              showLineNumbers: false,
+              noInlineHighlight: true,
+            },
+          },
         ],
       },
     },
@@ -96,6 +103,13 @@ module.exports = {
             icon: false,
             removeAccents: true,
           },
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              showLineNumbers: false,
+              noInlineHighlight: true,
+            },
+          },
         ],
       },
     },
@@ -107,35 +121,34 @@ module.exports = {
         },
       },
     },
-    // {
-    //   resolve: `gatsby-plugin-prefetch-google-fonts`,
-    //   options: {
-    //     fonts: [
-    //       {
-    //         family: `Roboto`,
-    //         variants: [`400`, `500`],
-    //       },
-    //     ],
-    //   },
-    // },
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            family: `Poppins`,
+            variants: [`400`, `400i`, `500`, `500i`, `600`, `700`],
+          },
+          {
+            family: `Domine`,
+            variants: [`400`, `500`],
+          },
+          {
+            family: `Roboto Mono`,
+            variants: [`400`, `500`, `600`],
+          },
+        ],
+      },
+    },
     // `gatsby-plugin-twitter`,
     // `gatsby-plugin-styled-components`,
     // `gatsby-plugin-algolia`,
     // `gatsby-plugin-netlify-cms`,
-    // {
-    //   resolve: `gatsby-plugin-google-analytics`,
-    //   options: {
-    //     trackingId: `UA-135955038-2`,
-    //     head: true,
-    //     respectDNT: true,
-    //     pageTransitionDelay: 1000,
-    //   },
-    // },
 
     {
       resolve: `gatsby-plugin-nprogress`,
       options: {
-        color: `#B80B2C`,
+        color: `palevioletred`,
         showSpinner: false,
       },
     },
