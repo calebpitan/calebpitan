@@ -5,6 +5,7 @@ import { Link } from 'gatsby'
 import { gcx } from '../../utils'
 
 import header from './header.mod.scss'
+import ThemeSwitch from '../theme-switch'
 
 const cx = gcx(header)
 
@@ -106,6 +107,7 @@ const Header = () => {
             )
           })}
         </div>
+        <ThemeSwitch />
       </header>
     </div>
   )

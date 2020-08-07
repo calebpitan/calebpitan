@@ -10,11 +10,28 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 import { useIcon } from './hooks'
+import { THEMES, THEME_KEY } from '../utils'
+import { ThemeContext } from './wrapper'
 
 const HOST = `https://calebpitan.dev`
 const TWITTER_USER = `@realongman`
 
-function SEO({ description, lang, meta, keywords = [], title, image, isHome }) {
+const THEME =
+  window !== undefined
+    ? localStorage.getItem(THEME_KEY) || THEMES.DARK
+    : THEMES.DARK
+
+function SEO({
+  description,
+  lang,
+  themeMode,
+  meta,
+  keywords = [],
+  title,
+  image,
+  isHome,
+}) {
+  const theme = React.useContext(ThemeContext)
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -89,6 +106,7 @@ function SEO({ description, lang, meta, keywords = [], title, image, isHome }) {
     <Helmet
       htmlAttributes={{
         lang,
+        class: theme || themeMode,
       }}
       title={title}
       titleTemplate={!isHome ? `%s | ${site.siteMetadata.title}` : `%s`}
@@ -110,6 +128,7 @@ function SEO({ description, lang, meta, keywords = [], title, image, isHome }) {
 
 SEO.defaultProps = {
   lang: `en`,
+  themeMode: THEME,
   meta: [],
   description: ``,
   isHome: false,
