@@ -82,12 +82,12 @@ const Presentation = ({
                   </a>
                 </div>
 
-                <div className={cx('metaItem', 'fontWeightBold')}>
+                <div className={cx('metaItem')}>
                   <div className={cx('metaItemItem', 'textMuted')}>Date</div>
                   <div>{date}</div>
                 </div>
 
-                <div className={cx('metaItem', 'fontWeightBold')}>
+                <div className={cx('metaItem')}>
                   <div
                     className={cx('metaItemItem', 'textMuted')}
                     aria-label="Estimated Time to Read (E.T.R)"

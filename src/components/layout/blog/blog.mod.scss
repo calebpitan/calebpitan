@@ -14,6 +14,7 @@
   position: relative;
   background-clip: border-box;
   width: 100%;
+  background: var(--bg-article);
 }
 
 .presentation-details {
@@ -38,16 +39,18 @@
   font-weight: 700;
   font-style: normal;
   font-size: var(--font-xxxlarge);
-  font-family: Ringside Regular A, Ringside Regular B, Rubik, Lato,
+  font-family: 'Domine', Ringside Regular A, Ringside Regular B, Rubik, Lato,
     Lucida Grande, Lucida Sans Unicode, Tahoma, Sans-Serif;
   text-transform: capitalize;
   margin: 0 0 1.5rem;
   display: block;
+  letter-spacing: 1px;
   z-index: 1;
 }
 
 .article-description {
   font-weight: 500;
+  font-style: italic;
   z-index: 1;
   max-width: 90%;
 
@@ -79,6 +82,7 @@
   z-index: 1;
   margin-top: 0.5rem;
   font-weight: 600;
+  font-family: 'Poppins';
 
   &:not(:last-of-type) {
     margin-right: 1em;
@@ -113,5 +117,26 @@
   @media (min-width: $md) {
     font-size: 1.05rem;
     // font-size: var(--font-large);
+  }
+}
+
+.blog-share-button {
+  display: inline-flex;
+  background: var(--theme-color-sat);
+  padding: 0.5em;
+  border-radius: 50%;
+  color: var(--bg-alpha);
+
+  &:not(:last-of-type) {
+    margin-right: 0.5rem;
+  }
+
+  &:hover {
+    background: var(--theme-color-shade);
+    color: var(--bg-alpha);
+  }
+
+  &:active {
+    background: var(--theme-color);
   }
 }

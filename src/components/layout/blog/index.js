@@ -11,15 +11,55 @@ import Layout from '..'
 import { useAvatar } from '../../hooks'
 
 import blog from './blog.mod.scss'
+import IntentShare from './share'
 import RecentPost from '../../recent-post'
+import H from '../../heading'
+import Tape from '../../tape'
 
 const shortcodes = { Link, SEO }
 
 const cx = gcx(blog)
 
+const changeSectionIcon = () => {
+  const postHeading = document.querySelectorAll('h2, h3, h4, h5')
+  postHeading.forEach((heading) => {
+    const svg = heading.querySelector('a > svg')
+    svg && (svg.outerHTML = `#`)
+  })
+}
+
 const BlogLayout = ({ data: { mdx, site } }) => {
-  const { title, author, date, desc, featuredImage } = mdx.frontmatter
   const { avatar } = useAvatar()
+  const { title, author, date, desc, featuredImage } = mdx.frontmatter
+
+  React.useEffect(() => {
+    changeSectionIcon()
+  }, [])
+
+  const postUrl = `${site.siteMetadata.siteUrl}/blog${
+    mdx.frontmatter?.slug || mdx.fields.slug
+  }`
+
+  const sharerIntents = [
+    {
+      name: 'mail',
+      text: `${mdx.frontmatter.title}&body=${mdx.frontmatter.desc}\n${postUrl}`,
+      url: true,
+    },
+    {
+      name: 'twitter',
+      text: `${mdx.frontmatter.desc}\n${postUrl}`,
+    },
+    {
+      name: 'facebook',
+      text: postUrl,
+    },
+    {
+      name: 'linkedin',
+      text: `url=${postUrl}&summary=${mdx.frontmatter.desc}`,
+      url: true,
+    },
+  ]
 
   return (
     <Layout>
@@ -29,7 +69,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
         keywords={mdx.frontmatter.tags}
       />
       <div className={cx('pb5')} style={{ background: `var(--bg)` }}>
-        <article style={{ maxWidth: 960, margin: `0 auto` }}>
+        <article style={{ maxWidth: `var(--compact-width)`, margin: `0 auto` }}>
           <Presentation
             {...{
               title,
@@ -55,6 +95,20 @@ const BlogLayout = ({ data: { mdx, site } }) => {
             </main>
           </div>
         </article>
+        <div
+          style={{
+            maxWidth: `var(--compact-width)`,
+            margin: `2rem auto 0`,
+            fontSize: `1.5rem`,
+            overflow: `hidden`,
+          }}
+          className={cx('px3', 'pxMd5')}
+        >
+          <IntentShare intents={sharerIntents} className="mb5" />
+          <H as="3">Recent Stunts</H>
+          <Tape small />
+          <RecentPost except={mdx.id} />
+        </div>
       </div>
     </Layout>
   )
@@ -75,7 +129,7 @@ export const pageQuery = graphql`
         slug
         featuredImage {
           childImageSharp {
-            fixed(width: 800, quality: 80, grayscale: false) {
+            fixed(width: 800, quality: 80) {
               ...GatsbyImageSharpFixed_withWebp
             }
           }
