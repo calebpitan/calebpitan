@@ -16,6 +16,13 @@ const utilStyles = {
   ...typo,
 }
 
+export const THEME_KEY = 'theme-mode'
+export const THEMES = {
+  DARK: 'dark',
+  LIGHT: 'light',
+  AUTO: 'auto',
+}
+
 export const gcx = (style) => {
   return classNames.bind(Object.assign({}, utilStyles, style || {}))
 }
