@@ -35,9 +35,11 @@
   --bg-alpha: #{$black};
   --bg-revert: #{$white};
   --bg-article: #{lighten($black, 5.5)};
+  --bg-input: var(--bg-alt);
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
+  --fg-inline-code: #d65c84;
   --selection: #{$selection-color};
   --shade: #{$shade-night};
   --shade-alt: #{$shade-day};
@@ -59,9 +61,11 @@
   --bg-alpha: #{$white};
   --bg-revert: #{$black};
   --bg-article: #{$white};
+  --bg-input: var(--bg);
   --fg: #{$fg-day};
   --fg-alt: #{$fg-alt-day};
   --fg-muted: #{$fg-muted-day};
+  --fg-inline-code: #ad2896;
   --selection: #{$selection-color-alt};
   --shade: #{$shade-day};
   --shade-alt: #{$shade-night};
@@ -146,28 +150,15 @@ a {
   }
 
   &:not([class]) {
-    color: inherit;
+    color: var(--theme-color-sat);
     position: relative;
     z-index: 1;
     text-shadow: 0 1px var(--bg-alpha);
-    transition: box-shadow linear var(--trans-time);
-
-    &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 0;
-      bottom: 5px;
-      height: 100%;
-      width: 100%;
-      opacity: 0.3;
-      box-shadow: 0 5px 0 0 var(--theme-color-hued);
-      z-index: -1;
-    }
 
     &:hover {
       color: var(--fg);
       box-shadow: 0 2px 0 0 var(--theme-color-shade);
+      transition: box-shadow linear var(--trans-time);
     }
   }
 }
