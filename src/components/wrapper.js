@@ -17,13 +17,21 @@ const useThemeToggle = () => {
   return toggle
 }
 
+const getTheme = () => {
+  try {
+    return (
+      undefined !== typeof window
+        ? localStorage.getItem(THEME_KEY) || THEMES.DARK
+        : THEMES.DARK
+    )
+  } catch {
+    return THEMES.DARK
+  }
+}
+  
 const BlogWrapper = ({ children }) => {
   // implement some stuff like site-wide alert here
-  const [currentTheme, setCurrnetTheme] = React.useState(
-    window !== undefined
-      ? localStorage.getItem(THEME_KEY) || THEMES.DARK
-      : THEMES.DARK
-  )
+  const [currentTheme, setCurrnetTheme] = React.useState(getTheme)
 
   return (
     <ThemeProvider value={currentTheme}>
