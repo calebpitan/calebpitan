@@ -22,10 +22,14 @@ const cx = gcx(blog)
 
 const changeSectionIcon = () => {
   const postHeading = document.querySelectorAll('h2, h3, h4, h5')
-  postHeading.forEach((heading) => {
-    const svg = heading.querySelector('a > svg')
-    svg && (svg.outerHTML = `#`)
-  })
+  try {
+    postHeading.forEach((heading) => {
+      const svg = heading.querySelector('a > svg')
+      svg.outerHTML = `#`
+    })
+  } catch {
+    return
+  }
 }
 
 const BlogLayout = ({ data: { mdx, site } }) => {
