@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
+import { FiTag } from 'react-icons/fi'
 
 import Layout from '../../components/layout'
 import Card from '../../components/card'
@@ -44,6 +45,9 @@ const Blog = ({ data }) => {
             }
           )}
         </div>
+        <Link to="/tag">
+          <FiTag aria-hidden="true" /> All Tags
+        </Link>
       </div>
     </Layout>
   )
