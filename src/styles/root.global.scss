@@ -49,6 +49,7 @@
   --shade: #{$shade-night};
   --shade-alt: #{$shade-day};
   --card-shade: var(--bg-alpha);
+  --card-gradient: linear-gradient(to right, var(--bg), var(--bg-alt));
 
   --presentation-stop-alpha: #{transparentize($bg-night, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-night, 0.1)};
@@ -79,6 +80,7 @@
   --shade: #{$shade-day};
   --shade-alt: #{$shade-night};
   --card-shade: #{transparentize($black, 0.8)};
+  --card-gradient: linear-gradient(to right, var(--bg-alpha), var(--bg-alt));
 
   --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-day, 0.1)};
