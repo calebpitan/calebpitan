@@ -38,7 +38,6 @@ const Presentation = ({
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
-            background-blend-mode: var(--presentation-blend-mode);
             position: absolute;
             filter: blur(var(--blur-radius));
             clip-path: inset(0 0 0 0);
