@@ -1,0 +1,70 @@
+@import './variables';
+
+@mixin palette($color: cornflowerblue) {
+  $ll: darken($color, 3.33);
+  $mm: darken($color, 6.67);
+  $nn: darken($color, 10);
+  $oo: darken($color, 13.33);
+  $pp: darken($color, 16.67);
+  $qq: darken($color, 12);
+  $rr: darken($color, 23.33);
+  $ss: darken($color, 26.67);
+  $tt: darken($color, 30);
+  $uu: darken($color, 33.33);
+  $vv: darken($color, 36.67);
+  $ww: darken($color, 40);
+  $xx: darken($color, 43.33);
+  $yy: darken($color, 46.67);
+  $zz: darken($color, 50);
+
+
+  $o: lighten($color, 3.33);
+  $n: lighten($color, 6.67);
+  $m: lighten($color, 10);
+  $l: lighten($color, 13.33);
+  $k: lighten($color, 16.67);
+  $j: lighten($color, 20.00);
+  $i: lighten($color, 23.33);
+  $h: lighten($color, 26.67);
+  $g: lighten($color, 30);
+  $f: lighten($color, 33.33);
+  $e: lighten($color, 36.67);
+  $d: lighten($color, 40);
+  $c: lighten($color, 43.33);
+  $b: lighten($color, 46.67);
+  $a: lighten($color, 50.00);
+
+  --theme-color-10: #{$a};
+  --theme-color-11: #{$b};
+  --theme-color-12: #{$c};
+  --theme-color-13: #{$d};
+  --theme-color-14: #{$e};
+  --theme-color-15: #{$f};
+  --theme-color-16: #{$g};
+  --theme-color-17: #{$h};
+  --theme-color-18: #{$i};
+  --theme-color-19: #{$j};
+  --theme-color-20: #{$k};
+  --theme-color-21: #{$l};
+  --theme-color-22: #{$m};
+  --theme-color-23: #{$n};
+  --theme-color-24: #{$o};
+
+  --theme-color-25: #{$color};
+
+  --theme-color-26: #{$ll};
+  --theme-color-27: #{$mm};
+  --theme-color-28: #{$nn};
+  --theme-color-29: #{$oo};
+  --theme-color-30: #{$pp};
+  --theme-color-31: #{$qq};
+  --theme-color-32: #{$rr};
+  --theme-color-33: #{$ss};
+  --theme-color-34: #{$tt};
+  --theme-color-35: #{$uu};
+  --theme-color-36: #{$vv};
+  --theme-color-37: #{$ww};
+  --theme-color-38: #{$xx};
+  --theme-color-39: #{$yy};
+  --theme-color-40: #{$zz};
+}

@@ -1,5 +1,5 @@
 $theme-color: yellow;
-$theme-color-alt: palevioletred;//sienna;
+$theme-color-alt: #cd3a6a; // palevioletred;
 
 $theme-color-shade: darken(
   $color: $theme-color,
@@ -19,21 +19,11 @@ $theme-color-alt-hued: adjust-hue(
   $degrees: -15,
 );
 
-$selection-color: rgba(
-  $color: $theme-color-shade,
-  $alpha: 0.1,
-);
-
-$selection-color-alt: rgba(
-  $color: $theme-color-alt,
-  $alpha: 0.1,
-);
-
-$softwhite: #fcf8e3;
+$softwhite: #fdfdfd;
 $white: #ffffff;
 $black: #000000;
 
-$bg-day: $white;
+$bg-day: $softwhite;
 
 $bg-night: lighten(
   $color: $black,
@@ -53,7 +43,7 @@ $bg-night-tint: lighten(
 $fg-day: $black;
 $fg-night: $white;
 
-$fg-muted-day: #52626d;
+$fg-muted-day: #3e5666;
 $fg-muted-night: #babfc0;
 
 $fg-alt-day: lighten(

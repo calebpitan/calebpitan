@@ -1,4 +1,5 @@
 @import './variables';
+@import './theme-mixin';
 @import '~bootstrap/scss/bootstrap-reboot';
 
 :root {
@@ -25,55 +26,63 @@
 }
 
 @mixin night-theme {
-  --theme-color: #{$theme-color};
-  --theme-color-shade: #{$theme-color-shade};
-  --theme-color-hued: #{$theme-color-hued};
+  @include palette($theme-color);
+
+  --theme-color: var(--theme-color-25);
+  --theme-color-shade: var(--theme-color-28);
   --theme-color-sat: #{desaturate($color: $theme-color, $amount: 40)};
   --theme-color-alt: #{$theme-color-alt};
+
   --bg: #{$bg-night};
   --bg-alt: #{$bg-night-tint};
   --bg-alpha: #{$black};
   --bg-revert: #{$white};
   --bg-article: #{lighten($black, 5.5)};
   --bg-input: var(--bg-alt);
+
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
-  --fg-inline-code: #d65c84;
-  --selection: #{$selection-color};
+  --fg-inline-code: #00bff9;
+
+  --selection: var(--theme-color-35);
   --shade: #{$shade-night};
   --shade-alt: #{$shade-day};
   --card-shade: var(--bg-alpha);
+
   --presentation-stop-alpha: #{transparentize($bg-night, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-night, 0.1)};
   --presentation-stop-gamma: var(--bg-article);
-  --presentation-blend-mode: normal;
 }
 
 @mixin light-theme {
-  --theme-color: #{$theme-color-alt};
-  --theme-color-shade: #{$theme-color-alt-shade};
-  --theme-color-hued: #{$theme-color-alt-hued};
-  --theme-color-sat: #{saturate($theme-color-alt, 30)};
+  @include palette($theme-color-alt);
+
+  --theme-color: var(--theme-color-25);
+  --theme-color-shade: var(--theme-color-31);
+  --theme-color-sat: #{saturate($theme-color-alt, 20)};
   --theme-color-alt: #{darken($theme-color-alt, 50)};
+
   --bg: #{$bg-day};
   --bg-alt: #{$bg-day-shade};
   --bg-alpha: #{$white};
   --bg-revert: #{$black};
-  --bg-article: #{$white};
-  --bg-input: var(--bg);
+  --bg-article: var(--bg-alpha);
+  --bg-input: var(--bg-alpha);
+
   --fg: #{$fg-day};
   --fg-alt: #{$fg-alt-day};
   --fg-muted: #{$fg-muted-day};
   --fg-inline-code: #ad2896;
-  --selection: #{$selection-color-alt};
+
+  --selection: var(--theme-color-15);
   --shade: #{$shade-day};
   --shade-alt: #{$shade-night};
   --card-shade: #{transparentize($black, 0.8)};
+
   --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-day, 0.1)};
-  --presentation-stop-gamma: var(--bg);
-  --presentation-blend-mode: hard-light;
+  --presentation-stop-gamma: var(--bg-article);
 }
 
 html {
@@ -150,14 +159,16 @@ a {
   }
 
   &:not([class]) {
-    color: var(--theme-color-sat);
+    color: var(--fg-alt);
+    font-style: oblique;
     position: relative;
+    box-shadow: 0 0.5px 0 0 var(--theme-color-sat);
     z-index: 1;
-    text-shadow: 0 1px var(--bg-alpha);
+    // text-shadow: 0 1px var(--bg-alpha);
 
     &:hover {
-      color: var(--fg);
-      box-shadow: 0 2px 0 0 var(--theme-color-shade);
+      color: var(--theme-color-sat);
+      box-shadow: 0 1.5px 0 0 var(--theme-color-sat);
       transition: box-shadow linear var(--trans-time);
     }
   }
@@ -166,6 +177,7 @@ a {
 code {
   background: var(--bg-alt);
   color: var(--fg-inline-code);
+  font-style: italic;
   padding: 0.085rem 0.175rem;
   border-radius: 5px;
 }
@@ -189,7 +201,6 @@ code {
   font-family: 'Inconsolata', 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono',
     'Lucida Console', $font-family-monospace;
 }
-
 
 /**
  * Styles affecting blog post layout and elements within
@@ -244,7 +255,7 @@ main {
 }
 
 .gatsby-highlight-code-line {
-  background-color: var(--shade-alt);
+  background-color: rgba(120, 120, 120, 0.2);
   display: block;
   margin-right: -1em;
   margin-left: -1em;
@@ -270,7 +281,7 @@ pre[class*='language-'] {
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(120, 120, 120, .7);
+    background: rgba(120, 120, 120, 0.7);
     border-radius: 0;
   }
 }
