@@ -1,7 +1,7 @@
 .card {
   position: relative;
   background: var(--bg-alt);
-  background: linear-gradient(to right, var(--bg), var(--bg-alt));
+  background: var(--card-gradient);
   padding: 1rem;
   border-radius: 7px;
   min-width: 12.5rem;
