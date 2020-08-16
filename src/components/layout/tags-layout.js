@@ -1,10 +1,12 @@
 import * as React from 'react'
+import { graphql, Link } from 'gatsby'
+import { FiTag } from 'react-icons/fi'
+
 import Layout from '../../components/layout'
-import { gcx } from '../../utils'
 import SEO from '../../components/seo'
 import H from '../../components/heading'
 import Tape from '../../components/tape'
-import { graphql, Link } from 'gatsby'
+import { gcx } from '../../utils'
 
 const cx = gcx()
 
@@ -58,7 +60,7 @@ const TagsLayout = ({ pageContext, data }) => {
               )
             })}
           </ol>
-          <Link to="/tags">All Tags</Link>
+          <Link to="/tag"><FiTag aria-hidden="true" /> All Tags</Link>
         </div>
       </div>
     </Layout>
