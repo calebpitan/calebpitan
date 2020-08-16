@@ -17,14 +17,6 @@
 
 .contact-message {
   color: var(--theme-color-sat);
-  background-image: linear-gradient(
-    to right,
-    var(--theme-color-alt),
-    var(--theme-color-sat)
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-style: italic;
   font-weight: 500;
 }

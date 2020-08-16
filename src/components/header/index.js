@@ -26,8 +26,8 @@ export const links = [
     icon: FiPenTool,
   },
   {
-    to: '/contact/',
-    text: 'Contact',
+    to: '/get-in-touch/',
+    text: 'Get in touch',
     icon: FiMail,
   },
 ]

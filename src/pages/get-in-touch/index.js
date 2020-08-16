@@ -15,6 +15,47 @@ const Contact = () => {
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [message, setMessage] = React.useState('')
+  const [requesting, setRequesting] = React.useState(false)
+
+  const encode = (data) => {
+    return Object.keys(data)
+      .map(
+        (key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
+      )
+      .join('&')
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setRequesting(true)
+
+    const data = {
+      'form-name': 'contact',
+      name,
+      email,
+      message,
+    }
+
+    fetch(`/`, {
+      method: `POST`,
+      headers: { 'Content-Type': `application/x-www-form-urlencoded` },
+      body: encode(data),
+    })
+      .then(() => {
+        setRequesting(false)
+        alert('Form submitted successfully')
+      })
+      .catch(() => {
+        setRequesting(false)
+        alert('Failed to submit')
+      })
+      .finally(() => {
+        setName('')
+        setEmail('')
+        setMessage('')
+      })
+  }
+
   return (
     <Layout>
       <SEO title={`Contact`} />
@@ -30,8 +71,11 @@ const Contact = () => {
           <form
             action="/"
             method="post"
+            name="Get in Touch"
             data-netlify="true"
+            data-netlify-honeypot="bot-field"
             className={cx('contactMain')}
+            onSubmit={handleSubmit}
           >
             <label className={cx('srOnly')} htmlFor="n">
               Name
