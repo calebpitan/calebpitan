@@ -17,7 +17,7 @@ const HOST = `https://calebpitan.dev`
 const TWITTER_USER = `@realongman`
 
 const THEME =
-  window !== undefined
+  undefined !== typeof window
     ? localStorage.getItem(THEME_KEY) || THEMES.DARK
     : THEMES.DARK
 
