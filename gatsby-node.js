@@ -52,12 +52,21 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   const posts = result.data.allPosts.edges
+  const tags = result.data.tagsGroup.group
 
   posts.forEach(({ node }) => {
     createPage({
       path: node.fields.slug,
       component: path.resolve(`./src/components/layout/blog/index.js`),
       context: { id: node.id },
+    })
+  })
+
+  tags.forEach((tag) => {
+    createPage({
+      path: `/tags/${_.kebabCase(tag.fieldValue)}/`,
+      component: path.resolve(`./src/components/layout/tags-layout.js`),
+      context: { tag: tag.fieldValue },
     })
   })
 }
