@@ -87,9 +87,11 @@ const ArtPage = ({ data }) => {
               className={['mb4', 'mbMd0', 'mrMd4']}
             />
             <Button
+              to="/get-in-touch"
               text="Order your portrait"
               size={BUTTONS.MED}
               className={['mlMd4']}
+              link
               alt
             />
           </div>
