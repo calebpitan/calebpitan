@@ -8,9 +8,15 @@
 
   @media (max-width: $lmd) {
     display: block;
+
     & > * {
-      width: 100%;
+      $width: 100%;
+      width: $width;
       margin-bottom: 2rem;
+
+      & > input {
+        width: $width;
+      }
     }
   }
 }
