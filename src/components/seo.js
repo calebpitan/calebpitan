@@ -10,27 +10,14 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { useStaticQuery, graphql } from 'gatsby'
 import { useIcon } from './hooks'
-import { THEMES, THEME_KEY } from '../utils'
+import { getTheme } from '../utils'
 import { ThemeContext } from './wrapper'
 
 const HOST = `https://calebpitan.dev`
 const TWITTER_USER = `@realongman`
 
-const getTheme = () => {
-  try {
-    return (
-      undefined !== typeof window
-        ? localStorage.getItem(THEME_KEY) || THEMES.DARK
-        : THEMES.DARK
-    )
-  } catch {
-    return THEMES.DARK
-  }
-}
-
-
 const THEME = getTheme()
-  
+
 function SEO({
   description,
   lang,

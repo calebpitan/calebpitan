@@ -23,6 +23,16 @@ export const THEMES = {
   AUTO: 'auto',
 }
 
+export const getTheme = () => {
+  try {
+    return typeof window !== undefined
+      ? localStorage.getItem(THEME_KEY) || THEMES.DARK
+      : THEMES.DARK
+  } catch {
+    return THEMES.DARK
+  }
+}
+
 export const gcx = (style) => {
   return classNames.bind(Object.assign({}, utilStyles, style || {}))
 }

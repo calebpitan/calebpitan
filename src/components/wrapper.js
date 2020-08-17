@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { THEME_KEY, THEMES } from '../utils'
+import { THEMES, THEME_KEY, getTheme } from '../utils'
 
 const ThemeContext = React.createContext(THEMES.DARK)
 
@@ -17,18 +17,6 @@ const useThemeToggle = () => {
   return toggle
 }
 
-const getTheme = () => {
-  try {
-    return (
-      undefined !== typeof window
-        ? localStorage.getItem(THEME_KEY) || THEMES.DARK
-        : THEMES.DARK
-    )
-  } catch {
-    return THEMES.DARK
-  }
-}
-  
 const BlogWrapper = ({ children }) => {
   // implement some stuff like site-wide alert here
   const [currentTheme, setCurrnetTheme] = React.useState(getTheme)
