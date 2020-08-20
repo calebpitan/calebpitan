@@ -6,10 +6,16 @@
   column-gap: 3rem;
   row-gap: 3rem;
 
+  & input {
+    width: 100%;
+  }
+
   @media (max-width: $lmd) {
     display: block;
+
     & > * {
-      width: 100%;
+      $width: 100%;
+      width: $width;
       margin-bottom: 2rem;
     }
   }

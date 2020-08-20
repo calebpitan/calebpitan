@@ -49,6 +49,7 @@
   --shade: #{$shade-night};
   --shade-alt: #{$shade-day};
   --card-shade: var(--bg-alpha);
+  --input-shade: var(--bg-alpha);
   --card-gradient: linear-gradient(to right, var(--bg), var(--bg-alt));
 
   --presentation-stop-alpha: #{transparentize($bg-night, 0.5)};
@@ -80,6 +81,7 @@
   --shade: #{$shade-day};
   --shade-alt: #{$shade-night};
   --card-shade: #{transparentize($black, 0.8)};
+  --input-shade: #{transparentize(lighten($black, 10), 0.9)};
   --card-gradient: linear-gradient(to right, var(--bg-alpha), var(--bg-alt));
 
   --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
@@ -182,6 +184,7 @@ code {
   font-style: italic;
   padding: 0.085rem 0.175rem;
   border-radius: 5px;
+  word-break: break-word;
 }
 
 .compact-content {
@@ -258,6 +261,7 @@ main {
 
 .gatsby-highlight-code-line {
   background-color: rgba(120, 120, 120, 0.2);
+  display: table;
   display: block;
   margin-right: -1em;
   margin-left: -1em;

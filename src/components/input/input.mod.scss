@@ -4,7 +4,7 @@
   border: 1px solid var(--shade);
   background-color: var(--bg-input);
   color: var(--fg-alt);
-  box-shadow: 0 3px 5px 0 var(--card-shade);
+  box-shadow: 0 2px 6px 0 var(--input-shade);
 
   &:focus {
     outline: none;

@@ -77,38 +77,42 @@ const Contact = () => {
             className={cx('contactMain')}
             onSubmit={handleSubmit}
           >
-            <label className={cx('srOnly')} htmlFor="n">
-              Name
-            </label>
-            <Input
-              id="n"
-              type="text"
-              value={name}
-              name="name"
-              placeholder="Jason Statham"
-              onChange={(e) => setName(e.target.value)}
-              autoCapitalize="false"
-              autoComplete="false"
-              autoCorrect="false"
-              autoFocus
-              required
-            />
+            <div>
+              <label className={cx('srOnly')} htmlFor="n">
+                Name
+              </label>
+              <Input
+                id="n"
+                type="text"
+                value={name}
+                name="name"
+                placeholder="Jason Statham"
+                onChange={(e) => setName(e.target.value)}
+                autoCapitalize="false"
+                autoComplete="false"
+                autoCorrect="false"
+                autoFocus
+                required
+              />
+            </div>
 
-            <label className={cx('srOnly')} htmlFor="e">
-              Email
-            </label>
-            <Input
-              id="e"
-              type="email"
-              value={email}
-              name="email"
-              placeholder="jason@statham.com"
-              onChange={(e) => setEmail(e.target.value)}
-              autoCapitalize="false"
-              autoComplete="false"
-              autoCorrect="false"
-              required
-            />
+            <div>
+              <label className={cx('srOnly')} htmlFor="e">
+                Email
+              </label>
+              <Input
+                id="e"
+                type="email"
+                value={email}
+                name="email"
+                placeholder="jason@statham.com"
+                onChange={(e) => setEmail(e.target.value)}
+                autoCapitalize="false"
+                autoComplete="false"
+                autoCorrect="false"
+                required
+              />
+            </div>
             <Textarea
               name="message"
               placeholder="Message"
@@ -118,7 +122,9 @@ const Contact = () => {
               required
             />
             <input type="hidden" name="form-name" value="Reach Out" />
-            <Button type="submit">Send message</Button>
+            <Button type="submit" disabled={requesting}>
+              {requesting ? 'Sending...' : 'Send message'}
+            </Button>
           </form>
         </div>
       </div>

@@ -21,21 +21,26 @@ const Tag = ({
   return (
     <Layout>
       <SEO title={`Tag`} />
-      <div className={cx('global-compact--layout', 'p5')}>
+      <div className={cx('global-compact--layout', 'p4', 'pMd5')}>
         <H as="1">Tag</H>
         <Tape />
 
         <div>
-          <ul className={cx('dFlex', 'flexWrap', 'justifyContentEvenly', 'listUnstyled')}>
+          <ul
+            className={cx(
+              'dFlex',
+              'flexWrap',
+              'justifyContentEvenly',
+              'listUnstyled'
+            )}
+          >
             {group.sort(sortAtoZ).map((tag) => (
               <li
-                className={cx('flexShrink0', 'mr3', 'my-3')}
+                className={cx('flexShrink0', 'mr2')}
+                style={{ padding: `0.4rem` }}
                 key={tag.fieldValue}
               >
-                <Link
-                  to={`/tags/${kebabCase(tag.fieldValue)}/`}
-                  style={{ padding: `0.4rem 1rem` }}
-                >
+                <Link to={`/tags/${kebabCase(tag.fieldValue)}/`}>
                   {tag.fieldValue} ({tag.totalCount})
                 </Link>
               </li>

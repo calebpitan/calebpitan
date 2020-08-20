@@ -61,7 +61,7 @@ const Projects = () => {
   return (
     <Layout>
       <SEO title={`Projects`} />
-      <div className={cx('global-compact--layout', 'p5')}>
+      <div className={cx('global-compact--layout', 'p4', 'pMd5')}>
         <H as="1">Projects</H>
         <Tape />
 
