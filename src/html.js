@@ -16,38 +16,7 @@ export default function HTML(props) {
       <body {...props.bodyAttributes}>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function() {
-                try {
-                  var mode = localStorage.getItem('theme-mode');
-                  var supportDarkMode =
-                    window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-                    console.log('init', mode, supportDarkMode)
-                  if(mode === 'light'){
-                    document.querySelector('html').classList.remove('dark')  
-                    document.querySelector('html').classList.add('light')
-                  }
-                  else if(mode === 'dark'){
-                    document.querySelector('html').classList.remove('light')
-                    document.querySelector('html').classList.add('dark')
-                  }
-                  else if(mode === 'auto'){
-                      document.querySelector('html').classList.remove('light')
-                      document.querySelector('html').classList.remove('dark')
-                  }
-                  else if(supportDarkMode){
-                    document.querySelector('html').classList.remove('light')
-                    document.querySelector('html').classList.add('dark')
-                  }
-                  else{
-                    document.querySelector('html').classList.remove('light')
-                    document.querySelector('html').classList.add('dark')
-                  }
-                } catch (e) {
-                  document.querySelector('html').classList.remove('light')
-                    document.querySelector('html').classList.add('dark')
-                  console.log(e)
-                }
-              })();`,
+            __html: `(function(c,t,d){c.remove(d),c.add(t||d)})(document.querySelector('html').classList,(localStorage && localStorage.getItem('theme-mode')),'dark');`,
           }}
         />
         {props.preBodyComponents}
