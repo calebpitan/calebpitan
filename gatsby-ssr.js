@@ -15,3 +15,22 @@ import BlogWrapper from './src/components/wrapper'
 export const wrapPageElement = ({ element, props }) => (
   <BlogWrapper {...props}>{element}</BlogWrapper>
 )
+
+export const onPreRenderHTML = ({
+  getHeadComponents,
+  replaceHeadComponents,
+}) => {
+  const headComponents = getHeadComponents()
+  
+  const themeScript = (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `(function(c,t,d){c.remove(d),c.add(t||d)})(document.querySelector('html').classList,(localStorage && localStorage.getItem('theme-mode')),'dark');`,
+      }}
+    />
+  )
+
+  headComponents.push(themeScript)
+
+  replaceHeadComponents(headComponents)
+}
