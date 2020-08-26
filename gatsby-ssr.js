@@ -21,9 +21,10 @@ export const onPreRenderHTML = ({
   replaceHeadComponents,
 }) => {
   const headComponents = getHeadComponents()
-  
+
   const themeScript = (
     <script
+      key="prevent-FOIT-script"
       dangerouslySetInnerHTML={{
         __html: `(function(c,t,d){c.remove(d),c.add(t||d)})(document.querySelector('html').classList,(localStorage && localStorage.getItem('theme-mode')),'dark');`,
       }}
