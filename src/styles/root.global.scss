@@ -31,7 +31,7 @@
   --theme-color: var(--theme-color-25);
   --theme-color-shade: var(--theme-color-28);
   --theme-color-sat: #{desaturate($color: $theme-color, $amount: 40)};
-  --theme-color-alt: #{$theme-color-alt};
+  --theme-color-alt: var(--theme-color-15);
 
   --bg: #{$bg-night};
   --bg-alt: #{$bg-night-tint};
@@ -63,7 +63,7 @@
   --theme-color: var(--theme-color-25);
   --theme-color-shade: var(--theme-color-31);
   --theme-color-sat: #{saturate($theme-color-alt, 20)};
-  --theme-color-alt: #{darken($theme-color-alt, 50)};
+  --theme-color-alt: var(--theme-color-35);
 
   --bg: #{$bg-day};
   --bg-alt: #{$bg-day-shade};
