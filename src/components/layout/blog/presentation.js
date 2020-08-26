@@ -6,6 +6,7 @@ import { gcx } from '../../../utils'
 import { findMeOn } from '../../find-me-on'
 
 import blog from './blog.mod.scss'
+import { FiHeart } from 'react-icons/fi'
 
 const cx = gcx(blog)
 
@@ -17,6 +18,8 @@ const Presentation = ({
   timeToRead,
   featuredImage,
   authorAvatar,
+  faves,
+  onFav,
 }) => {
   const underlay = `
     url(${featuredImage.childImageSharp.fixed.src}),
@@ -103,7 +106,20 @@ const Presentation = ({
               </div>
             </div>
           </div>
-          <div></div>
+          <div className={cx('actionablePresentation')}>
+            <div className={cx('dFlex', 'flexColumn')}>
+              <button className={cx('favButton')} onClick={() => onFav()}>
+                <FiHeart />
+              </button>
+              <span
+                style={{
+                  fontSize: `var(--font-xxsmall)`,
+                }}
+              >
+                {faves}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

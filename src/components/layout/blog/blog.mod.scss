@@ -120,6 +120,54 @@
   }
 }
 
+.actionable-presentation {
+  place-self: end;
+}
+
+.fav-button {
+  display: inline-flex;
+  text-align: center;
+  position: relative;
+  border: 1px solid var(--shade);
+  align-content: center;
+  justify-content: center;
+  padding: 0.375rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.5rem;
+  background: transparent;
+  color: #ac152e;
+  border: none;
+  box-shadow: none;
+  transition: all ease var(--trans-time);
+
+  & + * {
+    color: #ac152e;
+    position: relative;
+    font-weight: 600;
+    display: block;
+    margin: -0.375rem auto 0;
+  }
+
+  &:hover {
+    background: rgba(172, 21, 46, 0.2);
+    color: #ac152e;
+  }
+
+  &:focus {
+    outline: none
+  }
+
+  &.fav > svg {
+    stroke: #ac152e;
+    fill: #ac152e;
+  }
+
+  &.faved > svg {
+    stroke: #ac152e;
+  }
+}
+
 .blog-share-button {
   display: inline-flex;
   background: var(--theme-color-sat);

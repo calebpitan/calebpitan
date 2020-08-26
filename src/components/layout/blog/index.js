@@ -6,9 +6,9 @@ import { Link } from 'gatsby'
 
 import SEO from '../../seo'
 import Presentation from './presentation'
-import { gcx } from '../../../utils'
+import { gcx, largeNumber } from '../../../utils'
 import Layout from '..'
-import { useAvatar } from '../../hooks'
+import { useAvatar, useFav } from '../../hooks'
 
 import blog from './blog.mod.scss'
 import IntentShare from './share'
@@ -33,16 +33,31 @@ const changeSectionIcon = () => {
 }
 
 const BlogLayout = ({ data: { mdx, site } }) => {
+  const [faves, setFaves] = React.useState(null)
   const { avatar } = useAvatar()
-  const { title, author, date, desc, featuredImage } = mdx.frontmatter
+  const { fav, favCount } = useFav()
 
   React.useEffect(() => {
-    changeSectionIcon()
-  }, [])
+    favCount(mdx.frontmatter.title)
+      .then((res) => setFaves(largeNumber(res.favorite)))
+      .catch(console.log)
 
+    changeSectionIcon()
+  }, [favCount, mdx.frontmatter.title])
+
+  const { title, author, date, desc, featuredImage } = mdx.frontmatter
   const postUrl = `${site.siteMetadata.siteUrl}/blog${
     mdx.frontmatter?.slug || mdx.fields.slug
   }`
+
+  const onFav = () => {
+    fav(title, postUrl)
+      .then((res) => {
+        console.log(res)
+        setFaves(largeNumber(res.favorite))
+      })
+      .catch(console.log)
+  }
 
   const sharerIntents = [
     {
@@ -83,6 +98,8 @@ const BlogLayout = ({ data: { mdx, site } }) => {
               timeToRead: mdx.timeToRead,
               featuredImage,
               authorAvatar: avatar,
+              faves,
+              onFav,
             }}
           />
 
