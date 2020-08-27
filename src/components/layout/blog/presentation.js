@@ -107,8 +107,8 @@ const Presentation = ({
             </div>
           </div>
           <div className={cx('actionablePresentation')}>
-            <div className={cx('dFlex', 'flexColumn')}>
-              <button className={cx('favButton')} onClick={() => onFav()}>
+            <div className={cx('dFlex', 'flexColumn', 'mb3')}>
+              <button className={cx('favButton', 'mxAuto')} onClick={() => onFav()}>
                 <FiHeart />
               </button>
               <span

@@ -49,8 +49,9 @@
 }
 
 .article-description {
-  font-weight: 500;
-  font-style: italic;
+  font-weight: 400;
+  font-family: Poppins;
+  *font-style: italic;
   z-index: 1;
   max-width: 90%;
 
@@ -136,13 +137,13 @@
   font-weight: 600;
   font-size: 1.5rem;
   background: transparent;
-  color: #ac152e;
+  color: var(--color-palette-red);
   border: none;
   box-shadow: none;
   transition: all ease var(--trans-time);
 
   & + * {
-    color: #ac152e;
+    color: var(--color-palette-red);
     position: relative;
     font-weight: 600;
     display: block;
@@ -151,20 +152,18 @@
 
   &:hover {
     background: rgba(172, 21, 46, 0.2);
-    color: #ac152e;
+  }
+
+  &:active {
+    transform: scale(0.5) rotateY(180deg);
+
+    & > svg {
+      fill: var(--color-palette-red);
+    }
   }
 
   &:focus {
     outline: none
-  }
-
-  &.fav > svg {
-    stroke: #ac152e;
-    fill: #ac152e;
-  }
-
-  &.faved > svg {
-    stroke: #ac152e;
   }
 }
 
