@@ -7,9 +7,9 @@
 // You can delete this file if you're not using it
 
 import 'whatwg-fetch'
-import './src/styles/root.global.scss'
 import './src/styles/code-theme.css'
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
+import './src/styles/root.global.scss'
 
 import React from 'react'
 import BlogWrapper from './src/components/wrapper'
