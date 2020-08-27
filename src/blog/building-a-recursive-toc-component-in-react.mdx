@@ -20,18 +20,18 @@ You definitely have seen or written a recursion before. A Recursion is a functio
 
 ```js
 function factorial(n) {
-  if (n === 1) {
+  if (n <= 1) {
     return n
   }
   return n * factorial(n - 1) // highlight-line
 }
 ```
 
-A point to note is, anything that can be done using a recursion can also be achieved using a normal loop. But recursions have better compositions and once you get how they work, they should be easy to read and understand.
+A point to note is, anything that can be done using a recursion can also be achieved using a normal loop in the [procedural](https://en.wikipedia.org/wiki/Procedural_programming) approach. Recursion is one of the principles associated with [functional programming](https://en.wikipedia.org/wiki/Functional_programming), and has a good composition of logic. Once you get how they work, they should be easy to read and understand.
 
 ## React components can be recursive
 
-Enough about recursion jargon, a React component can be recursive. I have had to build a TOC for a blog I built using Gatsby and after I wrote some GraphQL queries, I got a data that was what seemed like nested properties of different levels of headings `h2` through to `h5` or `h6`. Although I don't know about how it may affect performance, since a React app on its own may be heavy, but running the whole site through Chrome Lighthouse didn't say it took a toll (Thank goodness for the good optimization job done by the Gatsby team).
+Enough of recursion jargon, a React component can be recursive. I have had to build a TOC for a blog I built using Gatsby and after I wrote some GraphQL queries, I got a data that was what seemed like nested properties of different levels of headings `h2` through to `h5` or `h6`. Although I don't know about how it may affect performance, since a React app on its own may be heavy, but running the whole site through Chrome Lighthouse didn't say it took a toll (Thank goodness for the good optimization job done by the Gatsby team).
 
 First, lets query the data we need to build the TOC from. We will do this by opening our Gatsby in-browser GraphiQL IDE and use the explorer to compose the query. Just simply open a new tab and copy and paste `http://localhost:8000/___graphql`
 
