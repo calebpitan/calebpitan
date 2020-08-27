@@ -33,6 +33,11 @@
   --theme-color-sat: #{desaturate($color: $theme-color, $amount: 40)};
   --theme-color-alt: var(--theme-color-15);
 
+  --color-palette-red: #fc002a;
+  --color-palette-green: #00ff62;
+  --color-palette-blue: #003bfc;
+  --color-palette-yellow: #fcd600;
+
   --bg: #{$bg-night};
   --bg-alt: #{$bg-night-tint};
   --bg-alpha: #{$black};
@@ -64,6 +69,11 @@
   --theme-color-shade: var(--theme-color-31);
   --theme-color-sat: #{saturate($theme-color-alt, 20)};
   --theme-color-alt: var(--theme-color-35);
+
+  --color-palette-red: #ac152e;
+  --color-palette-green: #00ff62;
+  --color-palette-blue: #003bfc;
+  --color-palette-yellow: #fcd600;
 
   --bg: #{$bg-day};
   --bg-alt: #{$bg-day-shade};
@@ -255,9 +265,9 @@ main {
  * Code styling
  */
 
-.gatsby-highlight {
-  border-radius: 10px;
-}
+// .gatsby-highlight {
+
+// }
 
 .gatsby-highlight-code-line {
   background-color: rgba(120, 120, 120, 0.2);
@@ -268,14 +278,21 @@ main {
   padding-right: 1em;
   padding-left: 0.75em;
   border-left: 0.25em solid var(--theme-color-sat);
+  min-width: max-content;
 }
 
 pre[class*='language-'] {
   font-size: 1rem;
-  border-radius: 10px;
-  margin: 0 0 1.75rem !important;
+  margin: 0 0 1.75rem;
   padding: 1em;
   overflow: auto;
+    border-radius: 10px;
+
+  @media (max-width: $lmd) {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: 0;
+  }
 
   &::-webkit-scrollbar {
     width: 5px;
