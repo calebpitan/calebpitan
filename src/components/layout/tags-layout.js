@@ -20,7 +20,7 @@ const TagsLayout = ({ pageContext, data }) => {
   return (
     <Layout>
       <SEO title={`Tags`} />
-      <div className={cx('global-compact--layout--sm', 'p5')}>
+      <div className={cx('global-compact--layout--sm', 'p4', 'pMd5')}>
         <H as="1">{tagHeader}</H>
         <Tape />
 
