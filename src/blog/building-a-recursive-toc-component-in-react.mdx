@@ -95,7 +95,7 @@ function CreateTOC({ items, depth = 0 }) {
           ) : (
             <React.Fragment key={index}>
               {url && (
-                <li key={index}>
+                <li>
                   <Link to={url}>{title}</Link>
                 </li>
               )}
