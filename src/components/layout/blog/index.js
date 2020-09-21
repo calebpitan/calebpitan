@@ -6,7 +6,12 @@ import { Link } from 'gatsby'
 
 import SEO from '../../seo'
 import Presentation from './presentation'
-import { gcx, largeNumber } from '../../../utils'
+import {
+  gcx,
+  formatLargeNumber,
+  existsInFavorite,
+  saveFavorite,
+} from '../../../utils'
 import Layout from '..'
 import { useAvatar, useFav } from '../../hooks'
 
@@ -33,28 +38,35 @@ const changeSectionIcon = () => {
 }
 
 const BlogLayout = ({ data: { mdx, site } }) => {
-  const [faves, setFaves] = React.useState(null)
+  const [faves, setFaves] = React.useState({ count: null, isFaved: false })
   const { avatar } = useAvatar()
   const { fav, favCount } = useFav()
 
   React.useEffect(() => {
     favCount(mdx.frontmatter.title)
-      .then((res) => setFaves(largeNumber(res.favorite)))
+      .then((res) =>
+        setFaves({
+          count: formatLargeNumber(res.favorite),
+          isFaved: res.favorite && existsInFavorite(mdx.frontmatter.title),
+        })
+      )
       .catch(console.log)
 
     changeSectionIcon()
   }, [favCount, mdx.frontmatter.title])
 
   const { title, author, date, desc, featuredImage } = mdx.frontmatter
-  const postUrl = `${site.siteMetadata.siteUrl}/blog${
-    mdx.frontmatter?.slug || mdx.fields.slug
+  const postUrl = `${site.siteMetadata.siteUrl}${
+    mdx.frontmatter?.slug ? `/blog${mdx.frontmatter.slug}` : mdx.fields.slug
   }`
 
   const onFav = () => {
+    if (existsInFavorite(title, postUrl)) return
+
     fav(title, postUrl)
       .then((res) => {
-        console.log(res)
-        setFaves(largeNumber(res.favorite))
+        setFaves({ count: formatLargeNumber(res.favorite), isFaved: true })
+        saveFavorite(title, postUrl)
       })
       .catch(console.log)
   }
@@ -98,7 +110,8 @@ const BlogLayout = ({ data: { mdx, site } }) => {
               timeToRead: mdx.timeToRead,
               featuredImage,
               authorAvatar: avatar,
-              faves,
+              isFaved: faves.isFaved,
+              faves: faves.count,
               onFav,
             }}
           />

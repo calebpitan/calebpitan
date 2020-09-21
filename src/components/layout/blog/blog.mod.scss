@@ -155,11 +155,15 @@
   }
 
   &:active {
-    transform: scale(0.5) rotateY(180deg);
+    transform: scale(1.2);
 
     & > svg {
       fill: var(--color-palette-red);
     }
+  }
+
+  &.faved svg {
+    fill: var(--color-palette-red);
   }
 
   &:focus {

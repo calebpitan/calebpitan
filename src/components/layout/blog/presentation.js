@@ -18,6 +18,7 @@ const Presentation = ({
   timeToRead,
   featuredImage,
   authorAvatar,
+  isFaved,
   faves,
   onFav,
 }) => {
@@ -108,7 +109,10 @@ const Presentation = ({
           </div>
           <div className={cx('actionablePresentation')}>
             <div className={cx('dFlex', 'flexColumn', 'mb3')}>
-              <button className={cx('favButton', 'mxAuto')} onClick={() => onFav()}>
+              <button
+                className={cx('favButton', { faved: isFaved }, 'mxAuto')}
+                onClick={() => onFav()}
+              >
                 <FiHeart />
               </button>
               <span

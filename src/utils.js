@@ -39,7 +39,7 @@ export const gcx = (style) => {
   return classNames.bind(Object.assign({}, utilStyles, style || {}))
 }
 
-export const largeNumber = (num) => {
+export const formatLargeNumber = (num) => {
   const baseExp = 3
   const units = {
     '3': 'K',
@@ -51,9 +51,59 @@ export const largeNumber = (num) => {
   let exp = Math.floor(Math.log10(num))
   exp -= exp % baseExp
 
-  if (!num) return
-  if (num < 10 ** baseExp) return num
+  if (!num) {
+    return
+  }
+
+  if (num < 10 ** baseExp) {
+    return num
+  }
 
   const reducedNumber = num / 10 ** exp
   return `${reducedNumber.toFixed(1)}${units[exp]}`
+}
+
+export const existsInFavorite = (title, postUrl = null) => {
+  try {
+    /**
+     * @type { {title: string, postUrl: string}[] }
+     */
+    const faves = JSON.parse(localStorage.getItem('faves'))
+
+    if (!faves) {
+      return false
+    }
+
+    return faves.some(({ title: fTitle, postUrl: fPostUrl }) => {
+      if (!postUrl) {
+        return title === fTitle
+      }
+
+      return title === fTitle && postUrl === fPostUrl
+    })
+  } catch {
+    return false
+  }
+}
+
+export const saveFavorite = (title, postUrl) => {
+  try {
+    let faves = JSON.parse(localStorage.getItem('faves'))
+
+    if (!faves) {
+      faves = []
+    }
+
+    if (existsInFavorite(title, postUrl)) {
+      return false
+    }
+
+    faves.push({ title, postUrl })
+
+    localStorage.setItem('faves', JSON.stringify(faves))
+
+    return true
+  } catch {
+    return false
+  }
 }
