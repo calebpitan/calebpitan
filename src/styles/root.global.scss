@@ -282,11 +282,11 @@ main {
 }
 
 pre[class*='language-'] {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin: 0 0 1.75rem;
   padding: 1em;
   overflow: auto;
-    border-radius: 10px;
+  border-radius: 10px;
 
   @media (max-width: $lmd) {
     margin-left: -1rem;
