@@ -23,7 +23,7 @@ const Footer = () => {
           )}
         >
           <p className={cx('textCenter')}>
-            Built with all the love in the world and outside it, I mean aliens
+            Built with all the love in the world and outside it. I mean aliens
             are capable of love too!
           </p>
           &copy; Caleb Adepitan {new Date().getFullYear()}
