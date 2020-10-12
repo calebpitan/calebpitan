@@ -126,16 +126,20 @@ module.exports = {
       options: {
         fonts: [
           {
-            family: `Inconsolata`,
-            variants: [`400`, `500`, `600`],
-          },
-          // {
-          //   family: `Poppins`,
-          //   variants: [`400`, `400i`, `500`],
-          // },
-          {
             family: `Domine`,
             variants: [`400`, `500`],
+          },
+          {
+            family: `Inconsolata`,
+            variants: [`400`, `500`],
+          },
+          {
+            family: `Poppins`,
+            variants: [`400`, `500`],
+          },
+          {
+            family: `Montserrat`,
+            variants: [`400`, `400i`, `500`],
           },
         ],
       },
