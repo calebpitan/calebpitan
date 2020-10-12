@@ -4,8 +4,9 @@ import { Link } from 'gatsby'
 
 import { gcx } from '../../utils'
 
-import header from './header.mod.scss'
 import ThemeSwitch from '../theme-switch'
+import Logo from '../../images/ninja.inline.svg'
+import header from './header.mod.scss'
 
 const cx = gcx(header)
 
@@ -71,7 +72,7 @@ const Header = () => {
       <header
         className={cx('dFlex', 'flexColumn', 'flexMdRow', 'alignItemsCenter')}
       >
-        <Link to="/" className="index-link">
+        <Link to="/" className="index-link" style={{display: `inline-flex`, alignItems: `center`}}>
           <div
             className={cx(
               'headerName',
@@ -82,7 +83,12 @@ const Header = () => {
             )}
             aria-label={`${firstname} ${lastname}`}
           >
-            <span className={cx('firstname')}>{firstname}</span> {lastname}
+            <div className={cx('dFlex')}>
+              <div className={cx('dNone', 'dMdInlineFlex', 'alignItemsCenter', 'mrMd3')}>
+                <Logo width="32" height="32" />
+              </div>
+              <span className={cx('firstname')}>{firstname}</span> {lastname}
+            </div>
           </div>
         </Link>
 
