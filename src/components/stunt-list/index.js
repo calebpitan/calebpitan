@@ -264,7 +264,7 @@ const StuntList = ({ data }) => {
         />
       )}
       <div
-        className={cx('stuntlistWrapper', 'dFlex')}
+        className={cx('stuntlistWrapper', 'dFlex', 'mb5')}
         onTouchStart={touchStartHandler}
         onTouchMove={touchMoveHandler}
         onTouchEnd={touchEndHandler}
@@ -274,7 +274,6 @@ const StuntList = ({ data }) => {
           return (
             <Card
               {...{ title, author, slug, avatar, date }}
-              className={cx('mb3')}
               key={`${slug}-${author}`}
             />
           )
