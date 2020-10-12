@@ -57,7 +57,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
 
   const { title, author, date, desc, featuredImage } = mdx.frontmatter
   const postUrl = `${site.siteMetadata.siteUrl}${
-    mdx.frontmatter?.slug ? `/blog${mdx.frontmatter.slug}` : mdx.fields.slug
+    mdx.frontmatter?.slug ? `/blog/${mdx.frontmatter.slug}` : mdx.fields.slug
   }`
 
   const onFav = () => {
