@@ -127,11 +127,7 @@ module.exports = {
         fonts: [
           {
             family: `Domine`,
-            variants: [`400`, `500`],
-          },
-          {
-            family: `Inconsolata`,
-            variants: [`400`, `500`],
+            variants: [`500`],
           },
           {
             family: `Poppins`,
