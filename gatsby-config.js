@@ -126,16 +126,16 @@ module.exports = {
       options: {
         fonts: [
           {
-            family: `Poppins`,
-            variants: [`400`, `400i`, `500`, `500i`, `600`, `700`],
+            family: `Inconsolata`,
+            variants: [`400`, `500`, `600`],
           },
+          // {
+          //   family: `Poppins`,
+          //   variants: [`400`, `400i`, `500`],
+          // },
           {
             family: `Domine`,
             variants: [`400`, `500`],
-          },
-          {
-            family: `Roboto Mono`,
-            variants: [`400`, `500`, `600`],
           },
         ],
       },
