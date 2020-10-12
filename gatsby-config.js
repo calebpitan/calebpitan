@@ -62,13 +62,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Caleb Pitan`,
+        name: `Caleb Adepitan`,
         short_name: `Caleb Pitan`,
         start_url: `/`,
-        background_color: `#f7fafc`,
-        theme_color: `#ffffff`,
+        background_color: `#222222`,
+        theme_color: `#222222`,
         display: `standalone`,
-        icon: `src/images/caleb.jpg`, // This path is relative to the root of the site.
+        icon: `src/images/ninja.png`, // This path is relative to the root of the site.
       },
     },
     {
