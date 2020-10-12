@@ -1,17 +1,18 @@
 ---
 title: Building a Recursive T.O.C Component in React
 author: Caleb Pitan
-date: 2020-07-31
-last-modified: 2020-07-31
+date: 2020-08-01
+last-modified: 2020-08-01
 desc: Has it ever crossed your mind that, if functions can be recursive, a component can, too?
-featuredImage: ../images/color-hands.jpg
+featuredImage: ../../images/color-hands.jpg
 tags:
   - recursion
   - react
   - TOC
-collection: React
+collection: 
+  - React
 publish: true
-slug: ''
+slug: 'building-a-recursive-toc-component-in-react'
 ---
 
 Have you ever had to deal with a kinda data that is nested and so nested that going through it seems like Space made friends with gravity and now the endless fall pulls everyone. Okay. If not, at least you must have written a program that calculates the factorial of a number once before or solved the Tower of Hanoi. Yeah, now you know where I'm headed with this &mdash; recursion.
@@ -21,13 +22,13 @@ You definitely have seen or written a recursive program before. Recursion is a f
 ```js
 function factorial(n) {
   if (n <= 1) {
-    return n
+    return 1
   }
   return n * factorial(n - 1) // highlight-line
 }
 ```
 
-Or a one liner [Euclidean GCD](https://en.wikipedia.org/wiki/Euclidean_algorithm)
+Or a one-liner [Euclidean GCD](https://en.wikipedia.org/wiki/Euclidean_algorithm)
 
 ```js
 const gcd = (x, y) => y === 0 ? x : gcd(y, x % y)  
