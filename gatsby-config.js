@@ -7,7 +7,7 @@ module.exports = {
       This is just all about me and what I always got for you.
       Yet, it's more about me
     `,
-    siteUrl: 'https://calebpitan.dev',
+    siteUrl: 'https://www.calebpitan.com',
   },
 
   plugins: [
