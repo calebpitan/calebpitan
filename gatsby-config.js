@@ -122,22 +122,9 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: [
-          {
-            family: `Domine`,
-            variants: [`500`],
-          },
-          {
-            family: `Poppins`,
-            variants: [`400`, `500`],
-          },
-          {
-            family: `Montserrat`,
-            variants: [`400`, `400i`, `500`],
-          },
-        ],
+        fonts: [`Domine:500,600,700`, `Poppins:400,400i,500`, `Inconsolata:400,500`],
       },
     },
     // `gatsby-plugin-twitter`,
