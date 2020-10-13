@@ -23,6 +23,22 @@
   --compact-width: 960px;
   --compact-width-small: 768px;
   --trans-time: #{$trans-timing};
+
+  --font-glyph-serif: 'Domine';
+  --font-glyph-san-serif: 'Nunito';
+  --font-glyph-mono: 'Inconsolata';
+
+  --font-family-base-default: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --font-family-code-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
+    SFMono-Regular, Menlo, Liberation Mono, Courier New, monospace;
+
+  --font-family-base: var(--font-glyph-san-serif),
+    var(--font-family-base-default);
+  --font-family-code: var(--font-glyph-mono), var(--font-family-code-default);
+  --font-family-heading: var(--font-glyph-serif), var(--font-family-code-default);
 }
 
 @mixin night-theme {
@@ -142,9 +158,7 @@ html {
 }
 
 body {
-  font-family: 'Nuinto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-family: var(--font-family-base);
 }
 
 ::selection {
@@ -200,8 +214,7 @@ code {
   padding: 0.085rem 0.175rem;
   border-radius: 5px;
   word-break: break-word;
-  font-family: 'Inconsolata', SFMono-Regular, Menlo, Monaco, Consolas,
-    Liberation Mono, Courier New, monospace;
+  font-family: var(--font-family-code);
 }
 
 .compact-content {
@@ -220,8 +233,7 @@ code {
 
 .global-alt-text {
   color: var(--theme-color-alt);
-  font-family: 'Inconsolata', 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono',
-    'Lucida Console', $font-family-monospace;
+  font-family: var(--font-family-code);
 }
 
 /**
@@ -286,6 +298,11 @@ main {
   padding-left: 0.75em;
   border-left: 0.25em solid var(--theme-color-sat);
   min-width: max-content;
+}
+
+pre[class*='language-'],
+code[class*='language-'] {
+  font-family: var(--font-family-code);
 }
 
 pre[class*='language-'] {
