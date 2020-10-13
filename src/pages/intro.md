@@ -7,4 +7,4 @@ and software that stirs up human use and save the day. I connect well with peopl
 break rocks when there's teamwork.
 
 I'm a fan of open source software, writing client libraries in JavaScript and code on the server side with
-NodeJS, a JavaScript runtime. Other than JavaScript, you can see me write applications in Python too.
+Node.js. Other than JavaScript, you can see me write applications in Python too.
