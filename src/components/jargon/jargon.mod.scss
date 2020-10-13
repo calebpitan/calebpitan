@@ -1,0 +1,23 @@
+@import '../../styles/variables';
+
+.jargon {
+}
+
+.jargon-list {
+  display: block;
+  list-style: none;
+  padding: 0;
+
+  @media (min-width: $lmd) {
+    display: grid;
+    row-gap: 1rem;
+  }
+
+  @media (min-width: $lmd) and (max-width: $lxl) {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  @media (min-width: $xl) {
+    grid-template-columns: repeat(3, auto);
+  }
+}

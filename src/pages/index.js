@@ -15,6 +15,7 @@ import RecentPost from '../components/recent-post'
 import AltText from '../components/alt-text'
 import { useAvatar } from '../components/hooks'
 import { gcx } from '../utils'
+import Jargon from '../components/jargon'
 
 const cx = gcx()
 
@@ -61,6 +62,10 @@ const IndexPage = () => {
           <H as="4" serif={true}>Recent Stunts</H>
           <Tape small />
           <RecentPost />
+
+          <H as="4" serif={true}>Some Jargon I know</H>
+          <Tape small />
+          <Jargon />
         </div>
 
         <div
