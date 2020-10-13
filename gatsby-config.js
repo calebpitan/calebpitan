@@ -2,11 +2,12 @@ module.exports = {
   siteMetadata: {
     title: `Caleb Pitan`,
     author: `Caleb Pitan`,
-    description: `
-      Hi, I am Caleb Adepitan (Caleb Pitan for short or as I prefer).
-      This is just all about me and what I always got for you.
-      Yet, it's more about me
-    `,
+    description: [
+      `Hi, I am Caleb Adepitan (Caleb Pitan for short or as I prefer).`,
+      `This is just one of the places where I'm domiciled on the internet`,
+      `as a proprietor not a tenant. A place where I write things relevant`,
+      `to your career in the tech industry. Catch your sub!`,
+    ].join(' '),
     siteUrl: 'https://www.calebpitan.com',
   },
 
@@ -121,17 +122,6 @@ module.exports = {
         },
       },
     },
-    {
-      resolve: `gatsby-plugin-google-fonts`,
-      options: {
-        fonts: [
-          `Domine:500,600,700`,
-          `Nuinto:400,400i,600`,
-          `Poppins:400,400i`,
-          `Inconsolata:400,500`,
-        ],
-      },
-    },
     // `gatsby-plugin-twitter`,
     // `gatsby-plugin-styled-components`,
     // `gatsby-plugin-algolia`,
@@ -144,7 +134,6 @@ module.exports = {
         showSpinner: false,
       },
     },
-
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
