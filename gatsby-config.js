@@ -124,7 +124,12 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: [`Domine:500,600,700`, `Poppins:400,400i,500`, `Inconsolata:400,500`],
+        fonts: [
+          `Domine:500,600,700`,
+          `Nuinto:400,400i,500`,
+          `Poppins:400,400i`,
+          `Inconsolata:400,500`,
+        ],
       },
     },
     // `gatsby-plugin-twitter`,
