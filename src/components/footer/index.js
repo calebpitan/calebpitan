@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <>
       <div className={cx('mt5')}></div>
-      <footer className={cx('footer')}>
+      <footer className={cx('footer', 'pb4')}>
         <FindMeOn />
         <div
           className={cx(
