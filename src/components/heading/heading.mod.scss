@@ -1,3 +1,8 @@
 .heading {
   color: var(--fg);
+  font-weight: 600;
+}
+
+.heading-serif-glyph {
+  font-family: var(--font-family-heading);
 }
