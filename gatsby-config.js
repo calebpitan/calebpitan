@@ -126,7 +126,7 @@ module.exports = {
       options: {
         fonts: [
           `Domine:500,600,700`,
-          `Nuinto:400,400i,500`,
+          `Nuinto:400,400i,600`,
           `Poppins:400,400i`,
           `Inconsolata:400,500`,
         ],
