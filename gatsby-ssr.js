@@ -6,11 +6,9 @@
 
 // You can delete this file if you're not using it
 
-import 'node-fetch'
-import './src/styles/root.global.scss'
-
 import React from 'react'
 import BlogWrapper from './src/components/wrapper'
+import './src/styles/root.global.scss'
 
 export const wrapPageElement = ({ element, props }) => (
   <BlogWrapper {...props}>{element}</BlogWrapper>
@@ -22,6 +20,19 @@ export const onPreRenderHTML = ({
 }) => {
   const headComponents = getHeadComponents()
 
+  const fonts = (
+    <React.Fragment key="google-fonts">
+      <link
+        href="https://fonts.googleapis.com/css2?family=Domine:wght@500;600;700&family=Inconsolata:wght@400;500&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="prefetch"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Domine:wght@500;600;700&family=Inconsolata:wght@400;500&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet"
+      />
+    </React.Fragment>
+  )
+
   const themeScript = (
     <script
       key="prevent-FOIT-script"
@@ -31,7 +42,7 @@ export const onPreRenderHTML = ({
     />
   )
 
-  headComponents.push(themeScript)
+  headComponents.push(fonts, themeScript)
 
   replaceHeadComponents(headComponents)
 }
