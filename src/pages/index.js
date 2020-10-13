@@ -51,14 +51,14 @@ const IndexPage = () => {
         </div>
 
         <div className={cx('compact-content', 'flexMdShrink1', 'mtMd5', 'px3')}>
-          <H as="2" style={{ margin: 0 }}>
+          <H as="2" style={{ margin: 0 }} serif={true}>
             Hola, bienvenido!
           </H>
           <AltText text="Hello, welcome!" />
           <Tape />
           <Intro />
           <Hr />
-          <H as="4">Recent Stunts</H>
+          <H as="4" serif={true}>Recent Stunts</H>
           <Tape small />
           <RecentPost />
         </div>
