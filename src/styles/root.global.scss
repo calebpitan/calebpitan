@@ -197,10 +197,11 @@ a {
 code {
   background: var(--bg-alt);
   color: var(--fg-inline-code);
-  font-style: italic;
   padding: 0.085rem 0.175rem;
   border-radius: 5px;
   word-break: break-word;
+  font-family: 'Inconsolata', SFMono-Regular, Menlo, Monaco, Consolas,
+    Liberation Mono, Courier New, monospace;
 }
 
 .compact-content {
