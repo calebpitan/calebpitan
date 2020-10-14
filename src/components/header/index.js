@@ -72,7 +72,11 @@ const Header = () => {
       <header
         className={cx('dFlex', 'flexColumn', 'flexMdRow', 'alignItemsCenter')}
       >
-        <Link to="/" className="index-link" style={{display: `inline-flex`, alignItems: `center`}}>
+        <Link
+          to="/"
+          className="index-link"
+          style={{ display: `inline-flex`, alignItems: `center` }}
+        >
           <div
             className={cx(
               'headerName',
@@ -84,7 +88,14 @@ const Header = () => {
             aria-label={`${firstname} ${lastname}`}
           >
             <div className={cx('dFlex')}>
-              <div className={cx('dNone', 'dMdInlineFlex', 'alignItemsCenter', 'mrMd3')}>
+              <div
+                className={cx(
+                  'dNone',
+                  'dMdInlineFlex',
+                  'alignItemsCenter',
+                  'mrMd3'
+                )}
+              >
                 <Logo width="32" height="32" />
               </div>
               <span className={cx('firstname')}>{firstname}</span> {lastname}

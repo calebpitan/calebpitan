@@ -62,6 +62,7 @@ const ArtPage = ({ data }) => {
           <H
             as="1"
             className={cx('textCenter', 'fontWeightBold', 'heroHeading')}
+            serif={true}
           >
             Absorb the art to heart
           </H>

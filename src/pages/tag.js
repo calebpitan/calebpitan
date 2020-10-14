@@ -34,7 +34,7 @@ const Tag = ({
               'listUnstyled'
             )}
           >
-            {group.sort(sortAtoZ).map((tag) => (
+            {group.sort(sortAtoZ).map(tag => (
               <li
                 className={cx('flexShrink0', 'mr2')}
                 style={{ padding: `0.4rem` }}

@@ -110,7 +110,7 @@ const Projects = () => {
                   <div className={cx('projectDescription')}>{desc}</div>
 
                   <div className={cx('dFlex', 'flexWrap', 'mtAuto', 'mb3')}>
-                    {tags.map((tag) => {
+                    {tags.map(tag => {
                       return (
                         <div className={cx('projectTag')} key={tag}>
                           {tag}

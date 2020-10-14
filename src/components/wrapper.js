@@ -8,12 +8,15 @@ const ThemeUpdaterContext = React.createContext()
 
 const useThemeToggle = () => {
   const setTheme = React.useContext(ThemeUpdaterContext)
-  const toggle = React.useCallback((nextTheme) => {
-    return setTheme(() => {
-      localStorage.setItem(THEME_KEY, nextTheme)
-      return nextTheme
-    })
-  }, [setTheme])
+  const toggle = React.useCallback(
+    nextTheme => {
+      return setTheme(() => {
+        localStorage.setItem(THEME_KEY, nextTheme)
+        return nextTheme
+      })
+    },
+    [setTheme]
+  )
   return toggle
 }
 
@@ -38,6 +41,6 @@ const BlogWrapper = ({ children }) => {
   )
 }
 
-export {useThemeToggle, ThemeContext}
+export { useThemeToggle, ThemeContext }
 
 export default BlogWrapper

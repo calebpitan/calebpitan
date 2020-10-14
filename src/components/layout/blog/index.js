@@ -28,7 +28,7 @@ const cx = gcx(blog)
 const changeSectionIcon = () => {
   const postHeading = document.querySelectorAll('h2, h3, h4, h5')
   try {
-    postHeading.forEach((heading) => {
+    postHeading.forEach(heading => {
       const svg = heading.querySelector('a > svg')
       svg.outerHTML = `#`
     })
@@ -44,7 +44,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
 
   React.useEffect(() => {
     favCount(mdx.frontmatter.title)
-      .then((res) =>
+      .then(res =>
         setFaves({
           count: formatLargeNumber(res.favorite),
           isFaved: res.favorite && existsInFavorite(mdx.frontmatter.title),
@@ -64,7 +64,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
     if (existsInFavorite(title, postUrl)) return
 
     fav(title, postUrl)
-      .then((res) => {
+      .then(res => {
         setFaves({ count: formatLargeNumber(res.favorite), isFaved: true })
         saveFavorite(title, postUrl)
       })

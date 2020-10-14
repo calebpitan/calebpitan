@@ -25,7 +25,7 @@ const cx = gcx(stunt)
  *
  * @param {CSSStyleDeclaration} cssStyleDeclaration
  */
-const getTotalMarginX = (cssStyleDeclaration) => {
+const getTotalMarginX = cssStyleDeclaration => {
   const { marginLeft, marginRight } = cssStyleDeclaration
   return parseFloat(marginLeft) + parseFloat(marginRight)
 }
@@ -83,7 +83,7 @@ const StuntList = ({ data }) => {
    *
    * @param {TouchEvent} e
    */
-  const touchStartHandler = (e) => {
+  const touchStartHandler = e => {
     const target = e.currentTarget
     touchList.current.touchStart = e.changedTouches[0]
     touchList.current.position =
@@ -96,7 +96,7 @@ const StuntList = ({ data }) => {
    *
    * @param {TouchEvent} e
    */
-  const touchMoveHandler = (e) => {
+  const touchMoveHandler = e => {
     const touchMove = e.changedTouches[0]
     const position = touchMove.clientX - touchList.current.touchStart.clientX
     const calculatedPosition =
@@ -113,7 +113,7 @@ const StuntList = ({ data }) => {
    *
    * @param {TouchEvent} e
    */
-  const touchEndHandler = (e) => {
+  const touchEndHandler = e => {
     const target = e.currentTarget
     const { width } = target.getBoundingClientRect()
     const { scrollWidth } = target
@@ -245,7 +245,7 @@ const StuntList = ({ data }) => {
       transition: TRANSITION,
     })
 
-    setActionState((actionState) => {
+    setActionState(actionState => {
       const { canNext, canPrev } = getActionState()
       if (actionState.canNext !== canNext && actionState.canPrev !== canPrev) {
         return { canNext, canPrev }

@@ -60,7 +60,9 @@ const TagsLayout = ({ pageContext, data }) => {
               )
             })}
           </ol>
-          <Link to="/tag"><FiTag aria-hidden="true" /> All Tags</Link>
+          <Link to="/tag">
+            <FiTag aria-hidden="true" /> All Tags
+          </Link>
         </div>
       </div>
     </Layout>

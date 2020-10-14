@@ -17,7 +17,9 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     createNodeField({
       name: 'slug',
       node,
-      value: `/blog${node.frontmatter.slug ? `/${node.frontmatter.slug}` : value}`,
+      value: `/blog${
+        node.frontmatter.slug ? `/${node.frontmatter.slug}` : value
+      }`,
     })
   }
 }
@@ -62,7 +64,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     })
   })
 
-  tags.forEach((tag) => {
+  tags.forEach(tag => {
     createPage({
       path: `/tags/${_.kebabCase(tag.fieldValue)}/`,
       component: path.resolve(`./src/components/layout/tags-layout.js`),

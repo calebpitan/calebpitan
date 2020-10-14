@@ -35,11 +35,11 @@ export const getTheme = () => {
   }
 }
 
-export const gcx = (style) => {
+export const gcx = style => {
   return classNames.bind(Object.assign({}, utilStyles, style || {}))
 }
 
-export const formatLargeNumber = (num) => {
+export const formatLargeNumber = num => {
   const baseExp = 3
   const units = {
     '3': 'K',

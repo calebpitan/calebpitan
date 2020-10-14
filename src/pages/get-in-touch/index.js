@@ -17,15 +17,13 @@ const Contact = () => {
   const [message, setMessage] = React.useState('')
   const [requesting, setRequesting] = React.useState(false)
 
-  const encode = (data) => {
+  const encode = data => {
     return Object.keys(data)
-      .map(
-        (key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key])
-      )
+      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
       .join('&')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     setRequesting(true)
 
@@ -87,7 +85,7 @@ const Contact = () => {
                 value={name}
                 name="name"
                 placeholder="Jason Statham"
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 autoCapitalize="false"
                 autoComplete="false"
                 autoCorrect="false"
@@ -106,7 +104,7 @@ const Contact = () => {
                 value={email}
                 name="email"
                 placeholder="jason@statham.com"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 autoCapitalize="false"
                 autoComplete="false"
                 autoCorrect="false"
@@ -117,7 +115,7 @@ const Contact = () => {
               name="message"
               placeholder="Message"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={e => setMessage(e.target.value)}
               style={{ gridColumn: `1 / span 2` }}
               required
             />
