@@ -10,7 +10,7 @@
   font-weight: 600;
   background: var(--theme-color-sat);
   color: var(--bg-alpha);
-  box-shadow: 0 2px 3px -1px var(--card-shade);
+  box-shadow: 0 2px 3px 0px var(--card-shade), 0 2px 3px 0px var(--card-shade);
   text-decoration: none;
 
   &:hover {
