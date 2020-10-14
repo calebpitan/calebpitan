@@ -20,8 +20,9 @@ import IntentShare from './share'
 import RecentPost from '../../recent-post'
 import H from '../../heading'
 import Tape from '../../tape'
+import Callout from '../../callout'
 
-const shortcodes = { Link, SEO }
+const shortcodes = { Link, SEO, Callout }
 
 const cx = gcx(blog)
 

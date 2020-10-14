@@ -1,0 +1,64 @@
+.callout {
+  padding: 1rem;
+  border-width: 0 0 0 5px;
+  border-style: solid;
+  border-color: var(--theme-color);
+  margin-bottom: var(--paragraph-margin-bottom);
+  border-radius: 3px;
+  position: relative;
+
+  p {
+    margin: 0;
+  }
+}
+
+.signal {
+  $font-size: 1.475rem;
+  $padding: 0.2rem;
+
+  color: #ffffff;
+  position: absolute;
+  font-size: $font-size;
+  top: -$font-size + ($font-size / 2) - ($padding * 2);
+  left: -$font-size + ($font-size / 2) - ($padding * 2);
+  padding: $padding;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  border-color: var(--callout-info);
+  background: var(--callout-info-bg);
+
+  & > .signal {
+    color: var(--callout-info-signal);
+    border-color: var(--callout-info);
+    background: var(--callout-info-signal-bg);
+  }
+}
+
+.warn {
+  border-color: var(--callout-warn);
+  background: var(--callout-warn-bg);
+
+  & > .signal {
+    color: var(--callout-warn-signal);
+    border-color: var(--callout-warn);
+    background: var(--callout-warn-signal-bg);
+  }
+}
+
+.danger {
+  border-color: var(--callout-danger);
+  background: var(--callout-danger-bg);
+
+  & > .signal {
+    color: var(--callout-danger-signal);
+    border-color: var(--callout-danger);
+    background: var(--callout-danger-signal-bg);
+  }
+}

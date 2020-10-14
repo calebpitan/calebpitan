@@ -38,7 +38,25 @@
   --font-family-base: var(--font-glyph-san-serif),
     var(--font-family-base-default);
   --font-family-code: var(--font-glyph-mono), var(--font-family-code-default);
-  --font-family-heading: var(--font-glyph-serif), var(--font-family-code-default);
+  --font-family-heading: var(--font-glyph-serif),
+    var(--font-family-code-default);
+
+  --paragraph-margin-bottom: 1.75rem;
+
+  --callout-info: #5050f5;
+  --callout-info-bg: rgba(80, 80, 245, 0.2);
+  --callout-info-signal: #4040f7;
+  --callout-info-signal-bg: #a7a7fa;
+
+  --callout-warn: #ff9100;
+  --callout-warn-bg: rgba(250, 158, 39, 0.2);
+  --callout-warn-signal: var(--callout-warn);
+  --callout-warn-signal-bg: #fff1a2;
+
+  --callout-danger: #fc002a;
+  --callout-danger-bg: rgba(252, 0, 42, 0.2);
+  --callout-danger-signal: var(--callout-danger);
+  --callout-danger-signal-bg: #f88ea0;
 }
 
 @mixin night-theme {
