@@ -97,6 +97,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
     <Layout>
       <SEO
         title={title}
+        description={mdx.frontmatter.desc}
         image={featuredImage.childImageSharp.fixed.src}
         keywords={mdx.frontmatter.tags}
       />
