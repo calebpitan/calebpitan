@@ -82,7 +82,7 @@
 .meta-item {
   z-index: 1;
   margin-top: 0.5rem;
-  font-weight: 600;
+  font-weight: 500;
   font-family: 'Poppins';
 
   &:not(:last-of-type) {
@@ -167,7 +167,7 @@
   }
 
   &:focus {
-    outline: none
+    outline: none;
   }
 }
 
