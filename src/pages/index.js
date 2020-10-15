@@ -65,11 +65,11 @@ const IndexPage = () => {
           <Tape small />
           <RecentPost />
 
-          <H as="4" serif={true}>
+          {/* <H as="4" serif={true}>
             Some Jargon I know
           </H>
           <Tape small />
-          <Jargon />
+          <Jargon /> */}
         </div>
 
         <div
