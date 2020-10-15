@@ -8,7 +8,9 @@ desc: |-
   relationship with input and output operations in JavaScript?
 featuredImage: ../../images/event-loop-and-io-operations.jpg
 tags:
-  - recursion
+  - synchronous programming
+  - asynchronous programming
+  - event demultiplexer
   - event loop
   - I/O
 collection:
@@ -98,7 +100,7 @@ JavaScript is single threaded therefore the only way it can handle asynchronous 
 
 ## Synchronous event demultiplexer
 
-The **synchronous event demultiplexer** or **event notification interface** as part of most modern operating systems is a native mechanism to effciently handle concurrent non-blocking resources. Rather than using polling algorithms like the **busy waiting** technique, which is most times a waste of CPU cycles, the operating system provides an event demultiplexer interface.
+The **synchronous event demultiplexer** or **event notification interface** as part of most modern operating systems is a native mechanism to effciently handle concurrent non-blocking resources. Rather than using polling algorithms like the **busy waiting** technique, which is often a waste of CPU cycles, the operating system provides an event demultiplexer interface.
 
 - Linux _epoll_
 - Mac _kqueue_
@@ -123,11 +125,24 @@ fs.readFile('/path/to/some/file.js', (err, data) => {
 console.log('Doing something else...')
 ```
 
+The event demultiplexer takes some resources and calls `watch()` on them for specific operations, like a `read()` operation. The call to `watch()` on the resources is a blocking synchronous call. After a read request on the resources has completed, `watch` returns some new events and the event demultiplexer pushes these new events to the event queue and control is returned to the event loop since the synchronous blocking call to `watch` has returned. The event loop processes each event from the event queue and the associated handler for each event is invoked. The event loop gives control to an handler because it trusts it to be non-blocking and in some few milliseconds the handler will return back the control to the event loop ([stuff can sometimes go south](#stuff-can-sometimes-go-south)). The handler can also cause new resources to be added to the event demultiplexer for watch, after which it returns control to the event loop. If there are remaining events in the event queue, the event loop processes these events also as it did with prior ones (the process continues while there are events). When there are no more event to be processed, the control is returned back to the event demultiplexer by the event loop and the event demultiplexer blocks again while waiting for new operations to complete.
+
+With this model, two things are very clear:
+
+1. Blocking synchronous calls can only take place in the event demultiplexer which is outside of the event loop and,
+2. No blocking call should take place inside the event loop.
+
+When the event loop doesn't block, it gives the event demultiplexer the opportunity to receive new requests that performs an operation on a system resource. This way, an Express server can receive new request while it's amid the processing of a prior request. While it is guranteed that the processing of this prior request doesn't block, control can quickly be returned to the event loop to process the new request. Any request that should normally block while processing should be sent to the event demultiplexer and return.
+
+### Stuff can sometimes go south
+
+The purpose of the event demultiplexer is defeated when the handler takes power which was given to it &mdash; and meant for it to use in due course &mdash; by the event loop and holds onto it or even plots a coup against the event loop to completely overthrow it from power.
+
 ## The reactor pattern
 
 Long before JavaScript had promises planned for the future (pun intended), the reactor pattern was what was adopted in handling asynchronous I/O operations. This was the only way to achieve concurrency. The reactor pattern is at the heart of Node.js
 
-The reactor pattern simply associates an handler with each I/O operation. This handler is simply a callback function in JavaScript. The callback function is invoked as soon as an event is produced by the event loop. The event is processed and the associated handler is invoked.
+The reactor pattern simply associates an handler with each I/O operation. This handler is simply a callback function in JavaScript. The callback function is invoked as soon as an event is produced to the event loop. The event is processed and the associated handler is invoked.
 
 ```js
 const fs = require('fs')
