@@ -127,6 +127,15 @@ console.log('Doing something else...')
 
 The event demultiplexer takes some resources and calls `watch()` on them for specific operations, like a `read()` operation. The call to `watch()` on the resources is a blocking synchronous call. After a read request on the resources has completed, `watch` returns some new events and the event demultiplexer pushes these new events to the event queue and control is returned to the event loop since the synchronous blocking call to `watch` has returned. The event loop processes each event from the event queue and the associated handler for each event is invoked. The event loop gives control to an handler because it trusts it to be non-blocking and in some few milliseconds the handler will return back the control to the event loop ([stuff can sometimes go south](#stuff-can-sometimes-go-south)). The handler can also cause new resources to be added to the event demultiplexer for watch, after which it returns control to the event loop. If there are remaining events in the event queue, the event loop processes these events also as it did with prior ones (the process continues while there are events). When there are no more event to be processed, the control is returned back to the event demultiplexer by the event loop and the event demultiplexer blocks again while waiting for new operations to complete.
 
+<Callout>
+  <code>watch()</code> is some arbitrary system call defined by me for the
+  purpose of this writing and could be{' '}
+  <a href="https://en.wikipedia.org/wiki/Select_(Unix)">
+    <code>select()</code>
+  </a>
+  in a real life scenario.
+</Callout>
+
 With this model, two things are very clear:
 
 1. Blocking synchronous calls can only take place in the event demultiplexer which is outside of the event loop and,
