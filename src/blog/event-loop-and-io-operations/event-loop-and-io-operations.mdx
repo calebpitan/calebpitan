@@ -1,0 +1,149 @@
+---
+title: Understanding the Event Loop and I/O Operations
+author: Caleb Pitan
+date: 2020-10-15T00:11:00.606Z
+last-modified: 2020-10-15T00:11:00.606Z
+desc: |-
+  Have you ever wondered what the event loop is and it's
+  relationship with input and output operations in JavaScript?
+featuredImage: ../../images/event-loop-and-io-operations.jpg
+tags:
+  - recursion
+  - event loop
+  - I/O
+collection:
+  - JavaScript
+  - Node.js
+publish: true
+slug: understanding-the-event-loop-and-io-operations
+---
+
+The event loop is a design pattern in computer science. The pattern is as simple as waiting for an event and dispatching an event so services that can handle the event consume it. The the loop blocks till another event is inbound for processing.
+
+Your Node.js Express server for example, would not exit its process. At that point, it waits for an event (a request). When the event arrives, the event is emitted and picked up by the GET handler in your router for that specific request. This is just on the high level. The moment the event loop stops, i.e the loop breaks, the Node.js process exits and as a sequel, your Express server too.
+
+<Callout type="info">
+  Ending the Node.js process itself is an event. By hitting{' '}
+  <code>Ctrl + C</code> you agree to send a <code>SIGINT</code> (interrupt)
+  signal that terminates the process.
+</Callout>
+
+I/O, or simply put, Input/Output, on the other hand, is what makes a computer a computer. A machine incapable of input and output cannot be called a computer. Computers are meant to take instruction, do something with it, and give a result. Do you see any possible way to do that without I/O?
+
+The request sent over HTTP to your Express server is the input and the response to the request is the output.
+
+See! The pieces are coming together.
+
+<Callout type="info">
+  The <code>Ctrl + C</code> you hit everytime you want a process terminated is
+  input and the termination itself or a "...(Y/N)?" question you get is a
+  response to the input &mdash; an output.
+</Callout>
+
+## Blocking I/O and non-blocking I/O
+
+In blocking I/O, the function that creates an I/O request blocks further execution in the thread till the request completes. The time it takes for any request to complete can vary from few milliseconds to even as long as the user doesn't supply an input. An example of blocking I/O when reading from the console:
+
+```js
+const prompt = require('prompt-sync')({ sigint: true })
+
+// Blocking I/O request
+const name = prompt('Enter your name: ')
+
+console.log(`Welcome ${name}, king of the seven kingdoms`)
+```
+
+If the user at the end of the console takes, say, two minutes to type their name and hit the carriage return. The thread blocks for two minutes and when the return key is hit, execution continues and the welcome message is logged.
+
+In the non-blocking I/O mechanism, a request to either read or write to an operating system's resource immediately returns without actually waiting for the read or write operation to complete. A predefined constant according to the OS is returned which relays the state of the operation to the executing program.
+
+```js
+const fs = require('fs')
+
+const code = 'console.log("Smart code")'
+
+// Non-blocking I/O request.
+fs.writeFile('/path/to/some/file.js', code, err => {
+  if (err) {
+    console.error(err)
+    return
+  }
+  console.log('Successfully wrote a code file!')
+})
+```
+
+## Understanding boundaries between synchrony and asynchrony
+
+A source of confusion for me in earlier times was the word synchronous and asynchronous. The first time I was introduced to _really knowing_ what these words meant was when I started working with [`XMLHttpRequest`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) in JavaScript. But I didn't "really know" what they meant. I could have checked my dictionary again and again, but trust me I knew what they meant literally.
+
+Synchrony is the normal flow in your code where every command or line of code continues to execute almost at the same instant, simultaneously. Asynchrony as opposed to synchrony is when the execution of one command or line of code takes longer to complete or doesn't complete until **a specific thing happens** and as such **could block** further execution of following commands or lines.
+
+### Synchronous and asynchronous programming
+
+Asynchronous procedure calls normally, are calls to access a blocking resource. If these calls were to be handled synchronously, they would block the thread they are run on. In order to prevent these calls from blocking a thread, many programming languages adopt some constructs called [Future and Promises](https://en.wikipedia.org/wiki/Futures_and_promises). (_Promises should sound familiar, you may know Future from Java_). Once a thread is blocked by an operation, further program execution on the thread suspends and is only returned control when the operation completes.
+
+```js
+const fs = require('fs')
+
+// Reading a file in a blocking manner.
+const file = fs.readFileSync('/path/to/file.js')
+
+// This will never log till the file is ready
+console.log('Doing something else...')
+```
+
+To prevent an operation that takes long to complete from blocking a thread, there has to be a way to handle them differently from synchronous operations. When handled differently from synchronous operations, then the event loop can keep processing other events in the queue while it waits for the undeterministic operation to complete. That is, the execution of this operation can be left in a partial state (the result of the operation cannot be determined yet) and when the result can be determined, if there are currently no events in the queue to be processed by the event loop, it can return to complete the operation immediately.
+
+JavaScript is single threaded therefore the only way it can handle asynchronous operations in a non-blocking manner is to have some level of [concurrency](<https://en.wikipedia.org/wiki/Concurrency_(computer_science)>) built in. Multi-threaded languages like Python and Java can easily allow you to create a new thread to run asynchronous operations on, but not with JavaScript. With JavaScript, it's either a callback or a promise.
+
+## Synchronous event demultiplexer
+
+The **synchronous event demultiplexer** or **event notification interface** as part of most modern operating systems is a native mechanism to effciently handle concurrent non-blocking resources. Rather than using polling algorithms like the **busy waiting** technique, which is most times a waste of CPU cycles, the operating system provides an event demultiplexer interface.
+
+- Linux _epoll_
+- Mac _kqueue_
+- Windows _IOCP_
+
+```js
+const fs = require('fs')
+
+// While this resource is not ready for read
+// The Event demultiplexer associates the resource with a read operation
+// When the resource is ready and can be read
+// The Event demultiplexer pushes a new event to the
+// event queue to be processed by the event loop
+// This callback is the associated handler for the event
+fs.readFile('/path/to/some/file.js', (err, data) => {
+  if (!err) {
+    // do something with data
+  }
+})
+
+// This would log before you do something with data
+console.log('Doing something else...')
+```
+
+## The reactor pattern
+
+Long before JavaScript had promises planned for the future (pun intended), the reactor pattern was what was adopted in handling asynchronous I/O operations. This was the only way to achieve concurrency. The reactor pattern is at the heart of Node.js
+
+The reactor pattern simply associates an handler with each I/O operation. This handler is simply a callback function in JavaScript. The callback function is invoked as soon as an event is produced by the event loop. The event is processed and the associated handler is invoked.
+
+```js
+const fs = require('fs')
+
+fs.readFile('/path/to/some/file.js', (err, data) => {
+  if (!err) {
+    // do something with data
+  }
+})
+```
+
+<Callout type="info">
+  The error is more important than the data. Node.js passes the error as the
+  first argument to force the API consumer to always check for error first
+  before reading data. So you don't fall into the trap of accessing an undefined
+  data.
+</Callout>
+
+The reactor pattern as a way of achieving concurrency is only made possible in JavaScript by the event loop.
