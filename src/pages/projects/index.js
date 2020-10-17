@@ -39,12 +39,12 @@ const featuredProjectx = [
     url: `https://eaveswall.com`,
     repo: `${REPO_BASE}/eaveswall`,
     tags: [
-      'Gatsby',
-      'JavaScript',
-      'React',
-      'Netlify',
-      'Styled Components',
-      'NodeJs',
+      'gatsby',
+      'javascript',
+      'react',
+      'netlify',
+      'styled-components',
+      'nodejs',
     ],
     contributors: 2,
   },
@@ -54,7 +54,7 @@ const featuredProjectx = [
     url: `${USER_REPO_BASE}/contextmenu`,
     repo: `${USER_REPO_BASE}/contextmenu`,
     contributors: 1,
-    tags: ['TypeScript', 'Frontend'],
+    tags: ['typescript', 'frontend'],
   },
   {
     name: `Chat`,
@@ -62,7 +62,7 @@ const featuredProjectx = [
     url: `https://oluwakeye-chat.herokuapp.com`,
     repo: `${USER_REPO_BASE}/chat`,
     contributors: 2,
-    tags: ['WebSocket', 'NodeJs'],
+    tags: ['websocket', 'nodejs'],
   },
   {
     name: `nodejs-firebase-app`,
@@ -70,7 +70,7 @@ const featuredProjectx = [
     url: `${USER_REPO_BASE}/nodejs-firebase-app`,
     repo: `${USER_REPO_BASE}/nodejs-firebase-app`,
     contributors: 1,
-    tags: ['Firebase', 'Serverless', 'NodeJs'],
+    tags: ['firebase', 'serverless', 'nodejs'],
   },
 ]
 
