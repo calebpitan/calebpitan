@@ -17,10 +17,27 @@ const cx = gcx(projects)
 
 const featuredProjectx = [
   {
+    name: `GraphQL Authentication with Apollo and TypeScript`,
+    desc: `An example and starter template Express app that shows how to do basic authentication and authorization in GraphQL leveraging TypeScript decorators, using MongoDB`,
+    url: `${USER_REPO_BASE}/graphql-auth-with-apollo-and-typescript`,
+    repo: `${USER_REPO_BASE}/graphql-auth-with-apollo-and-typescript`,
+    tags: [
+      'express',
+      'graphql',
+      'mongodb',
+      'typescript',
+      'authentication',
+      'authorization',
+      'mongoose',
+      'typegoose',
+    ],
+    contributors: 1,
+  },
+  {
     name: `Eaveswall`,
     desc: `A society and campus blog built with Gatsby deployed on Netlify and has dynamism built in, beyond SSG`,
     url: `https://eaveswall.com`,
-    repo: `${REPO_BASE}/eaveswall/eaveswall`,
+    repo: `${REPO_BASE}/eaveswall`,
     tags: [
       'Gatsby',
       'JavaScript',
@@ -43,7 +60,7 @@ const featuredProjectx = [
     name: `Chat`,
     desc: `A collaborative project that debut a chat application built with NodeJs and WebSockets, all vanilla on the front`,
     url: `https://oluwakeye-chat.herokuapp.com`,
-    repo: `${USER_REPO_BASE}/contextmenu`,
+    repo: `${USER_REPO_BASE}/chat`,
     contributors: 2,
     tags: ['WebSocket', 'NodeJs'],
   },
