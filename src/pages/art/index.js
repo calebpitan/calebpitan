@@ -48,8 +48,13 @@ const ArtPage = ({ data }) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [photoIndex, setPhotoIndex] = React.useState(0)
 
-  const handleOpen = (val, res) => {
+  const handleClick = (val, res) => {
     setPhotoIndex(val)
+    setIsOpen(true)
+  }
+
+  const handleOpen = () => {
+    setPhotoIndex(0)
     setIsOpen(true)
   }
 
@@ -107,9 +112,7 @@ const ArtPage = ({ data }) => {
               text="Launch Lightbox"
               size={BUTTONS.MED}
               className={['mb4', 'mbMd0', 'mrMd4']}
-              onClick={() => {
-                setIsOpen(true)
-              }}
+              onClick={handleOpen}
             />
             <Button
               to="/get-in-touch"
@@ -138,7 +141,7 @@ const ArtPage = ({ data }) => {
                           className={cx('artImageView', 'my4')}
                           key={relativePath}
                           onClick={() =>
-                            handleOpen(childImageSharp.fluid.number, {
+                            handleClick(childImageSharp.fluid.number, {
                               i,
                               column,
                               index,
