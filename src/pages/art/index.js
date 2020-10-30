@@ -48,8 +48,8 @@ const ArtPage = ({ data }) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [photoIndex, setPhotoIndex] = React.useState(0)
 
-  const handleClick = (val, res) => {
-    setPhotoIndex(val)
+  const handleClick = id => {
+    setPhotoIndex(id)
     setIsOpen(true)
   }
 
@@ -57,11 +57,6 @@ const ArtPage = ({ data }) => {
     setPhotoIndex(0)
     setIsOpen(true)
   }
-
-  edges.map((edge, i) => {
-    edge.node.childImageSharp.fluid.number = i
-    return edge
-  })
 
   return (
     <Layout>
@@ -130,22 +125,20 @@ const ArtPage = ({ data }) => {
             className={cx('artImages', 'py5', 'mx4', 'mxMd5')}
             style={{ '--columns': columns }}
           >
-            {new Array(columns).fill(0).map((_, i) => {
-              const column = edges.splice(0, elementsPerColumn.current)
+            {new Array(columns).fill(0).map((_, columnIndex) => {
+              const rows = edges.splice(0, elementsPerColumn.current)
               return (
-                <div key={i}>
-                  {column.map(
-                    ({ node: { childImageSharp, relativePath } }, index) => {
+                <div key={columnIndex}>
+                  {rows.map(
+                    ({ node: { childImageSharp, relativePath } }, rowIndex) => {
                       return (
                         <div
                           className={cx('artImageView', 'my4')}
                           key={relativePath}
                           onClick={() =>
-                            handleClick(childImageSharp.fluid.number, {
-                              i,
-                              column,
-                              index,
-                            })
+                            handleClick(
+                              elementsPerColumn.current * columnIndex + rowIndex
+                            )
                           }
                         >
                           <Img
