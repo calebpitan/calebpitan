@@ -9,6 +9,7 @@ import Button, { BUTTONS } from '../../components/button'
 
 import art from './art.mod.scss'
 import SEO from '../../components/seo'
+import LightboxComponent from '../../components/lightbox'
 
 const cx = gcx(art)
 
@@ -44,9 +45,29 @@ const ArtPage = ({ data }) => {
     return () => window.removeEventListener('resize', setColumnsClient)
   }, [getColumns, totalNodes])
 
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [photoIndex, setPhotoIndex] = React.useState(0)
+
+  const handleClick = id => {
+    setPhotoIndex(id)
+    setIsOpen(true)
+  }
+
+  const handleOpen = () => {
+    setPhotoIndex(0)
+    setIsOpen(true)
+  }
+
   return (
     <Layout>
       <SEO title={`Explore my artworks`} />
+      <LightboxComponent
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        edges={edges}
+        photoIndex={photoIndex}
+        setPhotoIndex={setPhotoIndex}
+      />
       <style>
         {`
           .${cx('galaxy')} {
@@ -86,6 +107,7 @@ const ArtPage = ({ data }) => {
               text="Launch Lightbox"
               size={BUTTONS.MED}
               className={['mb4', 'mbMd0', 'mrMd4']}
+              onClick={handleOpen}
             />
             <Button
               to="/get-in-touch"
@@ -103,26 +125,36 @@ const ArtPage = ({ data }) => {
             className={cx('artImages', 'py5', 'mx4', 'mxMd5')}
             style={{ '--columns': columns }}
           >
-            {new Array(columns).fill(0).map((_, i) => {
-              const column = edges.splice(0, elementsPerColumn.current)
+            {new Array(columns).fill(0).map((_, columnIndex) => {
+              const rows = edges.splice(0, elementsPerColumn.current)
               return (
-                <div key={i}>
-                  {column.map(({ node: { childImageSharp, relativePath } }) => {
-                    return (
-                      <div
-                        className={cx('artImageView', 'my4')}
-                        key={relativePath}
-                      >
-                        <Img fluid={childImageSharp.fluid} draggable={false} />
-                        {/* <div className={cx('artImageCaption')}>
+                <div key={columnIndex}>
+                  {rows.map(
+                    ({ node: { childImageSharp, relativePath } }, rowIndex) => {
+                      return (
+                        <div
+                          className={cx('artImageView', 'my4')}
+                          key={relativePath}
+                          onClick={() =>
+                            handleClick(
+                              elementsPerColumn.current * columnIndex + rowIndex
+                            )
+                          }
+                        >
+                          <Img
+                            fluid={childImageSharp.fluid}
+                            draggable={false}
+                          />
+                          {/* <div className={cx('artImageCaption')}>
                           <span>
                             Yes! Here is a very dope caption for this art, wow
                             don't
                           </span>
                         </div> */}
-                      </div>
-                    )
-                  })}
+                        </div>
+                      )
+                    }
+                  )}
                 </div>
               )
             })}
