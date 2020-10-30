@@ -9,6 +9,7 @@ import Button, { BUTTONS } from '../../components/button'
 
 import art from './art.mod.scss'
 import SEO from '../../components/seo'
+import LightboxComponent from './lightbox'
 
 const cx = gcx(art)
 
@@ -44,9 +45,29 @@ const ArtPage = ({ data }) => {
     return () => window.removeEventListener('resize', setColumnsClient)
   }, [getColumns, totalNodes])
 
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [photoIndex, setPhotoIndex] = React.useState(0)
+
+  const handleOpen = (val, res) => {
+    setPhotoIndex(val)
+    setIsOpen(true)
+  }
+
+  edges.map((edge, i) => {
+    edge.node.childImageSharp.fluid.number = i
+    return edge
+  })
+
   return (
     <Layout>
       <SEO title={`Explore my artworks`} />
+      <LightboxComponent
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        edges={edges}
+        photoIndex={photoIndex}
+        setPhotoIndex={setPhotoIndex}
+      />
       <style>
         {`
           .${cx('galaxy')} {
@@ -86,6 +107,9 @@ const ArtPage = ({ data }) => {
               text="Launch Lightbox"
               size={BUTTONS.MED}
               className={['mb4', 'mbMd0', 'mrMd4']}
+              onClick={() => {
+                setIsOpen(true)
+              }}
             />
             <Button
               to="/get-in-touch"
@@ -107,22 +131,34 @@ const ArtPage = ({ data }) => {
               const column = edges.splice(0, elementsPerColumn.current)
               return (
                 <div key={i}>
-                  {column.map(({ node: { childImageSharp, relativePath } }) => {
-                    return (
-                      <div
-                        className={cx('artImageView', 'my4')}
-                        key={relativePath}
-                      >
-                        <Img fluid={childImageSharp.fluid} draggable={false} />
-                        {/* <div className={cx('artImageCaption')}>
+                  {column.map(
+                    ({ node: { childImageSharp, relativePath } }, index) => {
+                      return (
+                        <div
+                          className={cx('artImageView', 'my4')}
+                          key={relativePath}
+                          onClick={() =>
+                            handleOpen(childImageSharp.fluid.number, {
+                              i,
+                              column,
+                              index,
+                            })
+                          }
+                        >
+                          <Img
+                            fluid={childImageSharp.fluid}
+                            draggable={false}
+                          />
+                          {/* <div className={cx('artImageCaption')}>
                           <span>
                             Yes! Here is a very dope caption for this art, wow
                             don't
                           </span>
                         </div> */}
-                      </div>
-                    )
-                  })}
+                        </div>
+                      )
+                    }
+                  )}
                 </div>
               )
             })}
@@ -133,7 +169,7 @@ const ArtPage = ({ data }) => {
   )
 }
 
-export const pageQuery = graphql`
+export const pageQuery = graphql` 
   query Art {
     allFile(filter: {relativePath: {regex: "/.*?\\.art\\.jpe?g$/i"}}) {
       edges {
