@@ -10,24 +10,24 @@ const LightboxComponent = ({
   setPhotoIndex,
 }) => {
   const data = useStaticQuery(graphql`
-        query ArtImages {
-    allFile(filter: {relativePath: {regex: "/.*?\\.art\\.jpe?g$/i"}}) {
-      edges {
-        node {
-          relativePath
-          childImageSharp {
-            fluid(maxWidth: 1200, quality: 100) {
-              presentationHeight
-              presentationWidth
-              ...GatsbyImageSharpFluid_withWebp_tracedSVG
+    query ArtImages {
+      allFile(filter: {relativePath: {regex: "/.*?\\.art\\.jpe?g$/i"}}) {
+        edges {
+          node {
+            relativePath
+            childImageSharp {
+              fluid(maxWidth: 1200, quality: 100) {
+                presentationHeight
+                presentationWidth
+                ...GatsbyImageSharpFluid_withWebp_tracedSVG
+              }
             }
           }
         }
       }
     }
-  }
-    
-    `)
+  `)
+
   const images = data.allFile.edges
 
   const handlePrev = () => {

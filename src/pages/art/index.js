@@ -9,7 +9,7 @@ import Button, { BUTTONS } from '../../components/button'
 
 import art from './art.mod.scss'
 import SEO from '../../components/seo'
-import LightboxComponent from './lightbox'
+import LightboxComponent from '../../components/lightbox'
 
 const cx = gcx(art)
 
@@ -172,7 +172,7 @@ const ArtPage = ({ data }) => {
   )
 }
 
-export const pageQuery = graphql` 
+export const pageQuery = graphql`
   query Art {
     allFile(filter: {relativePath: {regex: "/.*?\\.art\\.jpe?g$/i"}}) {
       edges {
