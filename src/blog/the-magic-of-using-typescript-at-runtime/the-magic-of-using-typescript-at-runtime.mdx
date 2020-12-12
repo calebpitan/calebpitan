@@ -1,0 +1,106 @@
+---
+title: The Magic of Using TypeScript at Runtime
+author: Caleb Adepitan
+date: 2020-12-12T20:40:00.606Z
+last-modified: 2020-12-12T20:40:00.606Z
+desc: |-
+  Ever wanted to pass the path to a TypeScript file to some other library or module
+  maybe to run it in a separate process or in a worker thread.
+featuredImage: magic.jpg
+tags:
+  - typescript
+  - nodejs
+collection:
+  - TypeScript
+  - Node.js
+publish: true
+slug: the-magic-of-using-typescript-at-runtime
+---
+
+Ever wanted to pass the path to a TypeScript file to some other library or module
+maybe to run it in a separate process or in a worker thread.
+You think you can just write the file in JavaScript, but you found out you will need to
+import another one or two of your TypeScript files beacuse it needs a function from it.
+Then I guess you have to refactor your whole codebase to use JavaScript instead,
+or not, if you read through this.
+
+The problem is, using `require` with a TypeScript file won't work, because Node.js does not and cannot handle `.ts` files. The extensions handled by the `require` function by default are `.js`, `.mjs`, `.node`, `.json`. The libaray or module you are passing the file path to would eventually require it at runtime and even if you add `.ts` to `require.extensions`, it would only resolve properly, but you get a syntax error on execution. This means sending it a TypeScript `.ts` file won't work, `require` will choke on this.
+
+```ts
+import { Worker } from 'worker_threads'
+
+const worker = new Worker('./path/to/typescript/worker.ts')
+```
+
+At runtime in the `worker_threads` module it would probably look somewhat like this
+
+```js
+class Worker {
+  constructor(filename) {
+    const mod = require(filename)
+  }
+}
+```
+
+<Callout type="info">
+  Well, the implementation is quite different, but my point is; filename will
+  eventually go through <code>require</code> maybe not in this same process.
+</Callout>
+
+## The magic
+
+The only option is to precompile your TypeScript files, know where the compiled file would be output to before it would be compiled, then pass it the path. But what if you use a runtime like [ts-node](https://www.npmjs.com/package/ts-node), which compiles on the fly and run the compiled files in-memory without emitting? There's no way to do this, except:
+
+### File 1: `worker.js`
+
+A base JavaScript file to portal every worker file written in TypeScript to.
+
+```js
+// worker.js
+const { workerData } = require('worker_threads')
+
+require('ts-node').register()
+require(workerData.aliasModule)
+```
+
+### File 2: `worker.ts`
+
+The module containing the code to be run on a worker thread, which is actually written in TypeScript.
+
+```ts
+// worker.ts
+const { parentPort, workerData } = require('worker_threads')
+
+parentPort.postMessage(`Post back: ${workerData.whatever}`)
+```
+
+### File 3: `index.ts`
+
+This is the main file that needs to run a job on a worker thread. It begins the whole worker thread thing.
+
+```ts
+// index.ts
+import path from 'path'
+import { Worker } from 'worker_threads'
+
+const worker = new Worker('./worker.js', {
+  workerData: {
+    aliasModule: path.resolve(__dirname, 'worker.ts'),
+    whatever: 'Hello, worker bee! The Queen greets you.',
+  },
+})
+
+worker.on('message', (message: string) => {
+  console.log(message) // Post back: Hello, worker bee! The Queen greets you.
+})
+```
+
+Most of the magic is done by ts-node using the `require('ts-node').register()` which registers the loader for future requires. The most beautiful thing about this magic is that you can dynamically set the module to load, therefore uisng `worker.js` for future workers but running different code in it.
+
+## Replicating the magic with a job queue like Bull
+
+If you ever used a job queue in a Node.js application or more specifically, [Bull](https://www.npmjs.com/package/bull), you will know you sometimes have to run a job in a different _process_ (child process) from the main one (parent process). Bull lets you specify the path to the file or filename that conatins the code to process the job. Whenever you pass a file to `queue.process`, Bull knows to process that job in a different _process_.
+
+In the case where a job processor is CPU intensive, it could stall the Node.js event loop and this could lead to [double processing](https://github.com/OptimalBits/bull#important-notes) a job. Processing jobs on a separate process could prevent double processing it. Processing the job on a separate process would also make sure the main process doesn't terminate even when the job process terminates maybe due to an error.
+
+The same problem as with worker threads happens here again if we are using TypeScript. We can't do `queue.process('./path/to/typescript/process-job.ts')`
