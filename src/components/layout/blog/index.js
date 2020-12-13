@@ -56,7 +56,8 @@ const BlogLayout = ({ data: { mdx, site } }) => {
     changeSectionIcon()
   }, [favCount, mdx.frontmatter.title])
 
-  const { title, author, date, desc, featuredImage } = mdx.frontmatter
+  const { title, date, desc, featuredImage } = mdx.frontmatter
+  const author = mdx.frontmatter.author || site.siteMetadata.author
   const postUrl = `${site.siteMetadata.siteUrl}${
     mdx.frontmatter?.slug ? `/blog/${mdx.frontmatter.slug}` : mdx.fields.slug
   }`
@@ -100,6 +101,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
         description={mdx.frontmatter.desc}
         image={featuredImage.childImageSharp.fixed.src}
         keywords={mdx.frontmatter.tags}
+        url={postUrl}
       />
       <div className={cx('pb5')} style={{ background: `var(--bg)` }}>
         <article style={{ maxWidth: `var(--compact-width)`, margin: `0 auto` }}>
@@ -182,6 +184,7 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         siteUrl
+        author
       }
     }
   }
