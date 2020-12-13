@@ -1,12 +1,12 @@
 module.exports = {
   siteMetadata: {
-    title: `Caleb Pitan`,
-    author: `Caleb Pitan`,
+    title: `Caleb Adepitan`,
+    author: `Caleb Adepitan`,
     description: [
-      `Hi, I am Caleb Adepitan (Caleb Pitan for short or as I prefer).`,
+      `Hi, I am Caleb!`,
       `This is just one of the places where I'm domiciled on the internet`,
-      `as a proprietor not a tenant. A place where I write things relevant`,
-      `to your career in the tech industry. Catch your sub!`,
+      `as a proprietor not a tenant. A place where I write about tech,`,
+      `coding, web applications and frameworks like Node.js, React and so much more.`,
     ].join(' '),
     siteUrl: 'https://www.calebpitan.com',
   },

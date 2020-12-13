@@ -1,6 +1,6 @@
 ---
 title: Building a Recursive T.O.C Component in React
-author: Caleb Pitan
+# author: Caleb Adepitan
 date: 2020-08-01
 last-modified: 2020-08-01
 desc: Has it ever crossed your mind that, if functions can be recursive, a component can, too?
@@ -9,7 +9,7 @@ tags:
   - recursion
   - react
   - TOC
-collection: 
+collection:
   - React
 publish: true
 slug: 'building-a-recursive-toc-component-in-react'
@@ -31,7 +31,7 @@ function factorial(n) {
 Or a one-liner [Euclidean GCD](https://en.wikipedia.org/wiki/Euclidean_algorithm)
 
 ```js
-const gcd = (x, y) => y === 0 ? x : gcd(y, x % y)  
+const gcd = (x, y) => (y === 0 ? x : gcd(y, x % y))
 ```
 
 A point to note is, anything that can be done using a recursion can also be achieved using a normal loop in the [procedural](https://en.wikipedia.org/wiki/Procedural_programming) approach. Recursion is one of the principles associated with [functional programming](https://en.wikipedia.org/wiki/Functional_programming), and has a good composition of logic. Once you get how they work, they should be easy to read and understand.
@@ -135,4 +135,4 @@ export default BlogLayout = ({ data }) => {
 }
 ```
 
-We map through all the items and check if we have any nested items. If we don't have nested items, we return a list item of the current `item`. If we do have a nested item, since we are looking forward, we return two list items one for the current `item` and the other list item will contain a list of the nested items, which is handled by the recursion, so if something similar to what I just explained occurs again, our component already knows how to handle it. You may go ahead to further style things with any  CSS styling approach you are comfortable working with, JSS, CSS-in-JS, SCSS or Vanilla flavour.
+We map through all the items and check if we have any nested items. If we don't have nested items, we return a list item of the current `item`. If we do have a nested item, since we are looking forward, we return two list items one for the current `item` and the other list item will contain a list of the nested items, which is handled by the recursion, so if something similar to what I just explained occurs again, our component already knows how to handle it. You may go ahead to further style things with any CSS styling approach you are comfortable working with, JSS, CSS-in-JS, SCSS or Vanilla flavour.
