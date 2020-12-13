@@ -3,7 +3,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 import { gcx } from '../../utils'
 import Card from '../card'
-import { useAvatar } from '../hooks'
+import { useAvatar, useSiteMetadata } from '../hooks'
 
 import stunt from './stunt.mod.scss'
 
@@ -78,6 +78,11 @@ const StuntList = ({ data }) => {
   }, [])
 
   const { avatar } = useAvatar()
+  const {
+    site: { siteMetadata },
+  } = useSiteMetadata()
+
+  console.log(siteMetadata)
 
   /**
    *
@@ -271,6 +276,7 @@ const StuntList = ({ data }) => {
         ref={wrapperRef}
       >
         {data.map(({ slug, title, author, date }) => {
+          author = author || siteMetadata.author
           return (
             <Card
               {...{ title, author, slug, avatar, date }}
