@@ -27,6 +27,7 @@ function SEO({
   title,
   image,
   isHome,
+  url,
 }) {
   const theme = React.useContext(ThemeContext)
   const { site } = useStaticQuery(
@@ -70,7 +71,7 @@ function SEO({
     },
     {
       name: `twitter:creator`,
-      content: site.siteMetadata.author,
+      content: TWITTER_USER,
     },
     {
       name: `twitter:site`,
@@ -89,14 +90,12 @@ function SEO({
   image = image ? image : defaultImage
 
   if (image) {
-    twitter.push({
-      name: `twitter:image`,
-      content: `${host}${image}`,
-    })
-    og.push({
-      name: `og:image`,
-      content: `${host}${image}`,
-    })
+    twitter.push({ name: `twitter:image`, content: `${host}${image}` })
+    og.push({ name: `og:image`, content: `${host}${image}` })
+  }
+
+  if (url) {
+    og.push({ name: `og:url`, content: url })
   }
 
   return (
@@ -114,10 +113,7 @@ function SEO({
         },
       ]
         .concat(og, twitter)
-        .concat({
-          name: `keywords`,
-          content: keywords.join(`,`),
-        })
+        .concat({ name: `keywords`, content: keywords.join(`,`) })
         .concat(meta)}
     />
   )
@@ -139,6 +135,7 @@ SEO.propTypes = {
   title: PropTypes.string.isRequired,
   image: PropTypes.string,
   isHome: PropTypes.bool,
+  url: PropTypes.string,
 }
 
 export default SEO
