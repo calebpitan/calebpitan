@@ -1,8 +1,8 @@
 ---
 title: The Magic of Using TypeScript at Runtime
-author: Caleb Adepitan
+# author: Caleb Adepitan
 date: 2020-12-12T20:40:00.606Z
-last-modified: 2020-12-12T20:40:00.606Z
+last-modified: 2020-12-13T02:27:00.606Z
 desc: |-
   Ever wanted to pass the path to a TypeScript file to some other library or module
   maybe to run it in a separate process or in a worker thread.
@@ -95,12 +95,57 @@ worker.on('message', (message: string) => {
 })
 ```
 
-Most of the magic is done by ts-node using the `require('ts-node').register()` which registers the loader for future requires. The most beautiful thing about this magic is that you can dynamically set the module to load, therefore uisng `worker.js` for future workers but running different code in it.
+<Callout type="warn">
+  If you are setting a timeout to terminate the worker so you don't wait for too
+  long when it hangs, bear in mind the worker may take quite long to post a
+  message, because it will first do some TypeScript compilation and
+  type-checking. You could make it fatser by setting <code>transpileOnly</code>
+  option to <code>true</code> on <code>register</code>.
+</Callout>
 
-## Replicating the magic with a job queue like Bull
+Most of the magic is done by ts-node using the `require('ts-node').register()` which registers the loader for future requires. The most beautiful thing about this magic is that you can dynamically set the module to load, because of the way the modules are structured. Therefore uisng `worker.js` for future workers but running different code in it is possible.
+
+## Re-creating the magic with a job queue like Bull
 
 If you ever used a job queue in a Node.js application or more specifically, [Bull](https://www.npmjs.com/package/bull), you will know you sometimes have to run a job in a different _process_ (child process) from the main one (parent process). Bull lets you specify the path to the file or filename that conatins the code to process the job. Whenever you pass a file to `queue.process`, Bull knows to process that job in a different _process_.
 
-In the case where a job processor is CPU intensive, it could stall the Node.js event loop and this could lead to [double processing](https://github.com/OptimalBits/bull#important-notes) a job. Processing jobs on a separate process could prevent double processing it. Processing the job on a separate process would also make sure the main process doesn't terminate even when the job process terminates maybe due to an error.
+In the case where a job processor is CPU intensive, it could stall the Node.js event loop and this could lead to [double processing](https://github.com/OptimalBits/bull#important-notes) a job. Processing jobs on a separate process could prevent double processing it. Processing the job on a separate process would also make sure the main process doesn't terminate even when the job process terminates maybe due to a runtime error.
 
-The same problem as with worker threads happens here again if we are using TypeScript. We can't do `queue.process('./path/to/typescript/process-job.ts')`
+The same problem as with worker threads happens here again if we are using TypeScript. We can't do:
+
+```js
+queue.process('./path/to/typescript/process-job.ts')
+```
+
+As we did with the worker thread example, although may not be as dynamic as that, we could do the same here also.
+
+We create the queue and add a job to be processed to it. We then specify the code file that processes the job off of the queue.
+Bull will run this code file in a separate process, but it can't handle TypeScript files.
+
+```ts
+// index.js
+import Bull from 'bull'
+
+const queue = new Bull<IData>('job-queue', options)
+
+queue.add('job-name', data)
+
+queue.process('job-name', './path/to/processor.js')
+```
+
+Using the ts-node `register` method as before, we register a loader to be used for future require, then load the TypeScript code file, compile it and run it. Bull picks the top level export (default export or unnamed export) from `module.exports` and invokes it with the `job` object containing info sepcific to the job and the data, sent from `queue.add`, to be processed.
+
+```js
+// processor.js
+require('ts-node').register()
+require('./processor.ts')
+```
+
+The `processor.ts` file is the file containing the original code to process the job.
+
+```ts
+// processor.ts
+export default async function (job: Bull.Job<IData>) {
+  // do something with job.data
+}
+```
