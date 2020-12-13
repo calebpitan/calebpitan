@@ -8,7 +8,7 @@ import SEO from '../../components/seo'
 import H from '../../components/heading'
 import Tape from '../../components/tape'
 import AltText from '../../components/alt-text'
-import { useAvatar } from '../../components/hooks'
+import { useAvatar, useSiteMetadata } from '../../components/hooks'
 import { gcx } from '../../utils'
 
 import blog from './index.mod.scss'
@@ -17,6 +17,9 @@ const cx = gcx(blog)
 
 const Blog = ({ data }) => {
   const { avatar } = useAvatar()
+  const {
+    site: { siteMetadata },
+  } = useSiteMetadata()
 
   return (
     <Layout>
@@ -35,6 +38,7 @@ const Blog = ({ data }) => {
                 frontmatter: { title, author, date },
               },
             }) => {
+              author = author || siteMetadata.author
               return (
                 <Card
                   {...{ title, author, slug, avatar, date }}
