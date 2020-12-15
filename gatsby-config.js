@@ -38,28 +38,29 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     // `gatsby-transformer-json`,
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {
-        plugins: [
-          // `gatsby-remark-embedder`,
-          // `gatsby-remark-responsive-iframe`,
-          {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 1200,
-            },
-          },
-          {
-            resolve: `gatsby-remark-prismjs`,
-            options: {
-              showLineNumbers: false,
-              noInlineHighlight: true,
-            },
-          },
-        ],
-      },
-    },
+    // {
+    //   resolve: `gatsby-transformer-remark`,
+    //   options: {
+    //     plugins: [
+    //       // `gatsby-remark-embedder`,
+    //       // `gatsby-remark-responsive-iframe`,
+    //       `gatsby-remark-smartypants`,
+    //       {
+    //         resolve: `gatsby-remark-images`,
+    //         options: {
+    //           maxWidth: 1200,
+    //         },
+    //       },
+    //       {
+    //         resolve: `gatsby-remark-prismjs`,
+    //         options: {
+    //           showLineNumbers: false,
+    //           noInlineHighlight: true,
+    //         },
+    //       },
+    //     ],
+    //   },
+    // },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -92,6 +93,7 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         gatsbyRemarkPlugins: [
           // `gatsby-remark-embedder`,
+          `gatsby-remark-smartypants`,
           {
             resolve: `gatsby-remark-images`,
             options: {
@@ -100,9 +102,11 @@ module.exports = {
           },
           {
             resolve: `gatsby-remark-autolink-headers`,
-            offsetY: `0`,
-            icon: false,
-            removeAccents: true,
+            options: {
+              offsetY: `0`,
+              icon: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd"></path></svg>`,
+              removeAccents: true,
+            },
           },
           {
             resolve: `gatsby-remark-prismjs`,
@@ -126,11 +130,24 @@ module.exports = {
     // `gatsby-plugin-styled-components`,
     // `gatsby-plugin-algolia`,
     // `gatsby-plugin-netlify-cms`,
-
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it
+        trackingId: 'UA-256387156-5',
+        head: true,
+        respectDNT: true,
+        pageTransitionDelay: 1000,
+        defer: false,
+        sampleRate: 5,
+        siteSpeedSampleRate: 10,
+        cookieDomain: 'calebpitan.com',
+      },
+    },
     {
       resolve: `gatsby-plugin-nprogress`,
       options: {
-        color: `palevioletred`,
+        color: `var(--theme-color)`,
         showSpinner: false,
       },
     },
