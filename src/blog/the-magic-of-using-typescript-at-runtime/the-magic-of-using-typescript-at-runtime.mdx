@@ -123,7 +123,7 @@ We create the queue and add a job to be processed to it. We then specify the cod
 Bull will run this code file in a separate process, but it can't handle TypeScript files.
 
 ```ts
-// index.js
+// index.ts
 import Bull from 'bull'
 
 const queue = new Bull<IData>('job-queue', options)
