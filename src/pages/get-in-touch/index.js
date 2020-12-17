@@ -58,7 +58,9 @@ const Contact = () => {
     <Layout>
       <SEO title={`Contact`} />
       <div className={cx('global-compact--layout--sm', 'p4', 'pMd5')}>
-        <H as="1">Contact</H>
+        <H as="1" serif={true}>
+          Contact
+        </H>
         <Tape />
         <p className={cx('contactMessage', 'mb5')}>
           Wanna reach out, work or do business with me, buy my products?

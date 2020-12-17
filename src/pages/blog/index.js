@@ -25,7 +25,9 @@ const Blog = ({ data }) => {
     <Layout>
       <SEO title={`Blog`} />
       <div className={cx('blog', 'p4', 'pMd5')}>
-        <H as="1">Blog</H>
+        <H as="1" serif={true}>
+          Blog
+        </H>
         <AltText text="Explore my stunts" />
         <Tape />
 

@@ -143,7 +143,9 @@ const BlogLayout = ({ data: { mdx, site } }) => {
           className={cx('px3', 'pxMd5')}
         >
           <IntentShare intents={sharerIntents} className="mb5" />
-          <H as="3">Recent Stunts</H>
+          <H as="3" serif={true}>
+            Recent Stunts
+          </H>
           <Tape small />
           <RecentPost except={mdx.id} />
         </div>
