@@ -42,10 +42,10 @@ export const gcx = style => {
 export const formatLargeNumber = num => {
   const baseExp = 3
   const units = {
-    '3': 'K',
-    '6': 'M',
-    '9': 'G',
-    '12': 'T',
+    3: 'K',
+    6: 'M',
+    9: 'G',
+    12: 'T',
   }
 
   let exp = Math.floor(Math.log10(num))
