@@ -82,7 +82,7 @@
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
-  --fg-inline-code: #00bff9;
+  --fg-inline-code: #c792ea;
 
   --selection: var(--theme-color-35);
   --shade: #{$shade-night};
@@ -228,7 +228,6 @@ a {
 }
 
 code {
-  background: var(--bg-alt);
   color: var(--fg-inline-code);
   padding: 0.085rem 0.175rem;
   border-radius: 5px;
@@ -324,12 +323,13 @@ code[class*='language-'] {
   font-family: var(--font-family-code);
 }
 
-pre[class*='language-'] {
+pre[class*='language-'],
+pre {
   font-size: 1rem;
   margin: 0 0 1.75rem;
   padding: 1em;
   overflow: auto;
-  border-radius: 10px;
+  border-radius: 5px;
 
   @media (max-width: $lmd) {
     margin-left: -1rem;
