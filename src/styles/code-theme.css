@@ -3,9 +3,9 @@
  * Based on dabblet (http://dabblet.com)
  * @author Lea Verou
  */
-code[class*="language-"],
-pre[class*="language-"] {
-  color: #ABB2BF;
+code[class*='language-'],
+pre[class*='language-'] {
+  color: #abb2bf;
   font-style: normal;
   background: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -24,40 +24,44 @@ pre[class*="language-"] {
   hyphens: none;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+pre[class*='language-']::-moz-selection,
+pre[class*='language-'] ::-moz-selection,
+code[class*='language-']::-moz-selection,
+code[class*='language-'] ::-moz-selection {
   text-shadow: none;
   background: #383e49;
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+pre[class*='language-']::selection,
+pre[class*='language-'] ::selection,
+code[class*='language-']::selection,
+code[class*='language-'] ::selection {
   text-shadow: none;
   background: #9aa2b1;
 }
 
 @media print {
-  code[class*="language-"],
-  pre[class*="language-"] {
+  code[class*='language-'],
+  pre[class*='language-'] {
     text-shadow: none;
   }
 }
 /* Code blocks */
-pre[class*="language-"] {
+pre[class*='language-'] {
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
   overflow: auto;
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-  background: #011627;
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+  background: #141414;
 }
 
 /* Inline code */
-:not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em;
+:not(pre) > code[class*='language-'] {
+  padding: 0.1em;
+  border-radius: 0.3em;
   white-space: normal;
 }
 
@@ -65,7 +69,7 @@ pre[class*="language-"] {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #5C6370;
+  color: #5c6370;
 }
 
 .token.punctuation {
@@ -74,7 +78,12 @@ pre[class*="language-"] {
 
 .token.selector,
 .token.tag {
-  color: #f7ecb5;
+  color: #f07178;
+}
+
+.token.class-name,
+.token.builtin {
+  color: #ffcb6b;
 }
 
 .token.property,
@@ -84,13 +93,12 @@ pre[class*="language-"] {
 .token.symbol,
 .token.attr-name,
 .token.deleted {
-  color: #7fdbca;
+  color: #f78c6c;
 }
 
 .token.string,
 .token.char,
 .token.attr-value,
-.token.builtin,
 .token.inserted {
   color: #bcf0c0;
 }
@@ -105,11 +113,12 @@ pre[class*="language-"] {
 
 .token.atrule,
 .token.keyword {
-  color: #00bff9;
+  color: #c792ea;
 }
 
 .token.function {
   color: #87aff4;
+  color: #82aaff;
 }
 
 .token.regex,
@@ -133,42 +142,41 @@ pre[class*="language-"] {
 }
 
 pre.line-numbers {
-	position: relative;
-	padding-left: 3.8em;
-	counter-reset: linenumber;
+  position: relative;
+  padding-left: 3.8em;
+  counter-reset: linenumber;
 }
 
 pre.line-numbers > code {
-	position: relative;
+  position: relative;
 }
 
 .line-numbers .line-numbers-rows {
-	position: absolute;
-	pointer-events: none;
-	top: 0;
-	font-size: 100%;
-	left: -3.8em;
-	width: 3em; /* works for line-numbers below 1000 lines */
-	letter-spacing: -1px;
-	border-right: 0;
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  font-size: 100%;
+  left: -3.8em;
+  width: 3em; /* works for line-numbers below 1000 lines */
+  letter-spacing: -1px;
+  border-right: 0;
 
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .line-numbers-rows > span {
-	pointer-events: none;
-	display: block;
-	counter-increment: linenumber;
+  pointer-events: none;
+  display: block;
+  counter-increment: linenumber;
 }
 
 .line-numbers-rows > span:before {
-	content: counter(linenumber);
-	color: #5C6370;
-	display: block;
-	padding-right: 0.8em;
-	text-align: right;
+  content: counter(linenumber);
+  color: #5c6370;
+  display: block;
+  padding-right: 0.8em;
+  text-align: right;
 }
