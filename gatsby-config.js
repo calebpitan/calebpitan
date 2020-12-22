@@ -108,6 +108,12 @@ module.exports = {
               removeAccents: true,
             },
           },
+          // {
+          //   resolve: `gatsby-remark-shiki`,
+          //   options: {
+          //     theme: 'nord', // Default: 'Material-Theme-Ocean'
+          //   },
+          // },
           {
             resolve: `gatsby-remark-prismjs`,
             options: {
@@ -127,7 +133,6 @@ module.exports = {
       },
     },
     // `gatsby-plugin-twitter`,
-    // `gatsby-plugin-styled-components`,
     // `gatsby-plugin-algolia`,
     // `gatsby-plugin-netlify-cms`,
     {
