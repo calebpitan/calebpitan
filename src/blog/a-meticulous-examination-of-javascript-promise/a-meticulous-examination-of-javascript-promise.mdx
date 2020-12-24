@@ -2,13 +2,13 @@
 title: A Meticulous Examination of JavaScript Promise
 # author: Caleb Adepitan
 date: 2020-12-24T07:52:00.606Z
-last-modified: 2020-12-24T07:52:00.606Z
+last-modified: 2020-12-24T10:20:00.606Z
 desc: |-
   An examination of the peculiarities of Promise, async/await, and even callbacks in JavaScript.
 featuredImage: pinky-finger.jpg
 tags:
   - javascript
-  - promises
+  - promise
   - async-await
 collection:
   - JavaScript
@@ -211,8 +211,119 @@ function wait(time) {
 
 ## Working with multiple promises
 
-Sometimes, we need to work with multiple promises and most times we may not be concerned by the fulfillment of individual promises, but their overall fulfillment or at least the fulfilment of anyone of them. Here is where some static `Promise` methods come in.
+Sometimes, we need to work with multiple promises and most times we may not be concerned by the fulfillment of individual promises, but their overall fulfillment or at least the fulfilment of anyone of them. Here is where some static promise methods come in.
 
-There isn't much to say about promise static methods that hasn't been [said here][mozilla-promise]
+- `Promise.all`
+- `Promise.allSettled`
+- `Promise.any`
+- `Promise.race`
 
-[mozilla-promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#Static_methods
+Other static methods are `Promise.resolve` and `Promise.reject` but their use case is different from the above ones
+
+### `Promise.all`
+
+Returns a single promise that resolves to an array of respective values when all promises resolves and rejects when at least one of the promises rejects. `Promise.all` works on the all-or-nothing principle.
+
+```js
+function wait(time) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(time), time)
+  })
+}
+
+function wait2(time) {
+  return new Promise((_r, reject) => {
+    setTimeout(() => reject(new Error('Rejected')), time)
+  })
+}
+
+async function exec() {
+  // All promises resolves/fulfills
+  // resolves to [4000, 2000]
+  let p1 = await Promise.all([wait(4000), wait(2000)])
+  // The promise that settles first is a rejected promise
+  // The promise that settles last is a fulfilled/resolved promise
+  // rejects with an Error without waiting for the last settled
+  let p2 = await Promise.all([wait(4000), wait2(2000)])
+  // The promise that settles first is a fulfilled/resolved promise
+  // The promise that settles last is a rejected promise
+  // rejects with an Error
+  let p3 = await Promise.all([wait2(4000), wait(2000)])
+  // All promises rejected
+  // rejects with an Error
+  let p4 = await Promise.all([wait2(4000), wait2(2000)])
+}
+```
+
+### `Promise.allSettled`
+
+Returns a single promise that resolves to an array of objects that contains the state of all settled (resolved or rejected) promises.
+
+```ts
+interface Fulfilled {
+  status: 'fulfilled'
+  value: any
+}
+
+interface Rejected {
+  status: 'rejected'
+  resaon: any
+}
+```
+
+```js
+async function exec() {
+  let p1 = await Promise.allSettled([wait(4000), wait(2000)]) // resolves to [Fulfilled, Fulfilled]
+  let p2 = await Promise.allSettled([wait(4000), wait2(2000)]) // resolves to [Fulfilled, Rejected]
+  let p3 = await Promise.allSettled([wait2(4000), wait(2000)]) // resolves to [Rejected, Fulfilled]
+  let p4 = await Promise.allSettled([wait2(4000), wait2(2000)]) // resolves to [Rejected, Rejected]
+}
+```
+
+### `Promise.any`
+
+Returns a single promise that resolves to the first promise that resolves/fulfills and rejects with an `AggregationError` only when all promises rejects.
+
+```js
+async function exec() {
+  // All promises resolves/fulfills
+  // resolves to 2000 without waiting for the last settled
+  let p1 = await Promise.any([wait(4000), wait(2000)])
+  // The promise that settles first is a rejected promise
+  // The promise that settles last is a fulfilled/resolved promise
+  // resolves to 4000 after the first settled rejects
+  let p2 = await Promise.any([wait(4000), wait2(2000)])
+  // The promise that settles first is a fulfilled/resolved promise
+  // The promise that settles last is a rejected promise
+  // resolves to 2000 without waiting for the last settled
+  let p3 = await Promise.any([wait2(4000), wait(2000)])
+  // All promises rejected
+  // rejects with an AggregationError of both promises rejection
+  let p4 = await Promise.any([wait2(4000), wait2(2000)])
+}
+```
+
+### `Promise.race`
+
+Returns a single promise that resolves to or rejects with the first settled (resolved or rejected, respectively) promise.
+
+```js
+async function exec() {
+  // All promises resolves/fulfills
+  // resolves to 2000 without waiting for the last settled
+  let p1 = await Promise.race([wait(4000), wait(2000)])
+  // The promise that settles first is a rejected promise
+  // The promise that settles last is a fulfilled/resolved promise
+  // rejects with an Error when the first settled rejects
+  let p2 = await Promise.race([wait(4000), wait2(2000)])
+  // The promise that settles first is a fulfilled/resolved promise
+  // The promise that settles last is a rejected promise
+  // resolves to 2000 when the first settled resolves without waiting for the last settled
+  let p3 = await Promise.race([wait2(4000), wait(2000)])
+  // All promises rejected
+  // rejects with an Error when the first settled rejects without waiting for the last settled
+  let p4 = await Promise.race([wait2(4000), wait2(2000)])
+}
+```
+
+`Promise.any` and `Promise.race` may seem like they work the same but they are different--take a closer look. I promise you'll notice the difference.
