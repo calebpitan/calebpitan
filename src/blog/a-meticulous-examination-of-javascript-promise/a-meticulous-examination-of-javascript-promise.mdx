@@ -82,7 +82,7 @@ Our intention to return a `Promise` in this statement is explicity stated. There
 
 ```ts
 function getUser(id: string) {
-  const user: Promise = fetch(`${BASE_URL}/people/${id}`).then(res =>
+  const user: Promise<User> = fetch(`${BASE_URL}/people/${id}`).then(res =>
     res.json()
   )
   return user
