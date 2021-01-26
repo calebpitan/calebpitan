@@ -28,7 +28,7 @@ const Contact = () => {
     setRequesting(true)
 
     const data = {
-      'form-name': 'contact',
+      'form-name': 'Get in Touch',
       name,
       email,
       message,
