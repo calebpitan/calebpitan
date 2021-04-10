@@ -38,29 +38,6 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     // `gatsby-transformer-json`,
-    // {
-    //   resolve: `gatsby-transformer-remark`,
-    //   options: {
-    //     plugins: [
-    //       // `gatsby-remark-embedder`,
-    //       // `gatsby-remark-responsive-iframe`,
-    //       `gatsby-remark-smartypants`,
-    //       {
-    //         resolve: `gatsby-remark-images`,
-    //         options: {
-    //           maxWidth: 1200,
-    //         },
-    //       },
-    //       {
-    //         resolve: `gatsby-remark-prismjs`,
-    //         options: {
-    //           showLineNumbers: false,
-    //           noInlineHighlight: true,
-    //         },
-    //       },
-    //     ],
-    //   },
-    // },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -134,19 +111,26 @@ module.exports = {
     },
     // `gatsby-plugin-twitter`,
     // `gatsby-plugin-algolia`,
-    // `gatsby-plugin-netlify-cms`,
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: `gatsby-plugin-google-gtag`,
       options: {
-        // The property ID; the tracking code won't be generated without it
-        trackingId: 'G-L8HKZQS2TK',
-        head: true,
-        respectDNT: true,
-        pageTransitionDelay: 1000,
-        defer: false,
-        sampleRate: 5,
-        siteSpeedSampleRate: 10,
-        cookieDomain: 'calebpitan.com',
+        // You can add multiple tracking ids and a pageview event will be fired for all of them.
+        trackingIds: ['G-L8HKZQS2TK'],
+        // This object gets passed directly to the gtag config command
+        // This config will be shared across all trackingIds
+        gtagConfig: {
+          anonymize_ip: false,
+          cookie_expires: 0,
+        },
+        // This object is used for configuration specific to this plugin
+        pluginConfig: {
+          // Puts tracking script in the head instead of the body
+          head: true,
+          // Setting this parameter is also optional
+          respectDNT: true,
+          // Avoids sending pageview hits from custom paths
+          exclude: [],
+        },
       },
     },
     {
