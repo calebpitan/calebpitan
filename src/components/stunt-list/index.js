@@ -82,8 +82,6 @@ const StuntList = ({ data }) => {
     site: { siteMetadata },
   } = useSiteMetadata()
 
-  console.log(siteMetadata)
-
   /**
    *
    * @param {TouchEvent} e
