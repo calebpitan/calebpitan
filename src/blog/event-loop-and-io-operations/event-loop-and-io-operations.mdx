@@ -20,7 +20,7 @@ publish: true
 slug: understanding-the-event-loop-and-io-operations
 ---
 
-The event loop is a design pattern in computer science. The pattern is as simple as waiting for an event and dispatching an event so services that can handle the event consume it. The the loop blocks till another event is inbound for processing.
+The event loop is a design pattern in computer science. The pattern is as simple as waiting for an event and dispatching an event so services that can handle the event consume it. Then the loop blocks till another event is inbound for processing.
 
 Your Node.js Express server for example, would not exit its process. At that point, it waits for an event (a request). When the event arrives, the event is emitted and picked up by the GET handler in your router for that specific request. This is just on the high level. The moment the event loop stops, i.e the loop breaks, the Node.js process exits and as a sequel, your Express server too.
 
