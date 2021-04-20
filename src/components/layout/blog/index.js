@@ -15,28 +15,51 @@ import {
 import Layout from '..'
 import { useAvatar, useFav } from '../../hooks'
 
-import blog from './blog.mod.scss'
 import IntentShare from './share'
 import RecentPost from '../../recent-post'
 import H from '../../heading'
 import Tape from '../../tape'
 import Callout from '../../callout'
 
+import blog from './blog.mod.scss'
+
 const shortcodes = { Link, SEO, Callout }
 
 const cx = gcx(blog)
 
-const changeSectionIcon = () => {
-  const postHeading = document.querySelectorAll('h2, h3, h4, h5')
-  try {
-    postHeading.forEach(heading => {
-      const svg = heading.querySelector('a > svg')
-      svg.outerHTML = `#`
-    })
-  } catch {
-    return
-  }
+const runAnimation = () => {
+  const options = { root: null, rootMargin: '0px', threshold: 1.0 }
+  const codeTitles = document.querySelectorAll('.ninja-code-title')
+  const animationClass = 'ninja-code-title-animate'
+  let [inFrameId, outFrameId] = [-1, -1]
+
+  codeTitles.forEach(codeTitleLabel => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const targetClassList = entry.target.classList
+
+        if (entry.isIntersecting) {
+          if (!targetClassList.contains(animationClass)) {
+            window.cancelAnimationFrame(inFrameId)
+            inFrameId = window.requestAnimationFrame(() => {
+              targetClassList.add(animationClass)
+            })
+          }
+        } else if (targetClassList.contains(animationClass)) {
+          window.cancelAnimationFrame(outFrameId)
+          outFrameId = window.requestAnimationFrame(() => {
+            targetClassList.remove(animationClass)
+          })
+        }
+      })
+    }, options)
+
+    observer.observe(codeTitleLabel)
+  })
 }
+
+const useEnhancedEffect =
+  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
 
 const BlogLayout = ({ data: { mdx, site } }) => {
   const [faves, setFaves] = React.useState({ count: null, isFaved: false })
@@ -51,10 +74,13 @@ const BlogLayout = ({ data: { mdx, site } }) => {
           isFaved: res.favorite && existsInFavorite(mdx.frontmatter.title),
         })
       )
-      .catch(console.log)
-
-    changeSectionIcon()
+      .catch(() => {})
   }, [favCount, mdx.frontmatter.title])
+
+  useEnhancedEffect(() => {
+    // changeSectionIcon()
+    runAnimation()
+  }, [])
 
   const { title, date, desc, featuredImage } = mdx.frontmatter
   const author = mdx.frontmatter.author || site.siteMetadata.author
