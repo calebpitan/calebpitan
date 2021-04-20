@@ -2,7 +2,7 @@
 title: Building an Accessible Performant Tree View in React
 # author: Caleb Adepitan
 date: 2021-04-20T10:30:00.606Z
-last-modified: 2021-04-20T10:30:00.606Z
+last-modified: 2021-04-20T12:00:00.606Z
 desc: |-
   Having accessibility and performance in mind when building a tree structure while evading wasted
   renders is key for building such component that may contain as much as a portion of an OS filesystem.
@@ -313,14 +313,14 @@ This component leaves us one more responsibility: creating the `Node` component.
 
 ```diff-tsx:title=Tree.tsx
 const Tree: FC<TreeProps> = ({ root }) => {
--  return <ul>{/* TODO: Make something useful */}</ul>
-+  const rootNode = new TreeNode([])
+-   return <ul>{/* TODO: Make something useful */}</ul>
++   const rootNode = new TreeNode([])
 +
-+  return (
-+    <ul role="tree" {...rest}>
-+      <RenderNodes nodes={root} parentNode={rootNode} />
-+    </ul>
-+  )
++   return (
++     <ul role="tree" {...rest}>
++       <RenderNodes nodes={root} parentNode={rootNode} />
++     </ul>
++   )
 }
 ```
 
@@ -506,7 +506,7 @@ Now time for some DOM events. We create a click handler and also keydown handler
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
--   return <li {...rest}>{children}</li>
+-   return <li ref={treeItem} {...rest}>{children}</li>
 +   useEffect(() => {
 +     node
 +       .on('selectin', () => {
