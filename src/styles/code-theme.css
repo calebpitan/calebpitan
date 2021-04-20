@@ -186,6 +186,7 @@ pre.line-numbers > code {
   margin: 0 -1rem;
   display: block;
   min-width: max-content;
+  width: auto;
 }
 
 .token.deleted-sign.deleted {

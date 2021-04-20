@@ -354,6 +354,14 @@ code[class*='language-'] {
   display: block;
 }
 
+code[class*='language-'] {
+  min-width: fit-content;
+
+  @media (min-width: $lg) {
+    width: 100%;
+  }
+}
+
 pre[class*='language-'],
 pre {
   font-size: 1rem;
@@ -361,6 +369,7 @@ pre {
   padding: 1em;
   overflow: auto;
   border-radius: 5px;
+  width: auto;
 
   @media (max-width: $lmd) {
     margin-left: -1rem;
