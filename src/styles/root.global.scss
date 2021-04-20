@@ -82,6 +82,7 @@
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
+  --fg-blend: #{$fg-blend-night};
   --fg-inline-code: #c792ea;
 
   --selection: var(--theme-color-35);
@@ -119,6 +120,7 @@
   --fg: #{$fg-day};
   --fg-alt: #{$fg-alt-day};
   --fg-muted: #{$fg-muted-day};
+  --fg-blend: #{$fg-blend-day};
   --fg-inline-code: #ad2896;
 
   --selection: var(--theme-color-15);
@@ -260,6 +262,18 @@ code {
  */
 
 main {
+  blockquote {
+    color: var(--fg-blend);
+    border-left: 5px solid currentColor;
+    padding: 0.25rem 1rem;
+    margin-bottom: 1.75rem;
+
+    p {
+      font-style: italic;
+      margin: 0;
+    }
+  }
+
   p,
   ul,
   ol {
@@ -271,19 +285,31 @@ main {
   h4[id],
   h5[id],
   h6[id] {
+    $svg-icon-height: 1.5rem;
+    $svg-icon-link-offset-right: 0.1em;
+
     font-family: 'Domine';
     margin-bottom: 1.75rem;
+    transform: translate(-1.1em, 0);
 
-    & svg,
     & a {
       opacity: 0;
       visibility: hidden;
       display: inline-block;
       color: var(--fg-alt);
-      width: 1.5rem;
-      height: 1.5rem;
-      margin-left: -1.5rem;
+      width: 1em;
+      height: 1em;
+      margin-right: $svg-icon-link-offset-right;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      // margin-left: -1.5rem;
+
+      & > svg {
+        font-size: $svg-icon-height;
+      }
     }
+
     &:hover a {
       opacity: 1;
       color: var(--fg);
@@ -349,6 +375,36 @@ pre {
   &::-webkit-scrollbar-thumb {
     background: rgba(120, 120, 120, 0.7);
     border-radius: 0;
+  }
+}
+
+.ninja-code-title {
+  width: max-content;
+  color: var(--bg-alpha);
+  background: var(--theme-color-sat);
+  padding: 0.05em 0.5em 0.5em;
+  border-radius: 3px 3px 0 0;
+  margin-bottom: -0.45em;
+  font-size: 0.85rem;
+  font-family: var(--font-family-code);
+  transform: translate(0, 1.5em);
+  transition: transform ease 0.4s;
+
+  & + div {
+    transform: translate(0);
+  }
+
+  &-animate {
+    animation: jiggle 0.4s cubic-bezier(1, -0.46, 0, 0.01) forwards 0.5s;
+
+    @keyframes jiggle {
+      from {
+        transform: translate(0, 1.5em) skew(5deg, 5deg);
+      }
+      to {
+        transform: translate(0) skew(5deg, -5deg);
+      }
+    }
   }
 }
 

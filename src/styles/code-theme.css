@@ -92,14 +92,14 @@ pre[class*='language-'] {
 .token.constant,
 .token.symbol,
 .token.attr-name,
-.token.deleted {
+.token.prefix.deleted {
   color: #f78c6c;
 }
 
 .token.string,
 .token.char,
 .token.attr-value,
-.token.inserted {
+.token.prefix.inserted {
   color: #bcf0c0;
 }
 
@@ -179,4 +179,16 @@ pre.line-numbers > code {
   display: block;
   padding-right: 0.8em;
   text-align: right;
+}
+
+.token.deleted-sign.deleted {
+  background-color: rgba(247, 140, 108, 0.1);
+  margin: 0 -1rem;
+  display: block;
+}
+
+.token.inserted-sign.inserted {
+  background-color: rgba(188, 240, 192, 0.1);
+  margin: 0 -1rem;
+  display: block;
 }
