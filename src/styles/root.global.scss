@@ -290,7 +290,7 @@ main {
 
     font-family: 'Domine';
     margin-bottom: 1.75rem;
-    transform: translate(-1.1em, 0);
+    display: inline-flex;
 
     & a {
       opacity: 0;
@@ -303,10 +303,14 @@ main {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      // margin-left: -1.5rem;
+      margin-left: -1.1em;
 
       & > svg {
         font-size: $svg-icon-height;
+      }
+
+      @media (max-width: $sm) {
+        order: 1;
       }
     }
 
@@ -347,6 +351,7 @@ main {
 pre[class*='language-'],
 code[class*='language-'] {
   font-family: var(--font-family-code);
+  display: block;
 }
 
 pre[class*='language-'],

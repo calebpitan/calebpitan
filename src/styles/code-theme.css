@@ -181,14 +181,17 @@ pre.line-numbers > code {
   text-align: right;
 }
 
-.token.deleted-sign.deleted {
-  background-color: rgba(247, 140, 108, 0.1);
+.token.deleted-sign.deleted,
+.token.inserted-sign.inserted {
   margin: 0 -1rem;
   display: block;
+  min-width: max-content;
+}
+
+.token.deleted-sign.deleted {
+  background-color: rgba(247, 140, 108, 0.1);
 }
 
 .token.inserted-sign.inserted {
   background-color: rgba(188, 240, 192, 0.1);
-  margin: 0 -1rem;
-  display: block;
 }
