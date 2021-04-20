@@ -286,11 +286,10 @@ main {
   h5[id],
   h6[id] {
     $svg-icon-height: 1.5rem;
-    $svg-icon-link-offset-right: 0.1em;
 
     font-family: 'Domine';
     margin-bottom: 1.75rem;
-    display: inline-flex;
+    position: relative;
 
     & a {
       opacity: 0;
@@ -299,18 +298,19 @@ main {
       color: var(--fg-alt);
       width: 1em;
       height: 1em;
-      margin-right: $svg-icon-link-offset-right;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-left: -1.1em;
+      margin-right: 0.1em;
+      left: -1.1em;
+      position: absolute;
 
       & > svg {
         font-size: $svg-icon-height;
       }
 
       @media (max-width: $sm) {
-        order: 1;
+        left: calc(100% - 1em);
       }
     }
 

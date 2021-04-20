@@ -189,6 +189,11 @@ pre.line-numbers > code {
   width: auto;
 }
 
+.token.prefix.deleted,
+.token.prefix.inserted {
+  user-select: none;
+}
+
 .token.deleted-sign.deleted {
   background-color: rgba(247, 140, 108, 0.1);
 }
