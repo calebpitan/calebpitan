@@ -92,6 +92,12 @@ module.exports = {
           //   },
           // },
           {
+            resolve: 'gatsby-remark-code-titles',
+            options: {
+              className: 'ninja-code-title',
+            },
+          },
+          {
             resolve: `gatsby-remark-prismjs`,
             options: {
               showLineNumbers: false,
