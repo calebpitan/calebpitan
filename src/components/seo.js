@@ -52,14 +52,17 @@ function SEO({
   const metaDescription = description || site.siteMetadata.description
   const og = [
     {
+      name: `title`,
       property: `og:title`,
       content: title,
     },
     {
+      name: `description`,
       property: `og:description`,
       content: metaDescription,
     },
     {
+      name: `type`,
       property: `og:type`,
       content: `website`,
     },
@@ -91,11 +94,11 @@ function SEO({
 
   if (image) {
     twitter.push({ name: `twitter:image`, content: `${host}${image}` })
-    og.push({ name: `og:image`, content: `${host}${image}` })
+    og.push({ name: `image`, property: `og:image`, content: `${host}${image}` })
   }
 
   if (url) {
-    og.push({ name: `og:url`, content: url })
+    og.push({ name: `url`, property: `og:url`, content: url })
   }
 
   return (
@@ -110,6 +113,10 @@ function SEO({
         {
           name: `description`,
           content: metaDescription,
+        },
+        {
+          name: `author`,
+          content: site.siteMetadata.author,
         },
       ]
         .concat(og, twitter)
