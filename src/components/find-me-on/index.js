@@ -24,7 +24,7 @@ export const findMeOn = [
     Icon: FiTwitter,
   },
   {
-    link: 'https://linkedin.com/adepitancaleb',
+    link: 'https://linkedin.com/in/caleb-adepitan',
     name: 'LinkedIn',
     Icon: FiLinkedin,
   },
