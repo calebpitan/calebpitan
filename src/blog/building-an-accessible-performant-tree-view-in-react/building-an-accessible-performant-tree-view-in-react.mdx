@@ -1,0 +1,594 @@
+---
+title: Building an Accessible Performant Tree View in React
+# author: Caleb Adepitan
+date: 2021-04-20T10:30:00.606Z
+last-modified: 2021-04-20T10:30:00.606Z
+desc: |-
+  Having accessibility and performance in mind when building a tree structure while evading wasted
+  renders is key for building such component that may contain as much as a portion of an OS filesystem.
+featuredImage: tree.jpg
+tags:
+  - react
+  - performance
+  - accessibility
+  - treeview
+  - tree
+collection:
+  - React
+publish: true
+slug: building-an-accessible-performant-tree-view-in-react
+---
+
+The structural complexity of a tree in reality isn't unthinkable to us. Since the advent of computer and the branch of science associated with it, scientist have continually tried to model "mother nature" and her phenomena observable to humans into a more brutal and versatile form. One of these models that has proved useful in this branch of science and more specifically, data structure, an also, very important and fundamental study in the branch, is the natural structure of a tree.
+
+It's quite fun to know that such structure isn't peculiar only to a tree, but also, every living thing that procreates and produces offspring. I mean, what lives and doesn't? To narrow it down, this phenomenon is also observable in the genealogy of you and me. What is it, actually?
+
+## Tree data structure
+
+> Given that intro, this almost seems like a quite technical essay. Oh, no! It's not! It's only a share of my experience building one of these things with the said technology.
+
+Without any further clutter, to basically summarize a tree data structure, there is one thing peculiar to it. **Node**.
+
+A node is a single point in the tree that can be traversed singly and can either have another node or not. That takes us to the differnet types of node we may come across in here.
+
+- Root
+- Parent
+- Child
+- Branch or Internal
+- Leaf
+
+The root node is also a parent node in a way, but consider it the "Adam and Eve" of every other node and without it there would exit no other node. What one node considers a parent is a child to some other node. Like we have a root node which gives rise to every other node, there's also a leaf node which terminates the preceeding nodes along its path. Or have you seen a tree that grows a branch from a leaf?
+
+My mother is a child to my grandmother and a parent to me. It's that complex&mdash;being a child and a parent at the same time. There also exits such relationship within the tree as we have in real life. Parent&ndash;to&ndash;child, child&ndash;to&ndash;child (or&nbsp;sibling).
+
+This is just a brief info about what a tree data structure is, at least enough to grasp what we're doing here. If there is need for more information, [this wiki][tree-data-structure] is a good read.
+
+## Building a tree view from a tree structure in React
+
+The tree we would be building is a simple one. I mean, just little styling and more focus on functionality. There are a number of files, functions and components here and there, so I had everything put up on [Code Sandbox][codesandbox] to make it easy to access and put together for anyone. You can see what it looks like below.
+
+<div style={{ marginBottom: '1.5rem' }}>
+  <iframe
+    src="https://codesandbox.io/embed/goofy-dew-2oj3b?fontsize=14&hidenavigation=1&theme=dark"
+    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+    title="goofy-dew-2oj3b"
+    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+  />
+</div>
+
+### Features of this Tree component
+
+This Tree component has features that makes it perfromant and at the same time accessible to even users of assitive technologies and those who can't handle or operate a mouse for whatsoever predicament.
+
+- Keyborad navigation.
+- Properly maintained focus and tab order (`tabIndex`) with neccessary accessibility attributes.
+- Effecient tree traversals to focus, expand and collapse nodes.
+- The whole tree never re-renders except after completely unmounted and remounted by page navigation.
+- Only nodes that have just been selected, expanded and/or a parent node that has a selection one level within it ever re-renders as state is managed by each node and not raised up to the tree itself.
+- Navigation state or history can be persisted in a store like [Redux][redux] or `localStorage` and retrieved so you don't have to always start from the first node when navigating.
+- Navigation state of the tree is only written to a store right before the component unmounts and not when the navigation state actually changes. While the state changes and the tree remains mounted, a `MutableRefObject` is leveraged to temporarily store the state.
+- Visual tree paths with highlighted path on the "branch node" that has focus or focus one level within.
+
+### How we got there
+
+That's too much functionality to take care of for what was meant to be a simple tutorial on building a Tree component. But we got there!
+
+What our original data would look like is this:
+
+```ts
+type ILeaf = { type: 'leaf'; name: string }
+type INode = { type: 'node'; name: string; items: Array<INode | ILeaf> }
+```
+
+> So much fuss for such a small and simple structure! Well, when you put small together, it all adds up to giant.
+
+A Leaf node and a Branch or Internal node. The leaf node is the terminating node along its path as it has no child nodes or child items. The branch node on the other hand keeps the ancestral line going as it has child nodes or child items. We will call both the leaf node and the branch node a "node", only distinguised by their `type`.
+
+#### Defining our root data
+
+We have a root data probably coming from an API or so, raw or transformed. This is the data we will pass into our tree component.
+
+```ts
+export const root: INode[] = [
+  {
+    type: "node",
+    name: "Stories",
+    items: [
+      { type: "leaf", name: "The Great Gatsby" },
+      { type: "leaf", name: "Pride and Prejudice" },
+      {
+        type: "node",
+        name: "Fantasies",
+        items: [
+          { type: "leaf", name: "Justice League" },
+          { ... },
+          { ... },
+          { type: "node", name: "Action", items: [{ ... }, { ... }] }
+        ]
+      }
+    ]
+  },
+  { type: "node", name: "John Grisham", items: [ ... ] },
+  { type: "node", name: "Languages", items: [{ ... }, { ... }] }
+];
+```
+
+#### Building a structure we can work with out of the data we have
+
+We need to build a data structure we can always work with from this root data and here is where some performance metrics also come in.
+
+The structure is only constructed when needed, that is lazily. In fact, if there are only three items on the root node, only these three items are rendered. Nothing is rendered eagerly and then hidden visually with CSS. We only construct the structure for, and render child nodes when their parent node is expanded.
+
+How does this impact performance? Imagine a node that has, say, three hundred and fifty `350` items. We never can tell if this node will ever be expanded. So why render it? Think about how costly it would be to render `350` direct child nodes of a parent node. Nodes which could possibly contain child nodes too. All rendered down the tree to the base. It's how a filesystem works too. Don't read a folder or load its items into memory till the folder is opened. The files and sub-folders in a folder up the directory are only know when the folder is opened.
+
+#### The structure
+
+We have got a generic `abstract` base `Node<T>` class. Which isn't meant to be instantiated, but extended to derive a more specific node type from. From this base class we will derive a `TreeNode` more specific to our use case.
+
+```ts
+abstract class Node<T extends Node<T>> {
+  public name: string
+  public id: string
+  public type: 'node' | 'leaf'
+  public next: T | null
+  public previous: T | null
+  public parent: T | null
+  public children: Stack<T>
+
+  public hasNext(): boolean
+
+  public hasPrevious(): boolean
+
+  public hasParent(): boolean
+
+  public hasChildren(): boolean
+}
+```
+
+When deriving our `TreeNode` class we add more methods and properties to the class to add more functionality on top of those provided by the base `Node<T>` class. One of the added functionality is the ability for our tree node to observe certain events and "unleash" handlers on those events when they are dispatched.
+
+```ts
+class TreeNode extends Node<TreeNode> {
+  private isSelected: boolean
+  private isSelectedIn: boolean
+  private isExpanded: boolean
+  private handlers: Map<TreeNodeEvent, TreeNodeEventHandler>
+
+  constructor(public path: Path): TreeNode
+
+  public has(child: TreeNode | null): boolean
+
+  public selectedin(): boolean
+
+  public selected(): boolean
+
+  public expanded(): boolean
+
+  public on(event: TreeNodeEvent, handler: TreeNodeEventHandler): this
+
+  public selectin<T>(...args: T[]): this
+
+  public selectout<T>(...args: T[]): this
+
+  public select<T>(...args: T[]): this
+
+  public deselect<T>(...args: T[]): this
+
+  public expand<T>(...args: T[]): this
+
+  public collapse<T>(...args: T[]): this
+}
+```
+
+Events these tree node would observe and call handlers on are:
+
+- `select`: When a node gets selected by focusing it.
+- `deselect`: When a node gets deselected by taking focus away from it.
+- `expand`:
+  - Branch node: When a branch node is expanded, its child nodes are rendered and visible in the tree.
+  - Leaf node: When a leaf node is expanded it is the currently opened or viewed node (somehow like opening a file to be viewed).
+- `collapse`:
+  - Branch node: When a branch node is collapsed, its child nodes are unmounted and hidden in the tree.
+  - Leaf node: N/A. A leaf node can not be collapsed.
+- `selectin`: This is applicable to the parent node of the selected and collapsed branch node, or the selected leaf node.
+  - Branch node: When a branch node is selected and its child nodes are collapsed, the parent of such branch node is said to have a selection within it and this is visually represented by the different highlight color on the node path drawn along it.
+  - Leaf node: The parent of a selected leaf node always has a selection within.
+- `selectout`: This is applicable to the parent node of the selected and expanded branch node, or the selected leaf node.
+  - Branch node: When a branch node is expanded or one of its child nodes is selected, the parent of such branch node is said to have a selection outside it and this is visually represented by the different highlight color on the node path drawn along it.
+  - Leaf node: When the parent of a selected leaf node changes the parent of the formerly selected leaf node has selection outside of it which negates the former `isSelectedIn` state of that parent node.
+
+<Callout type="info">
+  The selected node is first given a <code>tabIndex</code> of <code>0</code>,
+  i.e. it is added to the tab order and the deselected node is given a{' '}
+  <code>tabIndex</code> of <code>-1</code>, i.e. it is removed from the tab
+  order. Then the selected node is foused.
+</Callout>
+
+```ts
+type TreeNodeEvent =
+  | 'select'
+  | 'deselect'
+  | 'expand'
+  | 'collapse'
+  | 'selectin'
+  | 'selectout'
+```
+
+**A single stack for all child nodes**
+
+We also maintain one single stack per node to occupy all the child nodes of that node if it's a branch node, otherwise the stack would be just empty. Without this we won't be able to deterministically know and access child nodes. The only way we'd be able to access child nodes without a stack of them would be to traverse the tree from bottom up, getting the parent of the least (base-est) node and checking every next and previous (sibling) node of that node to see they share a common parent. This would leave us a great deal of complexity.
+
+```ts
+class Stack<T> {
+  private stack: T[]
+
+  public get size(): number
+
+  public toArray(): T[]
+
+  public clear(): this
+
+  public add(item: T): this
+
+  public remove(index: number): this
+
+  public item(index: number): T | null
+
+  public first(): T | null
+
+  public last(): T | null
+}
+```
+
+This concludes all about structuring the nodes. Except only an helper, `Path`, to help us deal with node paths which I haven't spoken of. Yeah, that's ’cause it's not a big deal!
+
+## Building the components
+
+Most of what we are left with now is basically logic&mdash;we all know how to create React components. We don't just need components; we need components with the logic that makes them work.
+
+Starting with the basic tree component, we'll then make a simple extra [component to recursively render][recursive-components] nodes.
+
+```tsx:title=Tree.tsx
+type TreeProps = { root: INode[] }
+
+const Tree: FC<TreeProps> = ({ root }) => {
+  return <ul>{/* TODO: Make something useful */}</ul>
+}
+```
+
+The "simple extra" recursive component is actually an important piece in the puzzle. It's in this component we construct our nodes and the tree structure from each node. The complete construction of the tree structure is done in the `Node.tsx` component where events are listened for on the specific node on the tree and the node is finally attached as a child to its parent's children stack.
+
+```tsx
+type RenderNodesProps = { nodes: Array<INode | ILeaf>; parentNode: TreeNode }
+
+const RenderNodes: FC<RenderNodesProps> = ({ nodes, parentNode }) => {
+  let previousNode: TreeNode = null!
+
+  return (
+    <Fragment>
+      {nodes.map((node, index) => {
+        const path = [...parentNode.path, index]
+        const key = path.concat(node.name).join('-')
+
+        // highlight-start
+        const currentNode: TreeNode = new TreeNode(path)
+
+        currentNode.type = node.type
+        currentNode.name = node.name
+        currentNode.parent = parentNode
+
+        if (previousNode === null) {
+          previousNode = currentNode
+        } else {
+          previousNode.next = currentNode
+          currentNode.previous = previousNode
+          previousNode = currentNode
+        }
+        // highlight-end
+
+        return (
+          <Node
+            node={currentNode}
+            aria-setsize={nodes.length}
+            aria-posinset={index + 1}
+            aria-level={path.length}
+            key={key}
+          >
+            {node.type === 'node' && (
+              <ul role="group">
+                // highlight-next-line
+                <RenderNodes nodes={node.items} parentNode={currentNode} />
+              </ul>
+            )}
+          </Node>
+        )
+      })}
+    </Fragment>
+  )
+}
+```
+
+This component leaves us one more responsibility: creating the `Node` component. Before we set out to create this component, let's give closure to the tree component. Now adding a `tree` role to the `ul` element as an accessibility improvement. This way assitive technologies can identify it as a tree-view and not a list which is the default or semantic role of the element.
+
+```diff-tsx:title=Tree.tsx
+const Tree: FC<TreeProps> = ({ root }) => {
+-  return <ul>{/* TODO: Make something useful */}</ul>
++  const rootNode = new TreeNode([])
++
++  return (
++    <ul role="tree" {...rest}>
++      <RenderNodes nodes={root} parentNode={rootNode} />
++    </ul>
++  )
+}
+```
+
+<Callout type="info">
+  Notice we passed an empty array as the path of the root node. This is because
+  the root node, here, is an abstract one; it can't be traversed by any user
+  interaction and is not visible to the user. Let's just say the root [node] is
+  buried inside the earth.
+</Callout>
+
+Now on to the `Node` component; another important piece. Let's set the stage starting from the very basics of this component.
+
+```tsx:title=Node.tsx
+export interface NodeProps extends LiHTMLAttributes<HTMLLIElement> {
+  node: TreeNode
+}
+
+const Node: FC<NodeProps> = ({ children, node, ...rest }) => {
+  const [isExpanded, setIsExpanded] = useState(() => {/* Some logic */})
+  const [isSelected, setIsSelected] = useState(() => {/* Some logic */})
+  const [isSelectedIn, setIsSelectedIn] = useState(() => {/* Some logic */})
+  const treeItem = useRef<HTMLLIElement>(null!);
+
+  return <li ref={treeItem} {...rest}>{children}</li>
+}
+```
+
+Our React component is reactive (no pun intended), but our `TreeNode` isn't. One thing we need to make sure of is that the state between our `TreeNode` and the component is synchronized. We will make sure of that by checking in a `useEffect` whenever the states we want synchronized changes and reciprocate the changes in the `TreeNode`.
+
+```diff-tsx:title=Node.tsx
+const Node: FC<NodeProps> = ({ children, node, ...rest }) => {
+  const [isExpanded, setIsExpanded] = useState(() => {/* Some logic */})
+  const [isSelected, setIsSelected] = useState(() => {/* Some logic */})
+  const [isSelectedIn, setIsSelectedIn] = useState(() => {/* Some logic */})
+  const treeItem = useRef<HTMLLIElement>(null!);
++
++   useEffect(() => {
++     // Synchronize state between component and data structure
++     if (isExpanded !== node.expanded()) {
++       if (node.expanded()) {
++         node.collapse();
++       } else {
++         node.expand();
++       }
++     }
++
++     if (isSelected !== node.selected()) {
++       if (node.selected()) {
++         node.deselect();
++       } else {
++         node.select();
++       }
++     }
++     // eslint-disable-next-line react-hooks/exhaustive-deps
++   }, []);
+
+  return <li ref={treeItem} {...rest}>{children}</li>
+}
+```
+
+Oops! I write faster than I can think! Back up a lil' bit; I retract&mdash;
+
+We will make sure of that by checking in a `useEffect` ~~whenever the states we want synchronized changes~~ on initial render and reciprocate the changes in the `TreeNode`.
+
+Why is it only on initial render and not when the states change?
+
+Our `TreeNode` tree structure is an advanced one straight out of Mars 🚀, baby! It can listen for and dispatch events so every state change is channeled through it's event emitter. This way it keeps synchronized on every state change. This synchronization is useful when you want to restore state from a previous history of expanded and selected nodes even after a complete re-render of the tree, probably due to out-in navigation of the page.
+
+What are these events we've been talking about too? It's time to wear some headphones and listen!
+
+```tsx:title=Node.tsx
+useEffect(() => {
+  node
+    .on('selectin', () => {
+      setIsSelectedIn(true)
+    })
+
+    .on('selectout', () => {
+      setIsSelectedIn(false)
+    })
+
+    .on('select', () => {
+      // Some logic...
+      treeItem.current.focus()
+      setIsSelected(true)
+    })
+
+    .on('deselect', () => {
+      node.parent?.selectout()
+      setIsSelected(false)
+    })
+
+    .on('expand', () => {
+      // Some logic...
+      setIsExpanded(true)
+    })
+
+    .on('collapse', () => {
+      // Some logic...
+      setIsExpanded(false)
+    })
+
+  const indexOfNodeInParentStack = Path.end(node.path)
+
+  if (indexOfNodeInParentStack) {
+    node.parent!.children.remove(indexOfNodeInParentStack)
+  }
+
+  node.parent!.children.add(node)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [node])
+```
+
+Now time for some DOM events. We create a click handler and also keydown handler. The click handler toggles the expanded state of the node if it is a branch node, otherwise it keeps it expanded.
+
+```tsx:title=Node.tsx
+  const handleItemClick: MouseEventHandler<HTMLLIElement> = (evt) => {
+    node.select();
+
+    if (isNode(type)) {
+      if (node.expanded()) {
+        node.collapse();
+      } else {
+        node.expand();
+      }
+    } else {
+      node.expand();
+    }
+
+    evt.stopPropagation();
+    onClick?.(evt);
+  };
+
+  const handleKeydown: KeyboardEventHandler<HTMLLIElement> = (evt) => {
+    const e = (evt as unknown) as KeyboardEvent;
+
+    Keyboard.handleArrowDown(e, node);
+    Keyboard.handleArrowUp(e, node);
+    Keyboard.handleArrowLeft(e, node);
+    Keyboard.handleArrowRight(e, node);
+    Keyboard.handleEnter(e, node);
+    Keyboard.handleHome(e, node);
+    Keyboard.handleEnd(e, node);
+    Keyboard.handleAsterisk(e, node);
+
+    evt.stopPropagation();
+    onKeyDown?.(evt);
+  };
+```
+
+<Callout type="info">
+  The <code>evt.stopPropagation()</code> call is to prevent the event from
+  reaching a parent <code>li</code> element. If a node is a branch node it
+  surely will have nested <code>li</code> and the event will propagate without
+  this.
+</Callout>
+
+```diff-tsx:title=Node.tsx
+- const Node: FC<NodeProps> = ({ children, node, ...rest }) => {
++ const Node: FC<NodeProps> = ({ children, node, onKeyDown, onClick, ...rest }) => {
+  const [isExpanded, setIsExpanded] = useState(() => {/* Some logic */})
+  const [isSelected, setIsSelected] = useState(() => {/* Some logic */})
+  const [isSelectedIn, setIsSelectedIn] = useState(() => {/* Some logic */})
+  const treeItem = useRef<HTMLLIElement>(null!);
+
+  useEffect(() => {
+    // Synchronize state between component and data structure
+    if (isExpanded !== node.expanded()) {
+      if (node.expanded()) {
+        node.collapse();
+      } else {
+        node.expand();
+      }
+    }
+
+    if (isSelected !== node.selected()) {
+      if (node.selected()) {
+        node.deselect();
+      } else {
+        node.select();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+-   return <li {...rest}>{children}</li>
++   useEffect(() => {
++     node
++       .on('selectin', () => {
++         setIsSelectedIn(true)
++       })
++
++       .on('selectout', () => {
++         setIsSelectedIn(false)
++       })
++
++       .on('select', () => {
++         // Some logic...
++         treeItem.current.focus()
++         setIsSelected(true)
++       })
++
++       .on('deselect', () => {
++         node.parent?.selectout()
++         setIsSelected(false)
++       })
++
++       .on('expand', () => {
++         // Some logic...
++         setIsExpanded(true)
++       })
++
++       .on('collapse', () => {
++         // Some logic...
++         setIsExpanded(false)
++       })
++
++     const indexOfNodeInParentStack = Path.end(node.path)
++
++     if (indexOfNodeInParentStack) {
++       node.parent!.children.remove(indexOfNodeInParentStack)
++     }
++
++     node.parent!.children.add(node)
++     // eslint-disable-next-line react-hooks/exhaustive-deps
++   }, [node])
++
++   const ariaAttribute: keyof AriaAttributes = isNode(type)
++     ? "aria-expanded"
++     : "aria-selected";
++   const aria: AriaAttributes = { [ariaAttribute]: isExpanded };
++
++   return (
++     <li
++       tabIndex={isSelected ? 0 : -1}
++       role="treeitem"
++       ref={treeItem}
++       onClick={handleItemClick}
++       onKeyDown={handleKeydown}
++       {...aria}
++       {...rest}
++     >
++       <div>{node.name}</div>
++       {isExpanded && children}
++     </li>
++   )
+}
+```
+
+<Callout type="warn">
+  Do not confuse <code>aria-selected</code> with local state{' '}
+  <code>isSelected</code>. They neither represent the same thing nor do they
+  represent each other. <code>isSelected</code> represents focus while{' '}
+  <code>aria-selected</code> represents active leaf node
+</Callout>
+
+## Accessibility
+
+Majority of the accessibility features focuses on keyboard navigation and hinting&mdash;what level a tree-item is at, its position within that level and the size or count of all the items in that level. A branch node can be expanded but a leaf node can not be expanded it can only be selected, as in viewed in some side pane of some sort or navigate to a resource.
+
+Properly maintaing tab order is a good thing also. If I have, say, `200` expanded nodes, I only opearte my machine with a keyboard; don't expect me to tab through `200` elements to get to a button positioned just after the tree or having to collapse the whole tree to do so. This is a good reason why only the focused item has a `tabIndex` of `0` while others are removed from the tab order by giving them a `tabIndex` of `-1`.
+
+Consider [this accessibility best practice][w3-accessibility] published on [w3](https://www.w3.org) as a reference to all accessibility best practices for building a tree view.
+
+Check out the codesandbox for a complete working implementation if you haven't. Thanks for trusting me on this and following to the end. Always and forever!
+
+[tree-data-structure]: https://en.wikipedia.org/wiki/Tree_(data_structure)
+[codesandbox]: https://codesandbox.io/s/goofy-dew-2oj3b
+[redux]: https://www.redux.js.org
+[recursive-components]: /blog/building-a-recursive-toc-component-in-react
+[w3-accessibility]: https://www.w3.org/TR/wai-aria-practices/examples/treeview/treeview-2/treeview-2a.html
