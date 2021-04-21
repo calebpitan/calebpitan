@@ -2,7 +2,7 @@
 title: The Magic of Using TypeScript at Runtime
 # author: Caleb Adepitan
 date: 2020-12-12T20:40:00.606Z
-last-modified: 2020-12-13T02:27:00.606Z
+last-modified: 2021-04-21T12:45:00.606Z
 desc: |-
   Ever wanted to pass the path to a TypeScript file to some other library or module
   maybe to run it in a separate process or in a worker thread.
@@ -42,51 +42,45 @@ class Worker {
 }
 ```
 
-<Callout type="info">
-  Well, the implementation is quite different, but my point is; filename will
-  eventually go through <code>require</code> maybe not in this same process.
-</Callout>
+> Well, the implementation is quite different, but my point is; filename will eventually go through `require` maybe not in this same process.
 
 ## The magic
 
 The only option is to precompile your TypeScript files, know where the compiled file would be output to before it would be compiled, then pass it the path. But what if you use a runtime like [ts-node](https://www.npmjs.com/package/ts-node), which compiles on the fly and run the compiled files in-memory without emitting? There's no way to do this, except:
 
-### File 1: `worker.js`
+## The JavaScript worker file
 
-A base JavaScript file to portal every worker file written in TypeScript to.
+A base JavaScript file to portal every worker file written in TypeScript to. In this file we register a ts-node runtime then go on to require the file passed to it through the `workerData.aliasModule`. Since we've registered the ts-node runtime on the file, it's safe to import a TypeScript file using the `require` function. The file that `workerData.aliasModule` points to is a TypeScript file.
 
-```js
-// worker.js
+```js:title=worker.js
 const { workerData } = require('worker_threads')
 
 require('ts-node').register()
 require(workerData.aliasModule)
 ```
 
-### File 2: `worker.ts`
+## The TypeScript worker file
 
-The module containing the code to be run on a worker thread, which is actually written in TypeScript.
+The module containing the code to be run on a worker thread, which is actually written in TypeScript. All the code to be run on the worker thread is written in this TypeScript file which would later be required by `worker.js`. This file would be compiled on the fly when required and executed from `worker.js`.
 
-```ts
-// worker.ts
+```ts:title=worker.ts
 const { parentPort, workerData } = require('worker_threads')
 
 parentPort.postMessage(`Post back: ${workerData.whatever}`)
 ```
 
-### File 3: `index.ts`
+### The worker entry point
 
-This is the main file that needs to run a job on a worker thread. It begins the whole worker thread thing.
+This is the main file that needs to run a job on a worker thread. It begins the whole worker thread thingy.
 
-```ts
-// index.ts
+```ts:title=index.ts
 import path from 'path'
 import { Worker } from 'worker_threads'
 
 const worker = new Worker('./worker.js', {
   workerData: {
-    aliasModule: path.resolve(__dirname, 'worker.ts'),
-    whatever: 'Hello, worker bee! The Queen greets you.',
+    aliasModule: path.resolve(__dirname, 'worker.ts'), // worker.js uses this
+    whatever: 'Hello, worker bee! The Queen greets you.', // worker.ts uses this
   },
 })
 
@@ -122,8 +116,7 @@ As we did with the worker thread example, although may not be as dynamic as that
 We create the queue and add a job to be processed to it. We then specify the code file that processes the job off of the queue.
 Bull will run this code file in a separate process, but it can't handle TypeScript files.
 
-```ts
-// index.ts
+```ts:title=index.ts
 import Bull from 'bull'
 
 const queue = new Bull<IData>('job-queue', options)
@@ -135,16 +128,14 @@ queue.process('job-name', './path/to/processor.js')
 
 Using the ts-node `register` method as before, we register a loader to be used for future require, then load the TypeScript code file, compile it and run it. Bull picks the top level export (default export or unnamed export) from `module.exports` and invokes it with the `job` object containing info sepcific to the job and the data, sent from `queue.add`, to be processed.
 
-```js
-// processor.js
+```js:title=processor.js
 require('ts-node').register()
 require('./processor.ts')
 ```
 
 The `processor.ts` file is the file containing the original code to process the job.
 
-```ts
-// processor.ts
+```ts:title=processor.ts
 export default async function (job: Bull.Job<IData>) {
   // do something with job.data
 }

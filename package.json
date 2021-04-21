@@ -74,6 +74,8 @@
   },
   "devDependencies": {
     "gatsby-cli": "^2.12.107",
-    "gatsby-remark-code-titles": "^1.1.0"
+    "gatsby-remark-code-titles": "^1.1.0",
+    "gatsby-remark-embedder": "^5.0.0",
+    "gatsby-remark-external-links": "^0.0.4"
   }
 }

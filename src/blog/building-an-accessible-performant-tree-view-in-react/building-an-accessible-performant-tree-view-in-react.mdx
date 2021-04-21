@@ -2,7 +2,7 @@
 title: Building an Accessible Performant Tree View in React
 # author: Caleb Adepitan
 date: 2021-04-20T10:30:00.606Z
-last-modified: 2021-04-20T12:00:00.606Z
+last-modified: 2021-04-21T12:44:00.606Z
 desc: |-
   Having accessibility and performance in mind when building a tree structure while evading wasted
   renders is key for building such component that may contain as much as a portion of an OS filesystem.
@@ -37,25 +37,17 @@ A node is a single point in the tree that can be traversed singly and can either
 - Branch or Internal
 - Leaf
 
-The root node is also a parent node in a way, but consider it the "Adam and Eve" of every other node and without it there would exit no other node. What one node considers a parent is a child to some other node. Like we have a root node which gives rise to every other node, there's also a leaf node which terminates the preceeding nodes along its path. Or have you seen a tree that grows a branch from a leaf?
+The root node is also a parent node in a way, but consider it the "Adam and Eve" of every other node and without it there would exist no other node. What one node considers a parent is a child to some other node. Like we have a root node which gives rise to every other node, there's also a leaf node which terminates the preceeding nodes along its path. Or have you seen a tree that grows a branch from a leaf?
 
-My mother is a child to my grandmother and a parent to me. It's that complex&mdash;being a child and a parent at the same time. There also exits such relationship within the tree as we have in real life. Parent&ndash;to&ndash;child, child&ndash;to&ndash;child (or&nbsp;sibling).
+My mother is a child to my grandmother and a parent to me. It's that complex&mdash;being a child and a parent at the same time. There also exist such relationship within the tree as we have in real life. Parent&ndash;to&ndash;child, child&ndash;to&ndash;child (or&nbsp;sibling).
 
 This is just a brief info about what a tree data structure is, at least enough to grasp what we're doing here. If there is need for more information, [this wiki][tree-data-structure] is a good read.
 
 ## Building a tree view from a tree structure in React
 
-The tree we would be building is a simple one. I mean, just little styling and more focus on functionality. There are a number of files, functions and components here and there, so I had everything put up on [Code Sandbox][codesandbox] to make it easy to access and put together for anyone. You can see what it looks like below.
+The tree we will be building is a simple one. I mean, just little styling and more focus on functionality. There are a number of files, functions and components here and there, so I had everything put up on [Code Sandbox][codesandbox] to make it easy to access and put together for anyone. You can see what it looks like below.
 
-<div style={{ marginBottom: '1.5rem' }}>
-  <iframe
-    src="https://codesandbox.io/embed/goofy-dew-2oj3b?fontsize=14&hidenavigation=1&theme=dark"
-    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-    title="goofy-dew-2oj3b"
-    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-  />
-</div>
+https://codesandbox.io/s/2oj3b?view=split
 
 ### Features of this Tree component
 
@@ -74,7 +66,7 @@ This Tree component has features that makes it perfromant and at the same time a
 
 That's too much functionality to take care of for what was meant to be a simple tutorial on building a Tree component. But we got there!
 
-What our original data would look like is this:
+What our original data will look like is this:
 
 ```ts
 type ILeaf = { type: 'leaf'; name: string }
@@ -120,7 +112,7 @@ We need to build a data structure we can always work with from this root data an
 
 The structure is only constructed when needed, that is lazily. In fact, if there are only three items on the root node, only these three items are rendered. Nothing is rendered eagerly and then hidden visually with CSS. We only construct the structure for, and render child nodes when their parent node is expanded.
 
-How does this impact performance? Imagine a node that has, say, three hundred and fifty `350` items. We never can tell if this node will ever be expanded. So why render it? Think about how costly it would be to render `350` direct child nodes of a parent node. Nodes which could possibly contain child nodes too. All rendered down the tree to the base. It's how a filesystem works too. Don't read a folder or load its items into memory till the folder is opened. The files and sub-folders in a folder up the directory are only know when the folder is opened.
+How does this impact performance? Imagine a node that has, say, three hundred and fifty `350` items. We never can tell if this node will ever be expanded. So why render it? Think about how costly it will be to render `350` direct child nodes of a parent node. Nodes which could possibly contain child nodes too. All rendered down the tree to the base. It's how a filesystem works too. Don't read a folder or load its items into memory till the folder is opened. The files and sub-folders in a folder up the directory are only know when the folder is opened.
 
 #### The structure
 
@@ -181,7 +173,7 @@ class TreeNode extends Node<TreeNode> {
 }
 ```
 
-Events these tree node would observe and call handlers on are:
+Events these tree node will observe and call handlers on are:
 
 - `select`: When a node gets selected by focusing it.
 - `deselect`: When a node gets deselected by taking focus away from it.
@@ -215,9 +207,7 @@ type TreeNodeEvent =
   | 'selectout'
 ```
 
-**A single stack for all child nodes**
-
-We also maintain one single stack per node to occupy all the child nodes of that node if it's a branch node, otherwise the stack would be just empty. Without this we won't be able to deterministically know and access child nodes. The only way we'd be able to access child nodes without a stack of them would be to traverse the tree from bottom up, getting the parent of the least (base-est) node and checking every next and previous (sibling) node of that node to see they share a common parent. This would leave us a great deal of complexity.
+We also maintain one single stack per node to occupy all the child nodes of that node if it's a branch node, otherwise the stack will be just empty. Without this we won't be able to deterministically know and access child nodes. The only way we will be able to access child nodes without a stack of them will be to traverse the tree from bottom up, getting the parent of the least (base-est) node and checking every next and previous (sibling) node of that node to see they share a common parent. This will leave us a great deal of complexity.
 
 ```ts
 class Stack<T> {

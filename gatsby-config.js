@@ -69,14 +69,9 @@ module.exports = {
       options: {
         extensions: [`.mdx`, `.md`],
         gatsbyRemarkPlugins: [
-          // `gatsby-remark-embedder`,
+          `gatsby-remark-embedder`,
           `gatsby-remark-smartypants`,
-          {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 1200,
-            },
-          },
+          { resolve: `gatsby-remark-images`, options: { maxWidth: 1200 } },
           {
             resolve: `gatsby-remark-autolink-headers`,
             options: {
@@ -93,9 +88,7 @@ module.exports = {
           // },
           {
             resolve: 'gatsby-remark-code-titles',
-            options: {
-              className: 'ninja-code-title',
-            },
+            options: { className: 'ninja-code-title' },
           },
           {
             resolve: `gatsby-remark-prismjs`,
@@ -103,6 +96,10 @@ module.exports = {
               showLineNumbers: false,
               noInlineHighlight: true,
             },
+          },
+          {
+            resolve: 'gatsby-remark-external-links',
+            options: { rel: 'nofollow noreferrer' },
           },
         ],
       },
