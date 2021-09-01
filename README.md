@@ -1,5 +1,5 @@
 ### Hola, bienvenido 👋
 
 Hello there!
-
-Thanks, you READ ME.
+Yikes! 
+You are psychic, you READ ME!
