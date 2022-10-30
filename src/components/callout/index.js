@@ -4,7 +4,7 @@ import { FiAlertTriangle } from 'react-icons/fi'
 
 import { gcx } from '../../utils'
 
-import callout from './callout.mod.scss'
+import * as callout from './callout.mod.scss'
 
 const cx = gcx(callout)
 

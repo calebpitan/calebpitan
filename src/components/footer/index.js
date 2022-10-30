@@ -2,8 +2,9 @@ import * as React from 'react'
 
 import { gcx } from '../../utils'
 
-import footer from './footer.mod.scss'
 import FindMeOn from '../find-me-on'
+
+import * as footer from './footer.mod.scss'
 
 const cx = gcx(footer)
 

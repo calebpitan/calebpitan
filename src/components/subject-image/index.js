@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import { gcx } from '../../utils'
 
-import subImg from './subject-image.mod.scss'
+import * as subImg from './subject-image.mod.scss'
 
 const cx = gcx(subImg)
 
@@ -92,7 +92,7 @@ const SubjectImage = ({ children, className }) => {
           className={cx('imageWrapperInner')}
           style={{ width: flexWidth || 1, height: flexHeight || 1 }}
         >
-          {children}
+          {React.cloneElement(children, { style: { height: '100%' } })}
         </div>
       </div>
     </>

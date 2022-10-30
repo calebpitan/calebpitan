@@ -23,7 +23,7 @@ Have you ever tried adding a CSS `filter: blur(3px)` to one of those background 
 
 This amount of extra pixels beyond the affected's bounding size is undesired as it makes your design or layout look untidy and dirty. Here it comes, shadowing over other elements outside it and making every thing look rough in just one line of CSS rule.
 
-<!-- ## The fix -->
+{/* The fix */}
 
 Whthout any more clutter, here is a fix I've derived for myself over time. The CSS `clip-path` property is the fix. This will clip the element to its bounding box and prevent extra pixels from spreading beyond.
 

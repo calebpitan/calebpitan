@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import { MDXProvider } from '@mdx-js/react'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { Link } from 'gatsby'
 
 import SEO from '../../seo'
@@ -21,7 +20,7 @@ import H from '../../heading'
 import Tape from '../../tape'
 import Callout from '../../callout'
 
-import blog from './blog.mod.scss'
+import * as blog from './blog.mod.scss'
 
 const shortcodes = { Link, SEO, Callout }
 
@@ -61,7 +60,7 @@ const runAnimation = () => {
 const useEnhancedEffect =
   typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
 
-const BlogLayout = ({ data: { mdx, site } }) => {
+const BlogLayout = ({ data: { mdx, site }, children }) => {
   const [faves, setFaves] = React.useState({ count: null, isFaved: false })
   const { avatar } = useAvatar()
   const { fav, favCount } = useFav()
@@ -137,7 +136,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
               author,
               date,
               desc,
-              timeToRead: mdx.timeToRead,
+              timeToRead: mdx.fields.timeToRead,
               featuredImage,
               authorAvatar: avatar,
               isFaved: faves.isFaved,
@@ -151,11 +150,7 @@ const BlogLayout = ({ data: { mdx, site } }) => {
               className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')}
               role="main"
             >
-              <MDXProvider components={shortcodes}>
-                <MDXRenderer frontmatter={mdx.frontmatter}>
-                  {mdx.body}
-                </MDXRenderer>
-              </MDXProvider>
+              <MDXProvider components={shortcodes}>{children}</MDXProvider>
             </main>
           </div>
         </article>
@@ -184,7 +179,6 @@ export const pageQuery = graphql`
   query BlogPostQuery($id: String) {
     mdx(id: { eq: $id }) {
       id
-      body
       frontmatter {
         title
         author
@@ -203,8 +197,13 @@ export const pageQuery = graphql`
       }
       fields {
         slug
+        timeToRead {
+          minutes
+          text
+          time
+          words
+        }
       }
-      timeToRead
       tableOfContents
     }
 

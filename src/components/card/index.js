@@ -5,9 +5,10 @@ import { Link } from 'gatsby'
 import { gcx } from '../../utils'
 import H from '../heading'
 
-import card from './card.mod.scss'
 import SubjectImage from '../subject-image'
 import Img from 'gatsby-image'
+
+import * as card from './card.mod.scss'
 
 const cx = gcx(card)
 

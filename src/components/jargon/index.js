@@ -2,7 +2,7 @@ import * as React from 'react'
 // import PropTypes from 'prop-types'
 import { gcx } from '../../utils'
 
-import jargon from './jargon.mod.scss'
+import * as jargon from './jargon.mod.scss'
 
 const cx = gcx(jargon)
 

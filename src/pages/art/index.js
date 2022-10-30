@@ -7,9 +7,10 @@ import H from '../../components/heading'
 import Layout from '../../components/layout'
 import Button, { BUTTONS } from '../../components/button'
 
-import art from './art.mod.scss'
 import SEO from '../../components/seo'
 import LightboxComponent from '../../components/lightbox'
+
+import * as art from './art.mod.scss'
 
 const cx = gcx(art)
 

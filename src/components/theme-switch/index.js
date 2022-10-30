@@ -9,7 +9,8 @@ import Button from '../button'
 import { ThemeContext, useThemeToggle } from '../wrapper'
 import { THEMES } from '../../utils'
 
-import tswitch from './switch.mod.scss'
+import * as tswitch from './switch.mod.scss'
+
 const icons = {
   light: MdBrightnessHigh,
   dark: MdBrightness4,

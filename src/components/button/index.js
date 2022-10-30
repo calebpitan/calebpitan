@@ -1,9 +1,9 @@
+import { Link } from 'gatsby'
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import { gcx } from '../../utils'
 
-import button from './button.mod.scss'
-import { Link } from 'gatsby'
+import * as button from './button.mod.scss'
 
 const cx = gcx(button)
 
@@ -26,7 +26,7 @@ const Button = ({
 }) => {
   return !link ? (
     <button
-      className={cx('btn', size, { default: alt }, className)}
+      className={cx('btn', size, { normal: alt }, className)}
       disabled={disabled}
       {...rest}
     >
@@ -35,7 +35,7 @@ const Button = ({
   ) : (
     <Link
       to={to}
-      className={cx('btn', size, { link, default: alt }, className)}
+      className={cx('btn', size, { link, normal: alt }, className)}
       {...rest}
     >
       {children || text}
@@ -54,7 +54,7 @@ Button.propTypes = {
   variant: PropTypes.oneOf([
     BUTTONS.PRIMARY,
     BUTTONS.SECONDARY,
-    BUTTONS.DEFAULT,
+    BUTTONS.NORMAL,
   ]),
   alt: PropTypes.bool,
   link: PropTypes.bool,

@@ -5,8 +5,9 @@ import SubjectImage from '../../subject-image'
 import { gcx } from '../../../utils'
 import { findMeOn } from '../../find-me-on'
 
-import blog from './blog.mod.scss'
 import { FiHeart } from 'react-icons/fi'
+
+import * as blog from './blog.mod.scss'
 
 const cx = gcx(blog)
 
@@ -98,11 +99,7 @@ const Presentation = ({
                   >
                     E.T.R
                   </div>
-                  <div>
-                    {timeToRead > 1
-                      ? `${timeToRead} mins`
-                      : `${timeToRead} min`}
-                  </div>
+                  <div>{timeToRead.text}</div>
                 </div>
               </div>
             </div>

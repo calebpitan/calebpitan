@@ -3,9 +3,7 @@ import React from 'react'
 import SEO from '../components/seo'
 import Layout from '../components/layout'
 import H from '../components/heading'
-import StuntList from '../components/stunt-list'
 import Tape from '../components/tape'
-import { First6ixPosts } from '../components/graphql'
 import RecentPost from '../components/recent-post'
 
 const LostInMars = () => {

@@ -53,6 +53,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sass`,
       options: {
+        implementation: require('node-sass'),
         // Override the file regex for SASS
         sassRuleTest: /\.global\.s(a|c)ss$/,
         // Override the file regex for CSS modules
@@ -68,6 +69,7 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
+        // mdxOptions: {
         gatsbyRemarkPlugins: [
           `gatsby-remark-embedder`,
           `gatsby-remark-smartypants`,
@@ -102,6 +104,7 @@ module.exports = {
             options: { rel: 'nofollow noreferrer' },
           },
         ],
+        // },
       },
     },
     {

@@ -15,7 +15,6 @@ import RecentPost from '../components/recent-post'
 import AltText from '../components/alt-text'
 import { useAvatar } from '../components/hooks'
 import { gcx } from '../utils'
-import Jargon from '../components/jargon'
 
 const cx = gcx()
 

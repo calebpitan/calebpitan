@@ -1,7 +1,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 
-import tape from './tape.mod.scss'
+import * as tape from './tape.mod.scss'
 
 const Tape = ({ small }) => {
   return (

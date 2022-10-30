@@ -3,7 +3,7 @@ import { FiGithub, FiTwitter, FiLinkedin, FiCodepen } from 'react-icons/fi'
 
 import { gcx } from '../../utils'
 
-import findMe from './find-me.mod.scss'
+import * as findMe from './find-me.mod.scss'
 
 const cx = gcx(findMe)
 
