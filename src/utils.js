@@ -1,9 +1,9 @@
-import flex from './styles/flex.mod.scss'
-import display from './styles/display.mod.scss'
-import screenreader from './styles/screenreader.mod.scss'
-import spacing from './styles/spacing.mod.scss'
-import text from './styles/text.mod.scss'
-import typo from './styles/type.mod.scss'
+import * as flex from './styles/flex.mod.scss'
+import * as display from './styles/display.mod.scss'
+import * as screenreader from './styles/screenreader.mod.scss'
+import * as spacing from './styles/spacing.mod.scss'
+import * as text from './styles/text.mod.scss'
+import * as typo from './styles/type.mod.scss'
 
 import classNames from 'classnames/bind'
 

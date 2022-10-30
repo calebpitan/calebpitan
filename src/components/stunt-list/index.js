@@ -5,7 +5,7 @@ import { gcx } from '../../utils'
 import Card from '../card'
 import { useAvatar, useSiteMetadata } from '../hooks'
 
-import stunt from './stunt.mod.scss'
+import * as stunt from './stunt.mod.scss'
 
 const SNAP_ACTION = {
   NEXT: 'next',

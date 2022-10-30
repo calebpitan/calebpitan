@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { gcx } from '../../utils'
 
-import input from './input.mod.scss'
+import * as input from './input.mod.scss'
 
 const cx = gcx(input)
 

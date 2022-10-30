@@ -8,7 +8,7 @@ import {
 } from 'react-icons/fi'
 import { gcx } from '../../../utils'
 
-import blog from './blog.mod.scss'
+import * as blog from './blog.mod.scss'
 
 const cx = gcx(blog)
 

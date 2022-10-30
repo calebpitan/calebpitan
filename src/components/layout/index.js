@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { gcx } from '../../utils'
 import Header from '../header'
-import layout from './layout.mod.scss'
 import Footer from '../footer'
 import Hr from '../hr'
+
+import * as layout from './layout.mod.scss'
 
 const cx = gcx(layout)
 

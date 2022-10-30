@@ -6,7 +6,8 @@ import { gcx } from '../../utils'
 
 import ThemeSwitch from '../theme-switch'
 import Logo from '../../images/ninja.inline.svg'
-import header from './header.mod.scss'
+
+import * as header from './header.mod.scss'
 
 const cx = gcx(header)
 
@@ -66,7 +67,7 @@ const HeaderLink = ({ to, text, children, className, icon: Icon, ...rest }) => {
 }
 
 const Header = () => {
-  const [firstname, lastname] = ['Caleb', 'Pitan']
+  const [firstname, lastname] = ['Caleb', ' Adepitan']
   return (
     <div className={cx('header', 'pl3', 'plMd5', 'pr3')}>
       <header
@@ -98,7 +99,7 @@ const Header = () => {
               >
                 <Logo width="32" height="32" />
               </div>
-              <span className={cx('firstname')}>{firstname}</span> {lastname}
+              <span className={cx('firstname')}>{firstname} </span> {lastname}
             </div>
           </div>
         </Link>

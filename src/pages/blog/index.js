@@ -11,7 +11,7 @@ import AltText from '../../components/alt-text'
 import { useAvatar, useSiteMetadata } from '../../components/hooks'
 import { gcx } from '../../utils'
 
-import blog from './index.mod.scss'
+import * as blog from './index.mod.scss'
 
 const cx = gcx(blog)
 
