@@ -22,14 +22,17 @@ export const onPreRenderHTML = ({
 
   const fonts = (
     <React.Fragment key="google-fonts">
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
-        href="https://fonts.googleapis.com/css2?family=Domine:wght@500;600;700&family=Inconsolata:wght@400;500&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:ital,wght@0,400;0,500;1,400&display=swap"
-        rel="prefetch"
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="true"
       />
       <link
-        href="https://fonts.googleapis.com/css2?family=Domine:wght@500;600;700&family=Inconsolata:wght@400;500&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:ital,wght@0,400;0,500;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Domine:wght@500;600;700&family=Inconsolata:wght@400;500&family=Inter:wght@400;500&family=Poppins:ital,wght@0,400;0,500;1,400&display=swap"
         rel="stylesheet"
       />
+      <script type="text/javascript" async src="https://tenor.com/embed.js" />
     </React.Fragment>
   )
 
