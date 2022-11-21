@@ -17,6 +17,8 @@ publish: true
 slug: creating-stacked-image-swap-animation
 ---
 
+import lollipop from './monkey-lollipop.gif'
+
 Hello folks!
 
 It's been quite a while, and would be pretty rude of me to get into anything without at least saying hello.
@@ -35,22 +37,21 @@ Everyone wants to see their products alive and well, _everyone_, especially prod
 > The original deal was four everyday, but they said they were concerned about my health, now that's not a bad thing, so two
 > it was.
 
-<div style={{ maxWidth: '300px', margin: '3rem auto' }}>
-  <div
-    class="tenor-gif-embed"
-    data-postid="21093592"
-    data-share-method="host"
-    data-aspect-ratio="1"
-    data-width="100%"
-  >
-    <a href="https://tenor.com/view/monkey-lollipop-gif-21093592">
-      Monkey Lollipop GIF
-    </a>
-    from <a href="https://tenor.com/search/monkey-gifs">Monkey GIFs</a>
-  </div>
+<div
+  style={{
+    display: 'flex',
+    justifyContent: 'center',
+    margin: '3rem 0',
+  }}
+>
+  <img
+    src={`${lollipop}`}
+    width={300}
+    alt="A monkey having a nice time with lollipop in their mouth"
+  />
 </div>
 
-## Time to stack these images
+## Time to stack these imagess
 
 I implemented this design bottom-up after developing the basic layout structure, things like, header and footer, etc. Although, I
 had no reason why I wanted to take it bottom up, or maybe I did, maybe I knew I had something special for the hero section which
