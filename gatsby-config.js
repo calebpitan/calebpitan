@@ -5,8 +5,8 @@ module.exports = {
     description: [
       `Hi, I am Caleb!`,
       `This is just one of the places where I'm domiciled on the internet`,
-      `as a proprietor not a tenant. A place where I write about tech,`,
-      `coding, web applications and frameworks like Node.js, React and so much more.`,
+      `as a proprietor not a tenant. A place where I write about all the things I can think of,`,
+      `and sometimes, even those I can't think of.`,
     ].join(' '),
     siteUrl: 'https://www.calebpitan.com',
   },
