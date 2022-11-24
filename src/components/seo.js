@@ -29,6 +29,20 @@ function SEO({
   isHome,
   url,
 }) {
+  const [prefersDarkScheme, setPrefersDarkScheme] = React.useState(() => {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+  })
+
+  React.useEffect(() => {
+    const mediaEventHandler = ev => setPrefersDarkScheme(ev.matches)
+
+    const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
+
+    mediaQueryList.addEventListener('change', mediaEventHandler)
+
+    return () => mediaQueryList.removeEventListener('change', mediaEventHandler)
+  }, [])
+
   const theme = React.useContext(ThemeContext)
   const { site } = useStaticQuery(
     graphql`
@@ -67,6 +81,7 @@ function SEO({
       content: `website`,
     },
   ]
+
   const twitter = [
     {
       name: `twitter:card`,
@@ -117,6 +132,11 @@ function SEO({
         {
           name: `author`,
           content: site.siteMetadata.author,
+        },
+        {
+          name: `theme-color`,
+          content:
+            themeMode === 'dark' || prefersDarkScheme ? '#000000' : '#ffffff',
         },
       ]
         .concat(og, twitter)
