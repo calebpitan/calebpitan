@@ -28,10 +28,10 @@ export const THEMES = {
 export const getTheme = () => {
   try {
     return typeof window !== undefined
-      ? localStorage.getItem(THEME_KEY) || THEMES.DARK
-      : THEMES.DARK
+      ? localStorage.getItem(THEME_KEY) || THEMES.LIGHT
+      : THEMES.LIGHT
   } catch {
-    return THEMES.DARK
+    return THEMES.LIGHT
   }
 }
 

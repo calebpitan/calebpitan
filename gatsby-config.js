@@ -44,8 +44,8 @@ module.exports = {
         name: `Caleb Adepitan`,
         short_name: `Caleb Adepitan`,
         start_url: `/`,
-        background_color: `#222222`,
-        theme_color: `#222222`,
+        background_color: `#010001`,
+        theme_color: `#010001`,
         display: `standalone`,
         icon: `src/images/ninja.png`, // This path is relative to the root of the site.
       },

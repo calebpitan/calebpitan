@@ -147,7 +147,7 @@ function SEO({
             theme === 'light'
               ? '#ffffff'
               : theme === 'dark' || prefersDarkScheme
-              ? '#222222'
+              ? '#010001'
               : '#ffffff',
         },
       ]
