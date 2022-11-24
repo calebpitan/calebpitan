@@ -30,7 +30,9 @@ function SEO({
   url,
 }) {
   const [prefersDarkScheme, setPrefersDarkScheme] = React.useState(() => {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
+    return typeof window !== 'undefined'
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
+      : false
   })
 
   React.useEffect(() => {
