@@ -36,7 +36,10 @@ function SEO({
   })
 
   React.useEffect(() => {
-    const mediaEventHandler = ev => setPrefersDarkScheme(ev.matches)
+    const mediaEventHandler = ev => {
+      console.log('MediaQueryListEvent %o', ev)
+      setPrefersDarkScheme(ev.matches)
+    }
 
     const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -118,6 +121,9 @@ function SEO({
     og.push({ name: `url`, property: `og:url`, content: url })
   }
 
+  console.log('ThemeMode %s', theme)
+  console.log('PrefersDarkScheme %s', prefersDarkScheme)
+
   return (
     <Helmet
       htmlAttributes={{
@@ -138,7 +144,11 @@ function SEO({
         {
           name: `theme-color`,
           content:
-            themeMode === 'dark' || prefersDarkScheme ? '#000000' : '#ffffff',
+            theme === 'light'
+              ? '#ffffff'
+              : theme === 'dark' || prefersDarkScheme
+              ? '#222222'
+              : '#ffffff',
         },
       ]
         .concat(og, twitter)

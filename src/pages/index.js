@@ -23,7 +23,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <SEO title="Caleb Pitan" isHome />
+      <SEO title="Caleb Adepitan" isHome />
 
       <div className={cx('dMdFlex')}>
         <div className={cx('px3')}>

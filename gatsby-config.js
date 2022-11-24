@@ -42,7 +42,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Caleb Adepitan`,
-        short_name: `Caleb Pitan`,
+        short_name: `Caleb Adepitan`,
         start_url: `/`,
         background_color: `#222222`,
         theme_color: `#222222`,
