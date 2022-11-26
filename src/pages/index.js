@@ -41,7 +41,7 @@ const IndexPage = () => {
             </H>
 
             <H as="6" className={cx('textMuted', 'textCenter')}>
-              Software engineer and full-stack web developer
+              Full Stack Software Engineer
             </H>
 
             <FindMeOn />

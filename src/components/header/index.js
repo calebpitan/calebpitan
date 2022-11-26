@@ -18,11 +18,6 @@ export const links = [
     icon: FiMessageCircle,
   },
   {
-    to: '/projects/',
-    text: 'Projects',
-    icon: FiFolder,
-  },
-  {
     to: '/art/',
     text: 'My Art',
     icon: FiPenTool,
