@@ -6,8 +6,9 @@ import Tape from '../../components/tape'
 import H from '../../components/heading'
 import Input from '../../components/input'
 import Textarea from '../../components/input/textarea'
-import contact from './contact.mod.scss'
 import Button from '../../components/button'
+
+import * as contact from './contact.mod.scss'
 
 const cx = gcx(contact)
 
