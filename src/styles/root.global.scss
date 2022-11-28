@@ -27,6 +27,7 @@
   --font-glyph-serif: 'Domine';
   --font-glyph-san-serif: 'Inter';
   --font-glyph-mono: 'Inconsolata';
+  --font-glyph-display: 'Bodoni Moda';
 
   --font-family-base-default: -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
@@ -39,6 +40,8 @@
     var(--font-family-base-default);
   --font-family-code: var(--font-glyph-mono), var(--font-family-code-default);
   --font-family-heading: var(--font-glyph-serif),
+    var(--font-family-code-default);
+  --font-family-display: var(--font-glyph-display),
     var(--font-family-code-default);
 
   --paragraph-margin-bottom: 1.75rem;
@@ -82,6 +85,7 @@
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
+  --fg-faded: #b1bac0;
   --fg-blend: #{$fg-blend-night};
   --fg-inline-code: #c792ea;
 
@@ -120,6 +124,7 @@
   --fg: #{$fg-day};
   --fg-alt: #{$fg-alt-day};
   --fg-muted: #{$fg-muted-day};
+  --fg-faded: #b1bac0;
   --fg-blend: #{$fg-blend-day};
   --fg-inline-code: #ad2896;
 
@@ -262,7 +267,7 @@ code {
  */
 
 main {
-  blockquote {
+  blockquote:not([class]) {
     color: var(--fg-blend);
     border-left: 5px solid currentColor;
     padding: 0.25rem 1rem;

@@ -18,11 +18,12 @@ import IntentShare from './share'
 import RecentPost from '../../recent-post'
 import H from '../../heading'
 import Tape from '../../tape'
+import Blockquote from '../../blockquote'
 import Callout from '../../callout'
 
 import * as blog from './blog.mod.scss'
 
-const shortcodes = { Link, SEO, Callout }
+const shortcodes = { Link, SEO, Callout, Blockquote }
 
 const cx = gcx(blog)
 

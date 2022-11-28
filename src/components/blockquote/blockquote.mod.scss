@@ -1,0 +1,55 @@
+.blockquote {
+  font-weight: 900;
+  position: relative;
+  margin-inline-start: 3rem;
+  margin-inline-end: 3rem;
+  display: inline-flex;
+  margin-bottom: 3rem;
+  font-family: var(--font-family-heading);
+  color: var(--fg);
+
+  &::after {
+    content: '\2014 'attr(data-cite);
+    font-family: var(--font-family-base);
+    font-weight: 400;
+    margin-top: auto;
+    position: absolute;
+    left: 0;
+    bottom: -1.25rem;
+    font-size: 0.725rem;
+    color: var(--fg-faded);
+  }
+
+  & > div {
+    display: inline;
+
+    & * {
+      display: inline;
+    }
+
+    &::before {
+      content: '“';
+      font-size: 4rem;
+      top: -1rem;
+      left: -3rem;
+    }
+
+    &::after {
+      content: '”';
+      font-size: 2rem;
+      bottom: -1rem;
+      margin-inline-start: 1rem;
+      justify-content: flex-end;
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      display: inline-flex;
+      flex-direction: column;
+      font-family: var(--font-family-display);
+      color: var(--fg-faded);
+      height: 100%;
+    }
+  }
+}
