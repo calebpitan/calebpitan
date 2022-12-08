@@ -21,7 +21,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       name: 'slug',
       node,
       value: `/blog${
-        node.frontmatter.slug ? `/${node.frontmatter.slug}` : value
+        node.frontmatter.slug ? `/${node.frontmatter.slug}/` : value
       }`,
     })
 
