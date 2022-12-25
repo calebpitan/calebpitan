@@ -5791,6 +5791,13 @@ gatsby-plugin-sitemap@^5.24.0:
     minimatch "^3.1.2"
     sitemap "^7.0.0"
 
+gatsby-plugin-twitter@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-twitter/-/gatsby-plugin-twitter-5.3.1.tgz#320c33d1974c01cc4645ab5f8f83e2d317ad0a88"
+  integrity sha512-skpabVfcoyziggDdTxAU9gqMZEne+DmPjz5H7Fl1DFY4lAI3lDjaKL3CAqI2qwxRddLNzi4RjWp0EWdxIj+qZg==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+
 gatsby-plugin-typescript@^4.24.0:
   version "4.24.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-typescript/-/gatsby-plugin-typescript-4.24.0.tgz#e20631bdca7023ecd6d36e9d0531c59724e3c7a1"
@@ -9576,6 +9583,13 @@ parse5@^7.0.0:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-7.1.1.tgz#4649f940ccfb95d8754f37f73078ea20afe0c746"
   integrity sha512-kwpuwzB+px5WUg9pyK0IcK/shltJN5/OVhQagxhCQNtT9Y9QRZqNY2e1cmbu/paRh5LMnz/oVTVLBpjFmMZhSg==
+  dependencies:
+    entities "^4.4.0"
+
+parse5@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-7.1.2.tgz#0736bebbfd77793823240a23b7fc5e010b7f8e32"
+  integrity sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==
   dependencies:
     entities "^4.4.0"
 

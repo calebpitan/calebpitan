@@ -1,4 +1,11 @@
+const {
+  shouldTransform,
+  getHTML,
+} = require('gatsby-remark-embedder/dist/transformers/GIPHY')
+const parse5 = require('parse5')
+
 module.exports = {
+  trailingSlash: 'never',
   siteMetadata: {
     title: `Caleb Adepitan`,
     author: `Caleb Adepitan`,
@@ -13,6 +20,7 @@ module.exports = {
 
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-twitter`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -38,6 +46,7 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     // `gatsby-transformer-json`,
+
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -50,6 +59,7 @@ module.exports = {
         icon: `src/images/ninja.png`, // This path is relative to the root of the site.
       },
     },
+
     {
       resolve: `gatsby-plugin-sass`,
       options: {
@@ -65,15 +75,40 @@ module.exports = {
         },
       },
     },
+
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
-        // mdxOptions: {
         gatsbyRemarkPlugins: [
-          `gatsby-remark-embedder`,
           `gatsby-remark-smartypants`,
           { resolve: `gatsby-remark-images`, options: { maxWidth: 1200 } },
+
+          {
+            resolve: `gatsby-remark-embedder`,
+            options: {
+              customTransformers: [
+                {
+                  name: 'GIPHY',
+                  shouldTransform,
+                  getHTML: async url => {
+                    const html = await getHTML(url)
+                    const div = parse5.parseFragment(html).childNodes[0]
+                    if (div.nodeName === 'div') {
+                      div.attrs.push({
+                        name: 'class',
+                        value: 'giphy-embedder giphy-gif-embed',
+                      })
+                    }
+                    const value = parse5.serializeOuter(div)
+                    console.log(value)
+                    return value
+                  },
+                },
+              ],
+            },
+          },
+
           {
             resolve: `gatsby-remark-autolink-headers`,
             options: {
@@ -82,6 +117,7 @@ module.exports = {
               removeAccents: true,
             },
           },
+
           // {
           //   resolve: `gatsby-remark-shiki`,
           //   options: {
@@ -104,7 +140,6 @@ module.exports = {
             options: { rel: 'nofollow noreferrer' },
           },
         ],
-        // },
       },
     },
     {
@@ -115,7 +150,6 @@ module.exports = {
         },
       },
     },
-    // `gatsby-plugin-twitter`,
     // `gatsby-plugin-algolia`,
     {
       resolve: `gatsby-plugin-google-gtag`,
@@ -149,7 +183,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        sitemapSize: 5000,
+        entryLimit: 5000,
       },
     },
   ],
