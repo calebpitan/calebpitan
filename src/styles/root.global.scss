@@ -262,6 +262,27 @@ code {
 }
 
 /**
+ * Twitter embedder styles
+ */
+.twitter-tweet.twitter-tweet-rendered {
+  margin-inline: auto;
+  margin-block-end: 1.75rem !important;
+}
+
+/**
+ * GIPHY embedder styles
+ */
+.giphy-embedder.giphy-gif-embed,
+div:has(> iframe.giphy-embed) {
+  height: auto !important;
+  height: 480px !important;
+  padding-bottom: 0 !important;
+  margin-block-end: 1.75rem !important;
+  background-color: #000000;
+  pointer-events: none;
+}
+
+/**
  * Styles affecting blog post layout and elements within
  * the <article> element <main> child
  */
