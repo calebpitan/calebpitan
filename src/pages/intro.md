@@ -8,4 +8,4 @@ I enjoy blending my creative skills with my designs constantly tweaking things t
 before, leveraging the power of my imaginative mind and proven engineering design principles for designing resilient systems and software.
 
 I'm a fan of Open Source Software, writing client libraries in JavaScript and code on the server side with
-Node.js. Other than JavaScript, you can see me write applications Java and Python too.
+Node.js. Other than JavaScript, you can see me write applications in Java and Python too.
