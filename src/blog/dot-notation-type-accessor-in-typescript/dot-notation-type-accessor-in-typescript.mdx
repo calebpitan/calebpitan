@@ -26,9 +26,9 @@ https://media.giphy.com/media/l4FGrYKtP0pBGpBAY/giphy.gif
 Back to what I was saying—I don't know what it is with me and not keeping to topic. I just want to say so many things in so little
 time, and it's killing me, argh!
 
-Yeah, back to what I was saying, for real: trash_dev wrote this tweet about someone making [react i18n][react-i18n] type safe. From the
-moment I saw "made react i18n type safe", I was intrigued like "how did they do that?". I saw the code snippet following and I thought
-to try it out, brethren, lo and behold, it was legit.
+Yeah, back to what I was saying, for real: @trashh_dev wrote this tweet about someone making [react i18n][react-i18n] type safe. From the
+moment I saw "made react i18n type safe", I was intrigued, like, "how did they do that?". I saw the code snippet following and I thought
+to try it out. Brethren, lo and behold, it was legit.
 
 https://twitter.com/trashh_dev/status/1558209179071877120?s=20&t=z8VEYzRjHBawfS8Awu5c2A
 
@@ -231,7 +231,23 @@ export type DeepProps<
   : U
 ```
 
-If you want me to explain what's going on here, it may take me writing another post or maybe not. Not that it's difficult, but I currently can't think of a way to explain it that'll be concise enough. All I can say is, if you care enough, copy it, break it and reconstruct the logic bottom up, one step at a time, and see how the logic composes to achieve the desired result.
+If you want me to explain what's going on here, it may take me writing another post or maybe not. Not that it's difficult, but I currently
+can't think of a way to explain it that'll be concise enough. All I can say is, if you care enough, copy it, break it and reconstruct the
+logic bottom up, one step at a time, and see how the logic composes to achieve the desired result.
+
+Alright, alright, I've heard you! Here you go:
+
+1. We have a `Join<K, P>` type that concats two string literal types `K` and `P` delimiting them with a dot.
+2. A `DeepProps<T>` type that enummerates all the paths in a type or an interface.
+3. `DeepProps<T>` has internal args `K` and `U`, where `K` is the keyof `T` with `symbol` excluded and `U` is the eventual joined paths
+   carried from one call of `DeepProps<T, K, U>` to another.
+4. If `U` is currently `''`, i.e no paths has been joined, union `K` which is the keyof the current type `T` with a call to
+   `DeepProps<T[K], keyof T[K], ...>`.
+5. `U` is carried to the next call of `DeepProps` so it can be further union'd with each successive calls till a base case is hit where only
+   `U` is returned.
+
+If you are familiar with recursive functions from normal day-to-day programming this will be easy to comprehend. All the patterns used are
+similar to those used with recursive routines.
 
 ```ts
 type Keys = DeepProps<{
@@ -251,13 +267,14 @@ export type Choose<
 > = K extends `${infer U}.${infer Rest}` ? Choose<T[U], Rest> : T[K]
 ```
 
-Now, you get type inference on the second parameter `K` which is a permutation of the keys in object `T` stringed together with a dot wherever necessary
+Now, you get type inference on the second parameter `K` which is a permutation of the keys in object `T` strung together with a dot
+wherever necessary
 
 If you used this type on another object, TypeScript might choke on it, so it's just safe to not use it at all.
 
 ![Type instantiation is excessively deep and possibly infinite. ts(2589)](dot-notation-type-accessor-example.png)
 
-After all coniderations, our eventual type is this:
+After all considerations, our eventual type is this:
 
 ```ts
 export type Choose<
