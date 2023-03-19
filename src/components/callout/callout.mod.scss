@@ -19,8 +19,8 @@
   color: #ffffff;
   position: absolute;
   font-size: $font-size;
-  top: -$font-size + ($font-size / 2) - ($padding * 2);
-  left: -$font-size + ($font-size / 2) - ($padding * 2);
+  top: -$font-size + calc($font-size / 2) - ($padding * 2);
+  left: -$font-size + calc($font-size / 2) - ($padding * 2);
   padding: $padding;
   border-width: 2px;
   border-style: solid;
