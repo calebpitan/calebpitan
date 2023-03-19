@@ -2,7 +2,7 @@
 title: Dot Notation Type Accessor in TypeScript
 # author: Caleb Adepitan
 date: 2022-12-25T13:33:00.000Z
-last-modified: 2022-12-25T13:33:00.000Z
+last-modified: 2023-03-19T21:46:00.000Z
 desc: |-
   The power of type computations in TypeScript is unparalleled
 featuredImage: dot-notation-type-accessor-in-typescript.jpg
@@ -167,8 +167,8 @@ So just like lodash where you can access object properties using the [dot notati
 that can help us choose the type of child properties from a parent type.
 
 <Callout type="info">
-  Unlike in lodash, accessing array or tuple types with bracket&#x2013;index
-  notation is not accounted for.
+  Unlike in lodash, accessing array or tuple types with bracket&#x2013;index notation is not
+  accounted for.
 </Callout>
 
 ```ts
@@ -186,8 +186,7 @@ This is just like a normal recursive function:
 4. Otherwise, terminate at the point where `K` has no more dots and return the type `T[K]`
 
 <Callout type="warn">
-  Note that this would break if the object key(s) contains a dot which is our
-  chosen delimiter.
+  Note that this would break if the object key(s) contains a dot which is our chosen delimiter.
 </Callout>
 
 ```ts
@@ -287,7 +286,133 @@ and TypeScript won't choke along the way!
 
 https://media.giphy.com/media/damYg6Mana2CHXfuz5/giphy.gif
 
+## Update: An elaborate `DeepProps` type
+
+So I found a better type implementation that can get the correct permutation of all possible paths in an object without choking TypeScript.
+
+I found these from [one of the libraries][nestjs-i18n-gh] I use in some projects. I took a look at the implementation and saw it was a very solid one they achieved by having to
+use three other helper types.
+
+One of these helper types checks if a type is `any`.
+
+While it's important to know that:
+
+- The types `unknown` and `never` don't intersect.
+- The types `unknown` and `any` do intersect.
+- Both `keyof never` and `keyof any` is `string | number | symbol`
+- While `keyof unknown` is `never`.
+
+These are all very similar types (`any`, `unknown` and `never`) that vary pretty much.
+
+Here are some assumptions of mine on these three types that are quite alike:
+
+- `any` means no discrimination and whatever type or any type can fit in.
+- `unknown` may seem like `any`, which you may think of also as unknown, but the difference is, `any` is a valid type while `unknown` is not really a type; it's more like a
+  placeholder that must be filled with a valid type to make anything useful of it, hence the `keyof unknown` is `never`.
+- `never` seems more like a vacuum (or maybe more strictly, an abomination), an abomination of types, yet a valid type. The thing is, while `never` is a valid type, there's no
+  single type that fits into it other than itself.
+
+But how is it that the `keyof never` is `string | number | symbol`?
+
+As I said `never` is a valid type, and for most of all valid types in TypeScript and values in JavaScript, (with the exclusion of `null`, `undefined` and `void`) they do have
+keys that somehow extend `string | number | symbol`. Other than primitves, all types in JavaScript are `Object`s. But primitves also do have their object representation and the
+key of all objects will either be a string, number or symbol.
+
+```ts
+export type IsAny<T> = unknown extends T ? ([keyof T] extends [never] ? false : true) : false
+```
+
+For the second helper type of the three, this is where most of the trick is done. Here is the implementation of it in the source library.
+
+```ts
+type PathImpl<T, Key extends keyof T> = Key extends string
+  ? IsAny<T[Key]> extends true
+    ? never
+    : T[Key] extends Record<string, any>
+    ?
+        | `${Key}.${PathImpl<T[Key], Exclude<keyof T[Key], keyof any[]>> & string}`
+        | `${Key}.${Exclude<keyof T[Key], keyof any[]> & string}`
+    : never
+  : never
+```
+
+Notice the line that has `T[Key] extends Record<string, any>`.
+
+It is important to know that arrays also pass the check as they are equally valid objects. So there's a problem.
+We could inadvertently inlcude array properties like `length`, `find`, `map`, etc, in our paths, which I'm sure would be undesired. To avoid this, their implementation
+excludes array keys from the keys of `T`. But there's a limitation there: any non-arraylike `T` that has one or more array properties in it's keys will have those excluded in
+the eventual path.
+
+Here is a modification to I made to fix that limitation. We add an extra helper type, which if you are counting, now makes it four.
+
+```ts
+type ExcludeArrayKeys<T> = T extends ArrayLike<any> ? Exclude<keyof T, keyof any[]> : keyof T
+```
+
+This is the same idea with:
+
+```ts
+// T extends Record<...>
+if (typeof value === 'object') {
+  // T extends ArrayLike<...>
+  if (Array.isArray(value)) {
+    // do something else
+    return
+  }
+  // do something
+}
+```
+
+So if we infuse that one line of helper type, we'd overcome the said limitation.
+
+```ts
+type PathImpl<T, Key extends keyof T> = Key extends string
+  ? IsAny<T[Key]> extends true
+    ? never
+    : T[Key] extends Record<string, any>
+    ?
+        | `${Key}.${PathImpl<T[Key], ExcludeArrayKeys<T[Key]>> & string}`
+        | `${Key}.${ExcludeArrayKeys<T[Key]> & string}`
+    : never
+  : never
+```
+
+The last helper is plain and simple and can even be avoided if it's inlined with the main type, but it makes it easily readable, I guess.
+
+This just makes sure the [terminal][tree-terms-wikipedia] paths at the root of the object are inlcuded with the other non-terminal paths at the root.
+
+```ts
+type PathImpl2<T> = PathImpl<T, keyof T> | keyof T
+```
+
+And a type is born!
+
+```ts
+export type Path<T> = keyof T extends string
+  ? PathImpl2<T> extends infer P
+    ? P extends string | keyof T
+      ? P
+      : keyof T
+    : keyof T
+  : never
+```
+
+You are free to choose, no strings attached!
+
+```ts
+export type Choose<
+  T extends Record<string | number, any>,
+  K extends Path<T>
+> = K extends `${infer U}.${infer Rest}`
+  ? Rest extends Path<T[U]>
+    ? Choose<T[U], Rest>
+    : never
+  : T[K]
+```
+
 [chris-bautista]: https://twitter.com/trashh_dev?s=20&t=z8VEYzRjHBawfS8Awu5c2A
-[react-i18n]: https://react.i18next.com/
-[til]: https://dictionary.cambridge.org/us/dictionary/english/til
 [lodash-dot-notation]: https://lodash.com/docs/#get
+[nestjs-i18n-gh]: https://github.com/toonvanstrijp/nestjs-i18n/blob/1a86bb46e9386c6450d10c9c9e609f78315752d0/src/types.ts#L27
+[react-i18n]: https://react.i18next.com/
+[tree-terms-wikipedia]: https://en.wikipedia.org/wiki/Tree_(data_structure)#Terminology
+[til]: https://dictionary.cambridge.org/us/dictionary/english/til
