@@ -2,7 +2,7 @@
 title: Dot Notation Type Accessor in TypeScript
 # author: Caleb Adepitan
 date: 2022-12-25T13:33:00.000Z
-last-modified: 2023-03-19T21:46:00.000Z
+last-modified: 2023-03-19T21:54:00.000Z
 desc: |-
   The power of type computations in TypeScript is unparalleled
 featuredImage: dot-notation-type-accessor-in-typescript.jpg
@@ -343,7 +343,7 @@ We could inadvertently inlcude array properties like `length`, `find`, `map`, et
 excludes array keys from the keys of `T`. But there's a limitation there: any non-arraylike `T` that has one or more array properties in it's keys will have those excluded in
 the eventual path.
 
-Here is a modification to I made to fix that limitation. We add an extra helper type, which if you are counting, now makes it four.
+Here is a modification I made to fix that limitation. We add an extra helper type, which if you are counting, now makes it four.
 
 ```ts
 type ExcludeArrayKeys<T> = T extends ArrayLike<any> ? Exclude<keyof T, keyof any[]> : keyof T
