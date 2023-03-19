@@ -1,7 +1,7 @@
 {
-  "name": "calebpitan.dev",
+  "name": "calebpitan.com",
   "version": "1.0.0",
-  "description": "I am Caleb Adepitan. This is just all about me and what I always got for you. Yet, it's more about me",
+  "description": "I'm Caleb Adepitan!",
   "main": "index.js",
   "scripts": {
     "build": "gatsby build",
@@ -64,7 +64,6 @@
     "gatsby-transformer-sharp": "^4.24.0",
     "lodash": "^4.17.21",
     "node-fetch": "^3.2.10",
-    "node-sass": "^7.0.3",
     "postcss-scss": "^4.0.5",
     "prettier": "^2.7.1",
     "prismjs": "^1.29.0",
@@ -76,6 +75,7 @@
     "react-image-lightbox": "^5.1.4",
     "reading-time": "^1.5.0",
     "resolve-url-loader": "^5.0.0",
+    "sass": "^1.59.3",
     "swiper": "^8.4.4",
     "whatwg-fetch": "^3.6.2"
   },
