@@ -1,7 +1,4 @@
-const {
-  shouldTransform,
-  getHTML,
-} = require('gatsby-remark-embedder/dist/transformers/GIPHY')
+const { shouldTransform, getHTML } = require('gatsby-remark-embedder/dist/transformers/GIPHY')
 const parse5 = require('parse5')
 
 module.exports = {
@@ -171,6 +168,16 @@ module.exports = {
           // Avoids sending pageview hits from custom paths
           exclude: [],
         },
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-google-tagmanager',
+      options: {
+        id: 'GTM-W6W7XBT',
+        includeInDevelopment: true,
+        defaultDataLayer: { platform: 'gatsby' },
+        // Defaults to false
+        enableWebVitalsTracking: true,
       },
     },
     {

@@ -55,6 +55,7 @@ const IntentShare = ({ intents, className, ...rest }) => {
                 className={cx('blogShareButton')}
                 rel="noreferrer noopener nofollow"
                 key={`${name}-share-button`}
+                id={`${name}-share-button`}
               >
                 <span className={cx('srOnly')}>Share on {name}</span>
                 <Icon role="presentation" />
