@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  FiShare2,
-  FiTwitter,
-  FiFacebook,
-  FiLinkedin,
-  FiMail,
-} from 'react-icons/fi'
+import { FiShare2, FiTwitter, FiFacebook, FiLinkedin, FiMail } from 'react-icons/fi'
 import { gcx } from '../../../utils'
 
 import * as blog from './blog.mod.scss'
@@ -32,6 +26,21 @@ const allMedia = {
 }
 
 const IntentShare = ({ intents, className, ...rest }) => {
+  const capitalize = /** @type {(v: string) => string} */ v =>
+    v.charAt(0).toUpperCase().concat(v.substring(1))
+
+  const handleShare = media => /** @type {(evt: import('react').MouseEvent)} */ evt => {
+    // const target = /** @type {HTMLAnchorElement} */ (evt.currentTarget)
+    if (typeof window !== 'undefined' && 'dataLayer' in window && Array.isArray(window.dataLayer)) {
+      window.dataLayer.push({
+        event: 'share_post',
+        media: capitalize(media),
+        page: window.location.href,
+      })
+      console.log('Shared to %s', capitalize(media))
+    }
+  }
+
   return (
     <div className={cx('dFlex', 'alignItemsCenter', className)} {...rest}>
       <FiShare2 role="presentation" />
@@ -41,9 +50,8 @@ const IntentShare = ({ intents, className, ...rest }) => {
             const Icon = allMedia[name].Icon
             return (
               <a
-                href={`${allMedia[name].link}${
-                  !url ? encodeURIComponent(text) : text
-                }`}
+                href={`${allMedia[name].link}${!url ? encodeURIComponent(text) : text}`}
+                onClick={handleShare(name)}
                 className={cx('blogShareButton')}
                 rel="noreferrer noopener nofollow"
                 key={`${name}-share-button`}
