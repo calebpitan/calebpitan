@@ -12,9 +12,12 @@ import * as card from './card.mod.scss'
 
 const cx = gcx(card)
 
-const Card = ({ title, excerpt, author, avatar, slug, date, className }) => {
+const Card = ({ title, excerpt, author, avatar, slug, date, className, height }) => {
   return (
-    <div className={cx('card', 'dFlex', 'flexColumn', className)}>
+    <div
+      className={cx('card', 'dFlex', 'flexColumn', className)}
+      style={{ height, marginBlockEnd: '1rem' }}
+    >
       <div>
         <H as="5">
           <Link to={slug} className={cx('cardLink')}>
