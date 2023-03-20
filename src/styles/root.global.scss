@@ -29,20 +29,17 @@
   --font-glyph-mono: 'Inconsolata';
   --font-glyph-display: 'Bodoni Moda';
 
-  --font-family-base-default: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-family-base-default: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 
-  --font-family-code-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono',
-    SFMono-Regular, Menlo, Liberation Mono, Courier New, monospace;
+  --font-family-code-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', SFMono-Regular, Menlo,
+    Liberation Mono, Courier New, monospace;
 
-  --font-family-base: var(--font-glyph-san-serif),
-    var(--font-family-base-default);
+  --font-family-base: var(--font-glyph-san-serif), var(--font-family-base-default);
   --font-family-code: var(--font-glyph-mono), var(--font-family-code-default);
-  --font-family-heading: var(--font-glyph-serif),
-    var(--font-family-code-default);
-  --font-family-display: var(--font-glyph-display),
-    var(--font-family-code-default);
+  --font-family-heading: var(--font-glyph-serif), var(--font-family-code-default);
+  --font-family-display: var(--font-glyph-display), var(--font-family-code-default);
 
   --paragraph-margin-bottom: 1.75rem;
 
@@ -461,4 +458,11 @@ pre {
 
 .line-numbers .line-numbers-rows {
   padding: 0 0 0 0.625em;
+}
+
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+  bottom: -5px !important;
 }

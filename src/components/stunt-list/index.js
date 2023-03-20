@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import { Mousewheel, Navigation, Pagination, Scrollbar } from 'swiper'
-import { Swiper, SwiperSlide, useSwiperSlide } from 'swiper/react'
+import { Mousewheel, Pagination } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { gcx } from '../../utils'
 import Card from '../card'
@@ -14,11 +14,6 @@ import 'swiper/css/mousewheel'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-
-const SNAP_ACTION = {
-  NEXT: 'next',
-  PREV: 'prev',
-}
 
 const cx = gcx(stunt)
 
@@ -56,12 +51,6 @@ const StuntList = ({ data }) => {
   const [canNext, setCanNext] = useState(true)
   const [height, setHeight] = useState('auto')
 
-  const slide = useSwiperSlide()
-
-  useEffect(() => {
-    swiper
-  }, [swiper])
-
   useEffect(() => {
     const container = containerRef.current
 
@@ -82,6 +71,19 @@ const StuntList = ({ data }) => {
     site: { siteMetadata },
   } = useSiteMetadata()
 
+  const handleActiveIndexChange = swiper => {
+    if (swiper.isBeginning && !swiper.isEnd) {
+      setCanPrev(false)
+      setCanNext(true)
+    } else if (swiper.isEnd && !swiper.isBeginning) {
+      setCanPrev(true)
+      setCanNext(false)
+    } else if (!swiper.isBeginning && !swiper.isEnd) {
+      setCanPrev(true)
+      setCanNext(true)
+    }
+  }
+
   return (
     <div className={cx('stuntlist')} ref={containerRef}>
       {canPrev && (
@@ -94,18 +96,21 @@ const StuntList = ({ data }) => {
         autoplay={true}
         cssMode={false}
         grabCursor={true}
-        // modules={[Mousewheel, Pagination, Scrollbar]}
-        // mousewheel={true}
-        // pagination={{ clickable: true }}
-        // scrollbar={{ draggable: true }}
-        slidesPerView={3}
-        spaceBetween={20}
+        modules={[Mousewheel, Pagination]}
+        mousewheel={true}
+        pagination={{ clickable: true }}
+        slidesPerView={1.25}
+        spaceBetween={5}
+        breakpoints={{
+          576: { slidesPerView: 2.175, spaceBetween: 10, slidesPerGroup: 2 },
+          768: { slidesPerView: 2.175, spaceBetween: 10, slidesPerGroup: 2 },
+          1200: { slidesPerView: 3.175, spaceBetween: 20, slidesPerGroup: 3 },
+        }}
+        centerInsufficientSlides
         onSwiper={swiper => setSwiper(swiper)}
         onReachBeginning={() => setCanPrev(false)}
         onReachEnd={() => setCanNext(false)}
-        onActiveIndexChange={swiper =>
-          !swiper.isBeginning && !swiper.isEnd && (setCanPrev(true), setCanNext(true))
-        }
+        onActiveIndexChange={handleActiveIndexChange}
         onTouchStart={() => {
           navigator.maxTouchPoints > 0 && (document.body.style.overflowY = `hidden`)
         }}

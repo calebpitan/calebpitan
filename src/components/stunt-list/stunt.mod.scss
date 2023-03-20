@@ -23,8 +23,7 @@
   box-shadow: 0 3px 10px var(--bg-alpha);
   box-shadow: 0 3px 10px var(--card-shade);
   z-index: 1;
-  transition: border linear var(--trans-time),
-    background linear var(--trans-time);
+  transition: border linear var(--trans-time), background linear var(--trans-time);
 
   &:hover {
     background: var(--bg);
@@ -33,6 +32,10 @@
   &:focus {
     outline: none;
     border: 2px solid var(--theme-color);
+  }
+
+  @media (max-width: $lmd) {
+    display: none !important;
   }
 }
 

@@ -32,11 +32,7 @@ const IndexPage = () => {
           </SubjectImage>
 
           <div className={cx('px3')}>
-            <H
-              as="5"
-              className={cx('textCenter')}
-              style={{ color: `var(--theme-color)` }}
-            >
+            <H as="5" className={cx('textCenter')} style={{ color: `var(--theme-color)` }}>
               Caleb Adepitan
             </H>
 
@@ -72,7 +68,7 @@ const IndexPage = () => {
         </div>
 
         <div
-          className={cx('flexShrink0', 'dMdNone', 'dLgBlock')}
+          className={cx('flexShrink0', 'dMdNone', 'dXlBlock')}
           style={{ width: `270px`, height: `100%` }}
         />
       </div>

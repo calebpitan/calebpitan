@@ -5,7 +5,7 @@
   padding: 1rem;
   border-radius: 7px;
   min-width: 12.5rem;
-  max-width: 12.5rem;
+  max-width: 15.5rem;
   border: 1px solid var(--shade);
   box-shadow: 5px 5px 15px var(--card-shade);
 
@@ -15,7 +15,7 @@
 
   &::before {
     --size-shift: 0.5rem;
-    content: "";
+    content: '';
     width: calc(100% - var(--size-shift));
     height: calc(100% - var(--size-shift));
     border: 1px solid var(--theme-color-sat);
