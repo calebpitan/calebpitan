@@ -1,6 +1,6 @@
 ---
 title: A Meticulous Examination of JavaScript Promise
-# author: Caleb Adepitan
+author: Caleb Adepitan
 date: 2020-12-24T07:52:00.606Z
 last-modified: 2020-12-24T10:20:00.606Z
 desc: |-
@@ -16,11 +16,18 @@ publish: true
 slug: a-meticulous-examination-of-javascript-promise
 ---
 
-Callback is the way asynchrony is built into JavaScript. Something like, "when my dress is ready, here's my digit, give me a call. I got a place to be".
+Callback is the way asynchrony is built into JavaScript. Something like, "when my dress is ready,
+here's my digit, give me a call. I got a place to be".
 
-But then it became obvious that _callback was hell_ and so many code fell into the pit of hell. This prompted the rise of a saviour for every future code so they don't go to hell while developers go gaga. A _promise for a better future_ came into the picture. This picture is what hangs on the wall of every "modern" JavaScript developer and marks the beginning of a new era for handling asynchronous flows. This gospel has been widely accepted, but peradventure there are unbelievers out there, was why I had to preach it.
+But then it became obvious that _callback was hell_ and so many code fell into the pit of hell. This
+prompted the rise of a saviour for every future code so they don't go to hell while developers go
+gaga. A _promise for a better future_ came into the picture. This picture is what hangs on the wall
+of every "modern" JavaScript developer and marks the beginning of a new era for handling
+asynchronous flows. This gospel has been widely accepted, but peradventure there are unbelievers out
+there, was why I had to preach it.
 
-No doubt, dealing with callback was hell, but promises too could be too much to deal with. Do you agree? No, right! Let's go...
+No doubt, dealing with callback was hell, but promises too could be too much to deal with. Do you
+agree? No, right! Let's go...
 
 ```js
 getUser(id)
@@ -32,9 +39,13 @@ getUser(id)
 
 ...and even worse, what I call a promise hell.
 
-Confession: I once wrote promises like this, before I sought for more knowledge knowing this here, doesn't fix the issue with callbacks--not even by an inch.
+Confession: I once wrote promises like this, before I sought for more knowledge knowing this here,
+doesn't fix the issue with callbacks--not even by an inch.
 
-I didn't exactly know that whatever is returned from the callback passed to `.then` is further wrapped in a `Promise` and returned by the `.then` method. Most callbacks return `void` and even if they returned something, it doesn't always matter to the code invoking them, so they just vanish. My reasoning was just like this for `Promise` callbacks too!
+I didn't exactly know that whatever is returned from the callback passed to `.then` is further
+wrapped in a `Promise` and returned by the `.then` method. Most callbacks return `void` and even if
+they returned something, it doesn't always matter to the code invoking them, so they just vanish. My
+reasoning was just like this for `Promise` callbacks too!
 
 ```js
 getUser(id).then(user => {
@@ -46,13 +57,17 @@ getUser(id).then(user => {
 })
 ```
 
-That's it! Still the same callback hell, but this time, lurking in the shadows of what was meant to be a better future--that same demon trying to possess the saviour.
+That's it! Still the same callback hell, but this time, lurking in the shadows of what was meant to
+be a better future--that same demon trying to possess the saviour.
 
-With this "promise hell" up there, we'd have to do error handling for each promise separately, adding a `.catch` to everyone of them. Hell indeed!
+With this "promise hell" up there, we'd have to do error handling for each promise separately,
+adding a `.catch` to everyone of them. Hell indeed!
 
 ## Explicit promises
 
-I termed it explicit `Promise`, because the intention to return a `Promise` would be clear even to a layman. Just like the way a function can explicitly return `undefined` or `void` and/or implicity return `undefined` or `void` when no return statement is present.
+I termed it explicit `Promise`, because the intention to return a `Promise` would be clear even to a
+layman. Just like the way a function can explicitly return `undefined` or `void` and/or implicity
+return `undefined` or `void` when no return statement is present.
 
 ```js
 function greet() {
@@ -68,7 +83,9 @@ let greeting = greet() // undefined
 let response = reply() // undefined
 ```
 
-The intention to return `undefined` is clear in the first function `greet`, but it would take someone who is familiar with programming languages to know the function `reply` returns `undefined` too. So also with `Promise`.
+The intention to return `undefined` is clear in the first function `greet`, but it would take
+someone who is familiar with programming languages to know the function `reply` returns `undefined`
+too. So also with `Promise`.
 
 ```js
 function wait(time) {
@@ -78,22 +95,28 @@ function wait(time) {
 }
 ```
 
-Our intention to return a `Promise` in this statement is explicity stated. There is another form which may not seem as explicit as this, but if you scrutinize quite well, it is as explicit, and TypeScript can easily make you cognizant of that.
+Our intention to return a `Promise` in this statement is explicity stated. There is another form
+which may not seem as explicit as this, but if you scrutinize quite well, it is as explicit, and
+TypeScript can easily make you cognizant of that.
 
 ```ts
 function getUser(id: string) {
-  const user: Promise<User> = fetch(`${BASE_URL}/people/${id}`).then(res =>
-    res.json()
-  )
+  const user: Promise<User> = fetch(`${BASE_URL}/people/${id}`).then(res => res.json())
   return user
 }
 ```
 
-If we could explore the implementation of `fetch`, we'd realize that it eventually returns a `Promise`, and since our function returns the result of `fetch`, we indirectly return a `Promise` too.
+If we could explore the implementation of `fetch`, we'd realize that it eventually returns a
+`Promise`, and since our function returns the result of `fetch`, we indirectly return a `Promise`
+too.
 
 ## Implicit promise (async/await)
 
-With `Promise` in the picture, the flow of program deviated from what you'd normally expect. Well this was nothing new, it's what we've known for quite a while. Even with callbacks the flow wasn't perfect. This is obvious from the way error handling is done in both promises and callbacks. Although it was better with promises--the separation of concerns unlike with callbacks--it's way better with `async`/`await`. We can return to the control flow we've always known, `try`/`catch`.
+With `Promise` in the picture, the flow of program deviated from what you'd normally expect. Well
+this was nothing new, it's what we've known for quite a while. Even with callbacks the flow wasn't
+perfect. This is obvious from the way error handling is done in both promises and callbacks.
+Although it was better with promises--the separation of concerns unlike with callbacks--it's way
+better with `async`/`await`. We can return to the control flow we've always known, `try`/`catch`.
 
 ```js
 import fs from 'fs'
@@ -118,9 +141,12 @@ fsp
   })
 ```
 
-These have deviated from the traditional `try`/`catch` flow. There need to be a way we can reason about a program that would once again seem normal to us. And to be honest, the `.then`, `.catch` flow could be overwhelming when it gets too much.
+These have deviated from the traditional `try`/`catch` flow. There need to be a way we can reason
+about a program that would once again seem normal to us. And to be honest, the `.then`, `.catch`
+flow could be overwhelming when it gets too much.
 
-We were given two brothers, `async`/`await` to relieve us the work and give us a program flow we can work with, and a clear syntax same as a normal synchronous code.
+We were given two brothers, `async`/`await` to relieve us the work and give us a program flow we can
+work with, and a clear syntax same as a normal synchronous code.
 
 ```js
 const parseJSONFile = async filename => {
@@ -133,7 +159,9 @@ const parseJSONFile = async filename => {
 }
 ```
 
-Now we can re-implement the previous `getUser` function with a better and clearer syntax. We don't have to reach for a variable or response from only inside a callback. Our variables are available just in the same block of code.
+Now we can re-implement the previous `getUser` function with a better and clearer syntax. We don't
+have to reach for a variable or response from only inside a callback. Our variables are available
+just in the same block of code.
 
 ```ts
 async function getUser(id: string) {
@@ -143,7 +171,9 @@ async function getUser(id: string) {
 }
 ```
 
-We didn't explicity return a promise, what we returned here is a `User`, but internally in the JavaScript engine, the `async` keyword makes the `User` to end up being wrapped in a `Promise` and look just like `Promise<User>`.
+We didn't explicity return a promise, what we returned here is a `User`, but internally in the
+JavaScript engine, the `async` keyword makes the `User` to end up being wrapped in a `Promise` and
+look just like `Promise<User>`.
 
 ## Promise execution order
 
@@ -170,9 +200,15 @@ async function exec() {
 }
 ```
 
-These two implementations are different. In the first implementation, the second promise will resolve before the first. Consequently, `'Promise 2'` will be logged before `'Promise 1'`. In the second implementation, the order of execution is guaranteed and would be line by line as the first promise would be `await`-ed before any other line continues within the async function. Although the order of execution can be preserved with a `.then` too, but this is worth noting.
+These two implementations are different. In the first implementation, the second promise will
+resolve before the first. Consequently, `'Promise 2'` will be logged before `'Promise 1'`. In the
+second implementation, the order of execution is guaranteed and would be line by line as the first
+promise would be `await`-ed before any other line continues within the async function. Although the
+order of execution can be preserved with a `.then` too, but this is worth noting.
 
-Also, the first `exec` function will resolve even before the two `wait` promises resolve, because its resultant resolution doesn't depend on any of the `wait` promises. The second `exec` function isn't resolved until all underlying promises have been **successfully** `await`-ed
+Also, the first `exec` function will resolve even before the two `wait` promises resolve, because
+its resultant resolution doesn't depend on any of the `wait` promises. The second `exec` function
+isn't resolved until all underlying promises have been **successfully** `await`-ed
 
 ### Preserving order of execution in `.then`
 
@@ -187,15 +223,25 @@ function exec() {
 }
 ```
 
-This guarantees that only after the first promise has resolved (`await`-ed **successfully**) would the second promise start execution. Also, unlike the previous one, this `exec` function would not resolve until all the `wait` promises are resolved, since the result of the `wait` promise is what is being returned, its resultant resolution is dependent on the overall `wait` promises.
+This guarantees that only after the first promise has resolved (`await`-ed **successfully**) would
+the second promise start execution. Also, unlike the previous one, this `exec` function would not
+resolve until all the `wait` promises are resolved, since the result of the `wait` promise is what
+is being returned, its resultant resolution is dependent on the overall `wait` promises.
 
-The promise having a non-preserved execution order could be useful in scenarios where the execution of the promises are independent.
+The promise having a non-preserved execution order could be useful in scenarios where the execution
+of the promises are independent.
 
-> Be candid, which syntax seems more appealing to you, the one with `await` or the one with `.then` and `return`?
+> Be candid, which syntax seems more appealing to you, the one with `await` or the one with `.then`
+> and `return`?
 
 ## Converting callback-based asynchronous API to Promise
 
-Many times you will see code trying to make a promise out a callback-based asynchronous API. Many times this is needed, cause the way a callback and a promise works differ, and we need to make things uniform and in phase. Some APIs still rely on callback for asynchrony, but this may not work for you if your code heavily depends on `Promise`. Reaching a callback and accessing its value, obviously can't be done _lazily_ with an `async`/`await`. We need to take all ammo out and summon a full-fledged `Promise`.
+Many times you will see code trying to make a promise out a callback-based asynchronous API. Many
+times this is needed, cause the way a callback and a promise works differ, and we need to make
+things uniform and in phase. Some APIs still rely on callback for asynchrony, but this may not work
+for you if your code heavily depends on `Promise`. Reaching a callback and accessing its value,
+obviously can't be done _lazily_ with an `async`/`await`. We need to take all ammo out and summon a
+full-fledged `Promise`.
 
 Look what we did with our `wait` function the other time
 
@@ -207,22 +253,31 @@ function wait(time) {
 }
 ```
 
-`setTimeout` is callback based, but now we can use the `await` or `.then` on it because we've reached into it with a promise and this gives us a uniform API if we'd been working with promises all along. Thanks to `await` we can have a sleep function without the hassles of doing the work we want done after sleeping in another code block or a callback. Just right after the sleep we can write the next chore to be done by JavaScript.
+`setTimeout` is callback based, but now we can use the `await` or `.then` on it because we've
+reached into it with a promise and this gives us a uniform API if we'd been working with promises
+all along. Thanks to `await` we can have a sleep function without the hassles of doing the work we
+want done after sleeping in another code block or a callback. Just right after the sleep we can
+write the next chore to be done by JavaScript.
 
 ## Working with multiple promises
 
-Sometimes, we need to work with multiple promises and most times we may not be concerned by the fulfillment of individual promises, but their overall fulfillment or at least the fulfilment of anyone of them. Here is where some static promise methods come in.
+Sometimes, we need to work with multiple promises and most times we may not be concerned by the
+fulfillment of individual promises, but their overall fulfillment or at least the fulfilment of
+anyone of them. Here is where some static promise methods come in.
 
 - `Promise.all`
 - `Promise.allSettled`
 - `Promise.any`
 - `Promise.race`
 
-Other static methods are `Promise.resolve` and `Promise.reject` but their use case is different from the above ones
+Other static methods are `Promise.resolve` and `Promise.reject` but their use case is different from
+the above ones
 
 ### `Promise.all`
 
-Returns a single promise that resolves to an array of respective values when all promises resolves and rejects when at least one of the promises rejects. `Promise.all` works on the all-or-nothing principle.
+Returns a single promise that resolves to an array of respective values when all promises resolves
+and rejects when at least one of the promises rejects. `Promise.all` works on the all-or-nothing
+principle.
 
 ```js
 function wait(time) {
@@ -257,7 +312,8 @@ async function exec() {
 
 ### `Promise.allSettled`
 
-Returns a single promise that resolves to an array of objects that contains the state of all settled (resolved or rejected) promises.
+Returns a single promise that resolves to an array of objects that contains the state of all settled
+(resolved or rejected) promises.
 
 ```ts
 interface Fulfilled {
@@ -282,7 +338,8 @@ async function exec() {
 
 ### `Promise.any`
 
-Returns a single promise that resolves to the first promise that resolves/fulfills and rejects with an `AggregationError` only when all promises rejects.
+Returns a single promise that resolves to the first promise that resolves/fulfills and rejects with
+an `AggregationError` only when all promises rejects.
 
 ```js
 async function exec() {
@@ -305,7 +362,8 @@ async function exec() {
 
 ### `Promise.race`
 
-Returns a single promise that resolves to or rejects with the first settled (resolved or rejected, respectively) promise.
+Returns a single promise that resolves to or rejects with the first settled (resolved or rejected,
+respectively) promise.
 
 ```js
 async function exec() {
@@ -326,4 +384,5 @@ async function exec() {
 }
 ```
 
-`Promise.any` and `Promise.race` may seem like they work the same but they are different--take a closer look. I promise you'll notice the difference.
+`Promise.any` and `Promise.race` may seem like they work the same but they are different--take a
+closer look. I promise you'll notice the difference.
