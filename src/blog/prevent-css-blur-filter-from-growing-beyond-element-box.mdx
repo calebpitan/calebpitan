@@ -2,7 +2,7 @@
 title: Prevent CSS Blur Filter from Growing Extra Pixels beyond Element's Box
 author: Caleb Adepitan
 date: 2020-07-31
-last-modified: 2020-07-31
+last-modified: 2023-10-22
 desc: Get rid of the extra pixels a blur filter generates in one single CSS rule.
 featuredImage: ../images/color-sidewalk.jpg
 tags:
@@ -15,17 +15,30 @@ publish: true
 slug: ''
 ---
 
-It becomes frustrating when we try to solve a problem thereby creating another problem, or try making that thing feel and look better, but it gets worse for every detail we muatate, create or erase. It feels so much like a deja vu that occurs often and often. We then finally ask ourself: Is it worth it?
+It becomes frustrating when we try to solve a problem thereby creating another problem, or try
+making that thing feel and look better, but it gets worse for every detail we mutate, create or
+erase. It feels so much like a deja vu that occurs often and often. We then finally ask ourself: Is
+it worth it?
 
-Well, the answer to that depends on what we are considering. But sometimes, you don't need to ask that question, much less answer it.
+Well, the answer to that depends on what we are considering. But sometimes, you don't need to ask
+that question, much less answer it.
 
-Have you ever tried adding a CSS `filter: blur(3px)` to one of those background images, an overlay or just any element? Ha, now you know! It happens everywhere, Photoshop, Adobe Illustrator, Inkscape, just about anything that does a graphical blur. It's how blur is meant to operate. Every blur on an object&mdash;at least that I know of, except, probably, the imrerpession formed by your eyes, since if you see blurrily then you see completely blurrily&mdash;creates an amount of extra pixels beyond it's bounding size.
+Have you ever tried adding a CSS `filter: blur(3px)` to one of those background images, an overlay
+or just any element? Ha, now you know! It happens everywhere, Photoshop, Adobe Illustrator,
+Inkscape, just about anything that does a graphical blur. It's how blur is meant to operate. Every
+blur on an object&mdash;at least that I know of, except, probably, the impression formed by your
+eyes, since if you see blurrily then you see completely blurrily&mdash;creates an amount of extra
+pixels beyond its bounding size.
 
-This amount of extra pixels beyond the affected's bounding size is undesired as it makes your design or layout look untidy and dirty. Here it comes, shadowing over other elements outside it and making every thing look rough in just one line of CSS rule.
+This amount of extra pixels beyond the affected's bounding size is undesired as it makes your design
+or layout look untidy and dirty. Here it comes, shadowing other elements outside it and making
+everything look rough in just one line of CSS rule.
 
 {/* The fix */}
 
-Whthout any more clutter, here is a fix I've derived for myself over time. The CSS `clip-path` property is the fix. This will clip the element to its bounding box and prevent extra pixels from spreading beyond.
+Without any more clutter, here is a fix I've derived for myself over time. The CSS `clip-path`
+property is the fix. This will clip the element to its bounding box and prevent extra pixels from
+spreading beyond.
 
 ```css
 .blurred {
@@ -36,4 +49,6 @@ Whthout any more clutter, here is a fix I've derived for myself over time. The C
 
 [See this on CodePen](https://codepen.io/calebpitan/pen/mdPdEOr)
 
-This is great! A fix for the whole fuss and my rant about the fuss in just one line of CSS code! Yeah, that's all. If you don't know about it already, and have had to let go of muatating that extra detail in your design, here is your chance to do whatever you please with the CSS blur filter.
+This is great! A fix for the whole fuss and my rant about the fuss in just one line of CSS code!
+Yeah, that's all. If you don't know about it already, and have had to let go of muatating that extra
+detail in your design, here is your chance to do whatever you please with the CSS blur filter.
