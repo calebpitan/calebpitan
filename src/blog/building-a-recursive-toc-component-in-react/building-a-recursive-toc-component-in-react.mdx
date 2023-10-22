@@ -1,6 +1,6 @@
 ---
 title: Building a Recursive T.O.C Component in React
-# author: Caleb Adepitan
+author: Caleb Adepitan
 date: 2020-08-01
 last-modified: 2020-08-01
 desc: Has it ever crossed your mind that, if functions can be recursive, a component can, too?
@@ -15,9 +15,19 @@ publish: true
 slug: 'building-a-recursive-toc-component-in-react'
 ---
 
-Have you ever had to deal with a kinda data that is nested and so nested that going through it seems like Space made friends with gravity and now the endless fall pulls everyone. Okay. If not, at least you must have written a program that calculates the factorial of a number once before or solved the Tower of Hanoi. Yeah, now you know where I'm headed with this &mdash; recursion.
+Have you ever had to deal with a kind of data that is nested and so nested that going through it
+seems like Space made friends with gravity and now the endless fall pulls everyone? Okay. If not, at
+least you must have written a program that calculates the factorial of a number once before or
+solved the Tower of Hanoi. Yeah, now you know where I'm headed with this &mdash; recursion.
 
-You definitely have seen or written a recursive program before. Recursion is a function that calls itself within its own body. There is always a control for every properly written recursion, a condition that when finally met, terminates any further call and completes the task of precedent calls on a LIFO (Last in First out) basis emptying the callstack. Several recursions are always seen to take arguments and their subsequent calls take arguments which could be a mutated state of the argument from the initial call that initiated the subseqent calls. Most times the control for the recursion is a logic around the mutated state of the argument passed down, which fixes the Space fall glitch I mentioned earlier and restores Zero G to Space.
+You, for sure, have seen or written a recursive program before. Recursion is a function that calls
+itself within its own body. There is always a control for every properly written recursion, a
+condition that when finally met, terminates any further call and completes the task of precedent
+calls on a LIFO (Last in First out) basis emptying the call stack. Several recursions are always
+seen to take arguments and their subsequent calls take arguments which could be a mutated state of
+the argument from the initial call that initiated the subsequent calls. Most times the control for
+the recursion is a logic around the mutated state of the argument passed down, which fixes the Space
+fall glitch I mentioned earlier and restores Zero G to Space.
 
 ```js
 function factorial(n) {
@@ -34,13 +44,21 @@ Or a one-liner [Euclidean GCD](https://en.wikipedia.org/wiki/Euclidean_algorithm
 const gcd = (x, y) => (y === 0 ? x : gcd(y, x % y))
 ```
 
-A point to note is, anything that can be done using a recursion can also be achieved using a normal loop in the [procedural](https://en.wikipedia.org/wiki/Procedural_programming) approach. Recursion is one of the principles associated with [functional programming](https://en.wikipedia.org/wiki/Functional_programming), and has a good composition of logic. Once you get how they work, they should be easy to read and understand.
+A point to note is that anything that can be done using recursion can also be achieved using a
+normal loop in the [procedural](https://en.wikipedia.org/wiki/Procedural_programming) approach.
+Recursion is one of the principles associated with
+[functional programming](https://en.wikipedia.org/wiki/Functional_programming), and has a good
+composition of logic. Once you get how they work, they should be easy to read and understand.
 
 ## React components can be recursive
 
-Enough of recursion jargon, a React component can be recursive. I have had to build a TOC for a blog I built using Gatsby and after I wrote some GraphQL queries, I got a data that was what seemed like nested properties of different levels of headings `h2` through to `h5` or even `h6`.
+Enough of recursion jargon, a React component can be recursive. I have had to build a TOC for a blog
+I built using Gatsby and after I wrote some GraphQL queries, I got some data that was what seemed
+like nested properties of different levels of headings `h2` through to `h5` or even `h6`.
 
-First, lets query the data we need to build the TOC from. We will do this by opening our Gatsby in-browser GraphiQL IDE and use the explorer to compose the query. Just simply open a new tab and copy and paste `http://localhost:8000/___graphql`
+First, let's query the data we need to build the TOC from. We will do this by opening our Gatsby
+in-browser GraphiQL IDE and using the explorer to compose the query. Just simply open a new tab and
+copy and paste `http://localhost:8000/___graphql`
 
 In the GraphiQL IDE we should be able to do something like this:
 
@@ -62,8 +80,10 @@ query MyQuery {
 }
 ```
 
-The first one will run this query on all your MDX files, which gives a better chance of you, at least, having one with headings.
-The second will only run through the last modified or last created MDX file since you didn't provide it with an id of the file to query. In real practice, we will pass an id to it from our `gatsby-node.js` `createPages` `context` through to the `$id` graphql variable.
+The first one will run this query on all your MDX files, which gives a better chance of you, at
+least, having one with headings. The second will only run through the last modified or last created
+MDX file since you didn't provide it with an ID of the file to query. In real practice, we will pass
+an id to it from our `gatsby-node.js` `createPages` `context` through to the `$id` graphql variable.
 
 We should get something with a structure similar to this:
 
@@ -87,7 +107,10 @@ export pageQuery = graphql`
 
 ## Creating the TOC component
 
-When you look at the result, `tableOfContents` is an object with one property, `items`. The `items` is an array of objects which could contain a sub `items` down and down. This is a tree data structure and we can't tell how many nodes we will reach before finally reaching the last leaf. So lets think of our component the recursive way.
+When you look at the result, `tableOfContents` is an object with one property, `items`. The `items`
+is an array of objects which could contain sub `items` down and down. This is a tree data structure
+and we can't tell how many nodes we will reach before finally reaching the last leaf. So let's think
+of our component in the recursive way.
 
 ```jsx
 function CreateTOC({ items, depth = 0 }) {
@@ -119,7 +142,11 @@ function CreateTOC({ items, depth = 0 }) {
 }
 ```
 
-Here we have it, our recursive TOC component. Whenever we want to render it, we can always pass it an `items` prop of `mdx.tableOfContents.items` we use the `depth` prop to style it to look nested whenever we have a nested item and we increment the value of `depth` passed to the component. Notice that we didn't increment `depth` but we incremented the value of `depth` passed as a prop to the component. To increment `depth` will be to increment and assign: `depth += 1` or `++depth`
+Here we have it, our recursive TOC component. Whenever we want to render it, we can always pass it
+an `items` prop of `mdx.tableOfContents.items` we use the `depth` prop to style it to look nested
+whenever we have a nested item and we increment the value of `depth` passed to the component. Notice
+that we didn't increment `depth` but we incremented the value of `depth` passed as a prop to the
+component. To increment `depth` will be to increment and assign: `depth += 1` or `++depth`
 
 ```jsx
 export default BlogLayout = ({ data }) => {
@@ -135,4 +162,10 @@ export default BlogLayout = ({ data }) => {
 }
 ```
 
-We map through all the items and check if we have any nested items. If we don't have nested items, we return a list item of the current `item`. If we do have a nested item, since we are looking forward, we return two list items one for the current `item` and the other list item will contain a list of the nested items, which is handled by the recursion, so if something similar to what I just explained occurs again, our component already knows how to handle it. You may go ahead to further style things with any CSS styling approach you are comfortable working with, JSS, CSS-in-JS, SCSS or Vanilla flavour.
+We map through all the items and check if we have any nested items. If we don't have nested items,
+we return a list item of the current `item`. If we do have a nested item, since we are looking
+forward, we return two list items one for the current `item` and the other list item will contain a
+list of the nested items, which is handled by the recursion, so if something similar to what I just
+explained occurs again, our component already knows how to handle it. You may go ahead to further
+style things with any CSS styling approach you are comfortable working with, JSS, CSS-in-JS, SCSS or
+Vanilla flavour.
