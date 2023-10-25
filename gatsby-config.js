@@ -191,6 +191,12 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         entryLimit: 5000,
+        serialize: ({ path, modifiedGmt }) => {
+          return {
+            url: path + '/',
+            lastmod: modifiedGmt,
+          }
+        },
       },
     },
   ],

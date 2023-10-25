@@ -20,9 +20,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     createNodeField({
       name: 'slug',
       node,
-      value: `/blog${
-        node.frontmatter.slug ? `/${node.frontmatter.slug}/` : value
-      }`,
+      value: `/blog${node.frontmatter.slug ? `/${node.frontmatter.slug}/` : value}`,
     })
 
     createNodeField({
@@ -50,10 +48,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           }
         }
       }
-      tagsGroup: allMdx(
-        limit: 2000
-        filter: { frontmatter: { publish: { eq: true } } }
-      ) {
+      tagsGroup: allMdx(limit: 2000, filter: { frontmatter: { publish: { eq: true } } }) {
         group(field: frontmatter___tags) {
           fieldValue
         }
