@@ -5,12 +5,7 @@ import { Link } from 'gatsby'
 
 import SEO from '../../seo'
 import Presentation from './presentation'
-import {
-  gcx,
-  formatLargeNumber,
-  existsInFavorite,
-  saveFavorite,
-} from '../../../utils'
+import { gcx, formatLargeNumber, existsInFavorite, saveFavorite } from '../../../utils'
 import Layout from '..'
 import { useAvatar, useFav } from '../../hooks'
 
@@ -28,38 +23,30 @@ const shortcodes = { Link, SEO, Callout, Blockquote }
 const cx = gcx(blog)
 
 const runAnimation = () => {
-  const options = { root: null, rootMargin: '0px', threshold: 1.0 }
+  const options = { root: null, rootMargin: '0px', threshold: 0.9 }
   const codeTitles = document.querySelectorAll('.ninja-code-title')
   const animationClass = 'ninja-code-title-animate'
-  let [inFrameId, outFrameId] = [-1, -1]
 
-  codeTitles.forEach(codeTitleLabel => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const targetClassList = entry.target.classList
-
-        if (entry.isIntersecting) {
-          if (!targetClassList.contains(animationClass)) {
-            window.cancelAnimationFrame(inFrameId)
-            inFrameId = window.requestAnimationFrame(() => {
-              targetClassList.add(animationClass)
-            })
-          }
-        } else if (targetClassList.contains(animationClass)) {
-          window.cancelAnimationFrame(outFrameId)
-          outFrameId = window.requestAnimationFrame(() => {
-            targetClassList.remove(animationClass)
-          })
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const targetClassList = entry.target.classList
+      if (entry.isIntersecting) {
+        if (!targetClassList.contains(animationClass)) {
+          targetClassList.add(animationClass)
         }
-      })
-    }, options)
+      } else {
+        if (targetClassList.contains(animationClass)) {
+          targetClassList.remove(animationClass)
+        }
+      }
+    })
+  }, options)
 
-    observer.observe(codeTitleLabel)
-  })
+  codeTitles.forEach(codeTitleLabel => observer.observe(codeTitleLabel))
+  return () => observer.disconnect()
 }
 
-const useEnhancedEffect =
-  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
+const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
 
 const BlogLayout = ({ data: { mdx, site }, children }) => {
   const [faves, setFaves] = React.useState({ count: null, isFaved: false })
@@ -77,10 +64,7 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
       .catch(() => {})
   }, [favCount, mdx.frontmatter.title])
 
-  useEnhancedEffect(() => {
-    // changeSectionIcon()
-    runAnimation()
-  }, [])
+  useEnhancedEffect(() => runAnimation(), [])
 
   const { title, date, desc, featuredImage } = mdx.frontmatter
   const author = mdx.frontmatter.author || site.siteMetadata.author
@@ -147,10 +131,7 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
           />
 
           <div className={cx('article')}>
-            <main
-              className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')}
-              role="main"
-            >
+            <main className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')} role="main">
               <MDXProvider components={shortcodes}>{children}</MDXProvider>
             </main>
           </div>
@@ -165,7 +146,7 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
           className={cx('px3', 'pxMd5')}
         >
           <IntentShare intents={sharerIntents} className="mb5" />
-          <H as="3" serif={true}>
+          <H as="3" serif={false}>
             Recent Stunts
           </H>
           <Tape small />
