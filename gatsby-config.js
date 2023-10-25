@@ -194,7 +194,6 @@ module.exports = {
       options: {
         entryLimit: 5000,
         serialize: ({ path, modifiedGmt }) => {
-          console.log(path, modifiedGmt)
           return {
             url: SITE_URL + path + '/',
             lastmod: modifiedGmt,
