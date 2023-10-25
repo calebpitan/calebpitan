@@ -65,34 +65,19 @@ const Header = () => {
   const [firstname, lastname] = ['Caleb', ' Adepitan']
   return (
     <div className={cx('header', 'pl3', 'plMd5', 'pr3')}>
-      <header
-        className={cx('dFlex', 'flexColumn', 'flexMdRow', 'alignItemsCenter')}
-      >
+      <header className={cx('dFlex', 'flexColumn', 'flexMdRow', 'alignItemsCenter')}>
         <Link
           to="/"
           className="index-link"
           style={{ display: `inline-flex`, alignItems: `center` }}
         >
           <div
-            className={cx(
-              'headerName',
-              'dInlineBlock',
-              'flexShrink0',
-              'prMd3',
-              'mr3'
-            )}
+            className={cx('headerName', 'dInlineBlock', 'flexShrink0', 'prMd3', 'mr3')}
             aria-label={`${firstname} ${lastname}`}
           >
             <div className={cx('dFlex')}>
-              <div
-                className={cx(
-                  'dNone',
-                  'dMdInlineFlex',
-                  'alignItemsCenter',
-                  'mrMd3'
-                )}
-              >
-                <Logo width="32" height="32" />
+              <div className={cx('dNone', 'dMdInlineFlex', 'alignItemsCenter', 'mrMd3')}>
+                {/* <Logo width="32" height="32" /> */}
               </div>
               <span className={cx('firstname')}>{firstname} </span> {lastname}
             </div>
@@ -100,24 +85,10 @@ const Header = () => {
         </Link>
 
         <div
-          className={cx(
-            'dFlex',
-            'flexWrap',
-            'justifyContentCenter',
-            'mt3',
-            'mtMd0',
-            'mlMdAuto'
-          )}
+          className={cx('dFlex', 'flexWrap', 'justifyContentCenter', 'mt3', 'mtMd0', 'mlMdAuto')}
         >
           {links.map(({ to, text, icon }) => {
-            return (
-              <HeaderLink
-                to={to}
-                text={text}
-                icon={icon}
-                key={`key-for-${to}`}
-              />
-            )
+            return <HeaderLink to={to} text={text} icon={icon} key={`key-for-${to}`} />
           })}
         </div>
         <ThemeSwitch />
