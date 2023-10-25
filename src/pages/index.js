@@ -54,7 +54,7 @@ const IndexPage = () => {
           <Tape />
           <Intro />
           <Hr />
-          <H as="4" serif={true}>
+          <H as="4" serif={false}>
             Recent Stunts
           </H>
           <Tape small />

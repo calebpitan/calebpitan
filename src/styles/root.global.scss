@@ -3,7 +3,7 @@
 @import '~bootstrap/scss/bootstrap-reboot';
 
 :root {
-  --font-xxxlarge: 2.5rem;
+  --font-xxxlarge: 3.5rem;
   --font-xxlarge: 2rem;
   --font-xlarge: 1.5rem;
   --font-large: 1.2rem;
@@ -26,6 +26,7 @@
 
   --font-glyph-serif: 'Domine';
   --font-glyph-san-serif: 'Inter';
+  --font-glyph-body: 'Zilla Slab';
   --font-glyph-mono: 'Inconsolata';
   --font-glyph-display: 'Bodoni Moda';
 
@@ -36,12 +37,12 @@
   --font-family-code-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', SFMono-Regular, Menlo,
     Liberation Mono, Courier New, monospace;
 
-  --font-family-base: var(--font-glyph-san-serif), var(--font-family-base-default);
+  --font-family-base: var(--font-glyph-body), var(--font-family-base-default);
   --font-family-code: var(--font-glyph-mono), var(--font-family-code-default);
   --font-family-heading: var(--font-glyph-serif), var(--font-family-code-default);
   --font-family-display: var(--font-glyph-display), var(--font-family-code-default);
 
-  --paragraph-margin-bottom: 1.75rem;
+  --paragraph-margin-bottom: 2rem;
 
   --callout-info: #5050f5;
   --callout-info-bg: rgba(80, 80, 245, 0.2);
@@ -210,14 +211,24 @@ html {
   }
 }
 
+// The body selector before the hr selector is a hack to increase
+// selector specificity and override the loaded bootsrap styles
+// without using !important.
+body hr {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  @media (prefers-color-scheme: dark) {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
 a {
   &:hover {
     text-decoration: none;
   }
 
   &:not([class]) {
-    color: var(--fg-alt);
-    font-style: oblique;
+    color: var(--theme-color-sat);
     position: relative;
     box-shadow: 0 0.5px 0 0 var(--theme-color-sat);
     z-index: 1;
@@ -263,7 +274,7 @@ code {
  */
 .twitter-tweet.twitter-tweet-rendered {
   margin-inline: auto;
-  margin-block-end: 1.75rem !important;
+  margin-block-end: var(--paragraph-margin-bottom) !important;
 }
 
 /**
@@ -274,7 +285,7 @@ div:has(> iframe.giphy-embed) {
   height: auto !important;
   height: 480px !important;
   padding-bottom: 0 !important;
-  margin-block-end: 1.75rem !important;
+  margin-block-end: var(--paragraph-margin-bottom) !important;
   background-color: #000000;
   pointer-events: none;
 }
@@ -289,7 +300,7 @@ main {
     color: var(--fg-blend);
     border-left: 5px solid currentColor;
     padding: 0.25rem 1rem;
-    margin-bottom: 1.75rem;
+    margin-bottom: var(--paragraph-margin-bottom);
 
     p {
       font-style: italic;
@@ -301,7 +312,7 @@ main {
   ul,
   ol,
   iframe {
-    margin-bottom: 1.75rem;
+    margin-bottom: var(--paragraph-margin-bottom);
   }
 
   h2[id],
@@ -311,8 +322,8 @@ main {
   h6[id] {
     $svg-icon-height: 1.5rem;
 
-    font-family: 'Domine';
-    margin-bottom: 1.75rem;
+    font-family: var(--font-family-body);
+    margin-bottom: var(--paragraph-margin-bottom);
     position: relative;
 
     & a {
@@ -389,7 +400,7 @@ code[class*='language-'] {
 pre[class*='language-'],
 pre {
   font-size: 1rem;
-  margin: 0 0 1.75rem;
+  margin: 0 0 var(--paragraph-margin-bottom);
   padding: 1em;
   overflow: auto;
   border-radius: 5px;
@@ -451,13 +462,26 @@ pre {
  */
 
 .gatsby-highlight pre[class*='language-'].line-numbers {
-  padding: 0 5em;
-  padding-left: 2.8em;
-  overflow: initial;
-}
+  padding: 1em 5em;
+  padding-left: 0;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: min-content 1fr;
 
-.line-numbers .line-numbers-rows {
-  padding: 0 0 0 0.625em;
+  & code[class*='language-'] {
+    padding-left: 1em;
+  }
+
+  .line-numbers-rows {
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 0 0 0.625em;
+    background: inherit;
+    position: sticky;
+    z-index: 1;
+    order: -1;
+    left: 0;
+    top: 0;
+  }
 }
 
 .swiper-horizontal > .swiper-pagination-bullets,

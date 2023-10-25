@@ -36,21 +36,20 @@
 
 .title {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: bold;
   font-style: normal;
   font-size: var(--font-xxxlarge);
-  font-family: 'Domine', Ringside Regular A, Ringside Regular B, Rubik, Lato,
-    Lucida Grande, Lucida Sans Unicode, Tahoma, Sans-Serif;
+  font-family: var(--font-family-body);
   // text-transform: capitalize;
   margin: 0 0 1.5rem;
   display: block;
-  letter-spacing: 1px;
+  line-height: 1.2;
   z-index: 1;
 }
 
 .article-description {
   font-weight: 400;
-  font-family: Poppins;
+  font-family: var(--font-family-body);
   *font-style: italic;
   z-index: 1;
   max-width: 90%;
@@ -83,7 +82,7 @@
   z-index: 1;
   margin-top: 0.5rem;
   font-weight: 500;
-  font-family: 'Poppins';
+  font-family: var(--font-family-body);
 
   &:not(:last-of-type) {
     margin-right: 1em;
