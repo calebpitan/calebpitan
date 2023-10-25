@@ -1,0 +1,703 @@
+---
+title: Handling OAuth 2 Sign-In and  Sign-Up Distinctly with NextAuth.js
+author: Caleb Adepitan
+date: 2023-10-25T13:15:00.000Z
+last-modified: 2023-10-25T13:15:00.000Z
+featuredImage: access-control.jpg
+desc: |-
+  I think it's bad UX to implicitly create an account for a user when they only wish to sign in. 
+  NextAuth.js provides no distinction between authenticating an existing user and registering a new user
+  when using the OAuth flow with any of the available providers.
+tags:
+  - authentication
+  - oauth
+  - oauth2
+collection:
+  - Next.js
+  - JavaScript
+  - React
+publish: true
+slug: handling-oauth-2-sign-in-and-sign-up-distinctly-with-next-auth
+---
+
+[TL;DR](#3-using-good-ol-cookies)  
+[TFL;DR](#into-the-mire)
+
+Authentication, authorization, access control, and any other synonymous name you can think to call
+it, is not always a walk in the park. Through the evolution of the World Wide Web (WWW) and web
+applications, there have been various solutions to help make authentication a breeze. There have
+been, third-party services like [Auth0][auth0] that you can easily integrate with your apps without
+having to worry much about authentication and doing it right, or worry about security because these
+third-party services cover all of that. There have also been standards, and specifications like
+[OAuth][oauth2] and [OpenID Connect (OIDC)][open-id] which have evolved over the years. Some
+libraries and SDKs enable developers to easily integrate with these services, standards and
+specifications without worrying much about low-level implementation details. The only need-to-know
+is a subset of the SDK's APIs needed to meet the application requirements. [NextAuth.js][next-auth]
+is one of these libraries!
+
+<Blockquote data-cite="Caleb Adepitan">
+  I think it's bad UX to implicitly create an account for a user when they only wish to sign in.
+  NextAuth.js provides no distinction between authenticating an existing user and registering a new
+  user when using the OAuth flow with any of the available providers.
+</Blockquote>
+
+NextAuth.js is a complete open-source authentication solution for Next.js applications. It is
+designed from the ground up to support Next.js and Serverless.
+[https://next-auth.js.org/getting-started/introduction](https://next-auth.js.org/getting-started/introduction).
+This library makes integrating with several OAuth 2.0 providers, like Google, Apple, Facebook,
+Twitter (X), etc, a breeze.
+
+## So what's the problem?
+
+The problem is that I searched every nook and cranny in this library for a `signUp` function just
+like there's a `signIn` function and a `signOut` function, but I couldn't find a single one.
+
+It's expected that every application that has a way to sign in, should have a way to sign up.
+Sometimes, the sign-up flow isn't always obvious, especially when working with internal applications
+where there's a central admin that manages user's accounts. The admin mostly creates the account
+(sign up), and gives the user the credentials, while also prompting them to change their password on
+their first sign-in.
+
+> So why is there no `signUp` function?
+>
+> Because the `signUp` function is an [easter egg][easter-egg] and no one has found it yet!
+
+## A high-level view of the OAuth 2.0 flow
+
+Well it's thought that when a user follows the OAuth flow, say, using one of the providers like
+Google, they start with clicking a button that probably says, "Sign in with Google", then get
+redirected to a Google accounts page where they are required to sign in to their Google account or,
+if they are already signed in, they see a list of their signed-in accounts and choose one of them,
+then get redirected back to the originating page&mdash;at least that's what the user sees.
+
+What happens when this user doesn't have an existing account on the first-party app matching the
+returned email from Google, are we supposed to tell them "Account not found" or go ahead and
+implicitly create an account for them on our (first-party) app?
+
+<p>
+  It would seem the latter is the case when using NextAuth.js: if there's no account found by the
+  returned email address from Google, sign up the user immediately without wasting time because we
+  need to convert, and that's a plus one <abbr title="Daily Active Users">DAU</abbr> or&nbsp;
+  <abbr title="Monthly Active Users">MAU</abbr> or whatnot.
+</p>
+
+This is a bad UX!
+
+## Why I think this is a bad UX
+
+Oftentimes I come back to an application after not using it for a while or after not having to sign
+in for a while because I had a very long session before I was eventually logged out, and I can't
+remember how exactly I created an account, whether I used regular email and password credentials,
+"Sign in with Google", "Sign in with Apple", etc. I can't remember.
+
+I go ahead and guess the authentication method I used, I decide it was "Sign in with Google". So I
+click the "Sign in with Google" button and choose one of my Google accounts. But, whoops, it wasn't
+Google&mdash;a new account has, inadvertently, been created for me on the same app.
+
+> How did I know it's a new account?
+>
+> Are you really asking :(
+
+So I try again, just this time, with more certainty that my original account is using "Sign in with
+Apple". Thankfully, it sure is. What am I to do with the new account I just created?
+
+I [mentioned this][mentioned-this] in [an age-old discussion][no-sign-up-discussion] on NextAuth
+GitHub repo.
+
+## Figuring a way out of this bad UX
+
+We should understand the NextAuth.js flow for OAuth 2.0 flow. There's [an illustration on this
+linked page][next-auth-oauth-flow] that lays out the flow.
+
+In a nutshell, it goes to our `/api/auth/signin/[provider]` route handler first, then redirects to
+that specific provider page for you to complete the authentication, the provider then redirects to
+our `/api/auth/callback/[provider]` handler with some extra params about the authentication.
+
+### 1. Using `SignInOptions`
+
+First, I thought there should be a way to pass some custom options to the `signIn` function that
+would be accessible from the [callbacks][next-auth-callbacks], since the callbacks is where you do
+all the nifty tricks needed by your application.
+
+```tsx:title=SignUpPage.tsx
+signIn('google', { intent: 'signup' })
+```
+
+That was a dumb one! Calling that function with a provider other than `"credentials"` or `"email"`
+will redirect to the external provider. It doesn't immediately trigger any callback or a function
+like `authorize`, as in [CredentialsProvider][next-auth-credentials-provider], defined in our
+`nextAuthOptions` object. By the time the two-way redirect is complete, our initial context is lost.
+
+### 2. Using the `referer` header
+
+Another solution I thought of was to intercept the Next.js route handler ([Next.js 13 route
+handler][nextjs-13-route-handler] in my case) before passing the request to the NextAuth factory
+function and read the headers to check for the `referer` header. If it matches the route of my
+sign-up page then it's a sign-up the user intends, otherwise, it's a sign-in that the user intends.
+
+```ts:title=./api/auth/[...nextauth]/route.ts
+import { NextApiRequest, NextApiResponse } from 'next'
+import NextAuth from 'next-auth'
+import { headers } from 'next/headers'
+
+// assuming a `Routes` object that contains an enumeration of all or most routes in our app
+// assuming some arbitrary `getAuthOptions` factory function returning the NextAuth config options
+
+type AuthIntent = 'signin' | 'signup' // signin or signup
+
+const Routes = { SIGNUP: '/auth/signup', ..., };
+
+function getAuthOptions(intent: AuthIntent) {...}
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const headersList = headers()
+  const referer: string | null = headersList.get('referer') // https://hostname.tld/auth/signin
+  const intent = referer && new URL(referer).pathname === Routes.SIGNUP ? 'signup' : 'signin'
+  return await NextAuth(req, res, getAuthOptions(intent))
+}
+
+export { handler as GET, handler as POST }
+```
+
+This is also flawed for two reasons.
+
+1. There's not enough control over who can set the referer header and it's not always guaranteed to
+   be present so the referer header can sometimes be empty or may contain some unexpected value.
+2. Remember there's a redirect to Google from our handler and from Google back to our handler. At
+   the time we need the `referer` header set to one of sign-in or sign-up routes, is when our
+   handler is redirected to, from Google, and obviously, Google didn't even set a `referer`, even if
+   they did it wouldn't be any of our expected routes.
+
+> What other tricks can a developer draw from their book of tricks?
+>
+> How about a hat trick?
+>
+> Well, the third time is the charm!
+
+https://media.giphy.com/media/1wANL9kM16LyszJjms/giphy.gif
+
+### 3. Using good ol' cookies
+
+Not that I didn't think of cookies earlier, it just didn't seem like the best approach at the time.
+But since I couldn't figure out anything better that works, I had cookies as my fallback. Using
+cookies, we don't need to change much of what we had with the `referer` header in the route handler.
+
+```diff-ts:title=./api/auth/[...nextauth]/route.ts
+import { NextApiRequest, NextApiResponse } from 'next'
+import NextAuth from 'next-auth'
+- import { headers } from 'next/headers'
++ import { cookies } from 'next/headers'
++ import type { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+
+// assuming a `Routes` object that contains an enumeration of all or most routes in our app
+// assuming some arbitrary `getAuthOptions` factory function returning the NextAuth config options
+
+type AuthIntent = 'signin' | 'signup' // signin or signup
+
+- const Routes = { SIGNUP: '/auth/signup', ..., };
+
+function getAuthOptions(intent: AuthIntent) {...}
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+-  const headersList = headers()
+-  const referer: string | null = headersList.get('referer') // https://hostname.tld/auth/signin
+-  const intent = referer && new URL(referer).pathname === Routes.SIGNUP ? 'signup' : 'signin'
++  const cookieStore = cookies()
++  const authIntent: RequestCookie | undefined = cookieStore.get('auth-intent')
++  const intent = (authIntent?.value ?? 'signin') as AuthIntent
+  return await NextAuth(req, res, getAuthOptions(intent))
+}
+
+export { handler as GET, handler as POST }
+```
+
+Now that we have this on the server, how, where, and when do we exactly set this cookie we are
+getting here right now?
+
+We set this cookie in the respective pages just as immediately as the page is rendered on the
+client.
+
+<Callout type="info">
+<div>A notable library to use to deal with cookies on the browser is js-cookie.</div>
+<br/>
+
+```bash
+yarn add js-cookie
+# or
+npm install js-cookie
+```
+
+</Callout>
+
+---
+
+## Into the Mire
+
+It's time to get our hands dirty. I've intentionally kept the code snippets short and simple rather
+than writing the entire implementation. But I guess now is the time to put it all together. Yet,
+I'll be omitting some stuff, like JSX for pages, and go straight to the logic needed to show you the
+crux of this article, as this is not a tutorial on how to build authentication pages.
+
+I hate to write snippets with undefined references, but this is me letting you know upfront that
+there may be undefined references in this one if I think a pseudo-code is enough or the references
+are such that, however you write your implementation is up to you.
+
+> If you've been with me until this point and you know what you are doing, you probably have all you
+> need already and may not need the following sections. But if you are still trying to figure things
+> out, you may proceed, read on, to get an idea of my implementation with the hopes that it helps
+> bake yours.
+
+Our sign-up and sign-in logic will look like the following:
+
+```tsx:title=SignUpPage.tsx
+'use client';
+
+import { useEffect } from 'react'
+
+import Cookies from 'js-cookie';
+import { signIn } from 'next-auth/react';
+
+import { AppleButton, GoogleButton } from '@/components/buttons';
+import { createAccountService } from '@/services/account';
+
+export const SignUpForm = () => {
+  useEffect(() => {
+    // highlight-next-line
+    Cookies.set('auth-intent', 'signup');
+    return () => Cookies.remove('auth-intent');
+  }, []);
+
+  const handleSubmit = async (e: SubmitEvent) => {
+    // Handle credential flow submission here and send data to your API
+    const form = new FormData(e.target); // You're probably going to use `useState` or react-hook-form
+    // highlight-start
+    await createAccountService({ first_name: form.get('username'), ... });
+    await signIn('credentials', { email: form.get('email'), password: form.get('password') });
+    // highlight-end
+  }
+
+  return (
+    <form onSubmit={handleSumbit}>
+      <GoogleButton type="button" onClick={() => signIn('google')}>
+        Sign up with Google
+      </GoogleButton>
+
+      <AppleButton type="button" onClick={() => signIn('apple')}>
+        Sign up with Apple
+      </AppleButton>
+
+      {/* Other form inputs will go somewhere here */}
+    </form>
+  );
+};
+```
+
+<Callout type="info">
+  You may not need NextAuth.js to handle your credentials sign-up flow where users have to enter
+  first name, last name, email, password, etc. For the sign-up, NextAuth.js is handling the OAuth
+  flow only.
+</Callout>
+
+Looking at the highlighted lines, after setting the cookie, we have a credentials sign-in following
+the call to `createAccountService` because I'm assuming `createAccountService` doesn't return a
+session token, just the newly created user account object. So we have to follow up with a sign-in to
+get the session tokens. If your API returns session tokens when registering a user, you may move
+your user registration logic into the NextAuth.js flow (inside your auth options file, `options.ts`)
+so you can add those tokens to your NextAuth.js session without having to sign in again after
+registering.
+
+You are probably thinking that the `auth-intent` cookie is set to `"signup"`, and it would affect
+the call to `signIn` following it. No, it won't. The cookie is only needed by the OAuth flow but we
+are using the credentials flow here. But, again, if your API for registering users returns session
+tokens and you are handling your registration inside NextAuth.js, yes, this cookie may be necessary
+for your credentials flow, except you choose a different method to distinguish a sign-in from a
+sign-up, since you can pass data directly to your credentials provider handler using the `signIn`
+function.
+
+Soon we'll define the auth options which will contain the core logic. But first, let's talk about
+the sign-in page and the sign-in form:
+
+```tsx:title=SignInPage.tsx
+'use client';
+
+import { useEffect } from 'react'
+
+import Cookies from 'js-cookie';
+import { signIn } from 'next-auth/react';
+
+import { AppleButton, GoogleButton } from '@/components/buttons';
+
+export const SignInForm = () => {
+  useEffect(() => {
+    // highlight-next-line
+    Cookies.set('auth-intent', 'signin')
+    return () => Cookies.remove('auth-intent');
+  }, []);
+
+  const handleSubmit = async (e: SubmitEvent) => {
+    // Handle credential flow submission here and send data through NextAuth.js
+    const form = new FormData(e.target); // You're probably going to use `useState` or react-hook-form
+    // highlight-next-line
+    await signIn('credentials', { email: form.get('email'), password: form.get('password') });
+  }
+
+  return (
+    <form onSubmit={handleSumbit}>
+      <GoogleButton type="button" onClick={() => signIn('google')}>
+        Sign in with Google
+      </GoogleButton>
+
+      <AppleButton type="button" onClick={() => signIn('apple')}>
+        Sign in with Apple
+      </AppleButton>
+
+      {/* Other form inputs will go somewhere here */}
+    </form>
+  );
+};
+```
+
+<Callout type="info">
+  It's okay, in fact encouraged, to handle your credentials sign-in flow where users have to enter
+  username or email, and password with NextAuth.js. For the sign-in, NextAuth.js is handling both
+  the OAuth flow and the credentials flow.
+</Callout>
+
+Easy-peasy, nothing much to see here, we just had to call the sign-in function with the correct
+data, and oh, yes, set our `auth-intent` cookie.
+
+Now back to our route handler. Applying [our patch from above](#3-using-good-ol-cookies).
+
+```ts:title=./api/auth/[...nextauth]/route.ts
+import { NextApiRequest, NextApiResponse } from 'next';
+import NextAuth from 'next-auth';
+import { cookies } from 'next/headers';
+
+// highlight-next-line
+import type { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+
+import { getAuthOptions } from './options';
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const cookieStore = cookies();
+  const authIntent: RequestCookie | undefined = cookieStore.get('auth-intent');
+  const intent = (authIntent?.value ?? 'signin') as AuthIntent;
+  return await NextAuth(req, res, getAuthOptions(intent));
+}
+
+export { handler as GET, handler as POST };
+```
+
+<Callout type="info">
+  The highlighted import statement above isn't necessary. It's only there for the sake of this
+  article so you know `authIntent` could be either that type or `undefined`
+</Callout>
+
+We read the `auth-intent` from the request cookies to our route handler, which intercepts the
+NextAuth.js route handler, and pass it as an argument to the `getAuthOptions` factory function.
+
+We should talk about the `getAuthOptions` factory function which we define in our `options.ts` file.
+For our `options.ts` file, we'll write it chunk by chunk because it's quite long. We start with
+defining some imports. It is assumed that we have some service functions that we can use to send a
+request to our API on the backend:
+
+- The `authenticateAccountService` is a service used to authenticate a user using the credentials
+  flow, i.e., email, and password.
+- The `authenticateAccountOIDCService` is used to authenticate a user using an OAuth with OpenID
+  Connect flow, i.e., access_token, and id_token (for Google).
+- The `createAccountOIDCService` is used to create a user using an OAuth with OpenID Connect flow,
+  i.e., access_token, and id_token (for Google).
+- The `identifyUserAccountService` is used to fetch the user object provided that an access token
+  granted by our application is present.
+
+```typescript:title=options.ts {numberLines: true}
+import { AuthOptions, DefaultSession, Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import { BuiltInProviderType } from 'next-auth/providers/index';
+
+import { authenticateAccountService, authenticateAccountOIDCService } from '@/services/account';
+import { createAccountOIDCService, identifyUserAccountService } from '@/services/account';
+import { type SigninCredentials, type UserAccountResponse } from '@/services/account';
+```
+
+Let's take a short break from the `options.ts` file. We are going to do some [declaration
+merging][declaration-merging] to make sure the shape of NextAuth.js objects fits our needs. [A
+guide][next-auth-typescript-guide] is also available in the NextAuth.js documentation.
+
+```ts:title=types.ts
+import { DefaultSession } from 'next-auth';
+
+export interface AppToken {
+  id: string // user account id
+  type: string // Bearer
+  access_token: string
+  refresh_token: string
+}
+
+export interface AppSessionUser extends NonNullable<DefaultSession['user']> {
+  /** @note This is the user account ID generated by the application itself not `providerAccountId` */
+  id?: string;
+  /** @note This is the token generated by the application itself not any 3rd party */
+  tokens?: AppToken;
+}
+```
+
+```ts:title=@types/next-auth.d.ts
+import { AppSessionUser, AppToken } from './types';
+
+declare module 'next-auth' {
+  /** Returned by `useSession`, `getSession`, and `getServerSession` */
+  interface Session {
+    user: AppSessionUser;
+    tokens?: AppToken;
+  }
+
+  interface User {
+    /** Only present when using credentials provider */
+    tokens?: AppToken;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    tokens?: Token;
+  }
+}
+```
+
+Back to our `options.ts` file. We are going to define some utility functions and an enum of
+supported providers.
+
+```typescript:title=options.ts {numberLines: 10}
+export enum AccountProviderEnum {
+  GOOGLE = 'google',
+  APPLE = 'apple',
+}
+
+export const never = (_: never) => {
+  throw new Error('Unimplemented')
+}
+
+export const getAuthorization = (token: AppToken | null) =>
+  token ? `${token.type} ${token.access_token}` : undefined
+```
+
+We should define our credentials provider handler used in the `authorize` method. This function
+authenticates a user using their email, and password credentials, and uses the resulting token to
+get the user's identity by calling another function with it that returns the user account object. A
+subset of the data from the user account object is returned from this function:
+
+```typescript:title=options.ts {numberLines: 21}
+const authorize = async (credentials: SignInCredentials, _req: any) => {
+  const { data: token } = await authenticateAccountService(credentials)
+  const { data: identity } = await identifyUserAccountService({
+    headers: { Authorization: getAuthorization(token) },
+  })
+
+  const account = identity.data
+
+  // The returned value here becomes the user object in the `jwt` callback args (`params.user`)
+  // The `id` in this returned object is used to add a `sub` property to token (`params.token`)
+  return {
+    id: account.id,
+    email: account.email,
+    name: account.user.fullname,
+    image: account.avatar,
+    tokens: token,
+  }
+}
+```
+
+Next is our `jwt` callback, which gets called after a successful round trip&mdash;a two-way redirect
+to and from the OAuth provider&mdash;or after our `authorize` function in the credentials provider
+returns. We'll further split this `jwt` callback into a couple independent functions. We are
+handling just two things, or more technically "triggers", in our `jwt` callback: the `"signIn"`
+trigger and the `"update"` trigger. Our `signIn` trigger handles three things, which are the
+`"credentials"`, `"google"`, and `"apple"` providers, but I'll only be talking about the
+`"credentials"` and `"google"` providers.
+
+```typescript:title=options.ts {numberLines: 39}
+type JWTCallback = NonNullable<AuthOptions['callbacks']>['jwt'];
+type Params = Parameters<JWTCallback>[0];
+type Account = Params['account'];
+
+const googleHandler = async (account: Account, jwt: JWT, intent: AuthIntent) => {
+  let identity: UserAccountResponse | undefined = undefined;
+
+  if (!account.access_token || !account.id_token) {
+    throw new Error(`Access token and ID token are missing in the ${provider} provider`);
+  }
+
+  // You'll send this to your API where you verify the tokens, and get the user info
+  // to register them with, from Google's tokeninfo endpoint
+  const credentials = {
+    access_token: account.access_token,
+    id_token: account.id_token,
+    provider: AccountProviderEnum.GOOGLE,
+  };
+
+  // The intent passed to this factory function as received from the request cookies
+  switch (intent) {
+    case 'signin':
+      break; // noop
+    case 'signup':
+      ({ data: identity } = await createAccountOIDCService(credentials));
+      break;
+    default:
+      never(intent);
+  }
+
+  // After registration we'll still authenticate (signin) anyway.
+  // So "signin" case above is a no-op
+  const res = await authenticateAccountOIDCService(credentials)
+  const token = res.data
+
+  // identity will be undefined for intent="signin" but will
+  // be of type UserAccountResponse if "signup"
+  if (!identity) {
+    ({ data: identity } = await identifyUserAccountService({
+      headers: { Authorization: getAuthorization(token) },
+    }));
+  }
+
+  // Make sure you update the `sub` property of the token (jwt is params.token)
+  // to use the ID given to the user by your application rather than the provider
+  // account ID which is the user's Google account ID in this case
+  return { ...jwt, tokens: token, sub: identity.data.user.id };
+};
+```
+
+Since, I believe, our OAuth scope for Google is `user.profile user.email openid`, we get both an
+`access_token` and an `id_token`. We send these tokens with the name of the provider that granted
+them (google) to our backend where the tokens are verified and the user information is retrieved
+using [Google's tokeninfo endpoint][google-tokeninfo-endpoint] in this case.
+
+<Callout type="warn">
+  Make sure to check the `aud` field of both the access and id tokens. Check that it matches your
+  `GOOGLE_ID` (`GOOGLE_CLIENT_ID`).
+</Callout>
+
+When the `intent` we retrieved from the request cookies is `signup`, we create an account for the
+user using their credentials. Notice that in the case of `signin` it's a no-op, because whatever
+applies to the `signin` case here also applies to the `signup` case, and we don't want to repeat
+ourself, so we just wait to do it after the switch-case statement&mdash;we authenticate the user
+either ways to get their session tokens and add these tokens to the returned object, which is
+further used down the callbacks pipeline in making the eventual NextAuth.js session and also
+serialized to make the NextAuth.js JWT token, since we are not using a [database
+strategy][next-auth-database-strategy].
+
+<Callout type="info">
+  Make sure to override the existing `sub` field in the `params.token` from the original callback
+  which is passed into our function as `jwt` with the user ID generated by your application as the
+  default is the user's Google account ID.
+</Callout>
+
+```typescript:title=options.ts {numberLines: 87}
+const signInTrigger = async (params: Params, jwt: JWT, intent: AuthIntent) => {
+  const account = params.account!; // account is available when the trigger is "signIn"
+  const provider = account.provider as BuiltInProviderType;
+  const user = params.user; // user is available when the trigger is "signIn"
+
+  switch (provider) {
+    case 'credentials': {
+      // The application-provided token returned from the authorize method in the credentials provider
+      return { ...jwt, tokens: user.tokens };
+    }
+    case 'google': {
+      return await googleHandler(account, jwt, intent);
+    }
+    default:
+      // Our app only supports Google and Apple, although I'm skipping "apple" here
+      never(provider as never)
+      return jwt; // unreachable but typescript won't know
+  }
+}
+```
+
+The `signInTrigger` function is simple enough. Switch between providers for as many as are
+supported. The return statement in the default case is not necessary since `never` throws an error,
+but TypeScript can't see that. The return statement prevents our return signature from being unioned
+with `undefined`
+
+Whew, finally we arrive at our `getAuthOptions` function! We will go ahead now and define our
+`getAuthOptions` factory function.
+
+```typescript:title=options.ts {numberLines: 106}
+export const getAuthOptions: (intent: AuthIntent) => AuthOptions = (intent) => {
+  return {
+    pages: { signIn: Routes.SIGNIN, newUser: Routes.HOME },
+    providers: [
+      GoogleProvider({ clientId: GOOGLE_ID, clientSecret: GOOGLE_SECRET }),
+      CredentialsProvider({
+        credentials: {
+          email: { label: 'Email address', type: 'email' },
+          password: { label: 'Password', type: 'Password' },
+        },
+        async authorize(credentials: SignInCredentials | undefined, req) {
+          if (!credentials) return null;
+          return await authorize(credentials, req)
+        },
+      }),
+    ],
+    callbacks: {
+      async jwt(params) {
+        const jwt = params.token;
+        if (params.trigger === 'signIn') {
+          Object.assign(jwt, await signInTrigger(params, jwt, intent));
+        } else if (params.trigger === 'update') {
+          // TODO: validate params.session
+          const update: Session = params.session;
+
+          // When you update your session by refreshing your application tokens, for example.
+          Object.assign<JWT, JWT>(jwt, {
+            tokens: update.tokens,
+            email: update.user.email,
+            name: update.user.name,
+            picture: update.user.image,
+            sub: update.user.id,
+          });
+        }
+      },
+      session(params) {
+        // We've made mutations to params.token in the `jwt` callback
+        // We can access those mutated fields here and compose them to make our session object.
+        params.session.user.id = params.token.sub;
+        params.session.tokens = params.token.tokens;
+
+        // This is the eventual session object we get when using `useSession` or `getServerSession`
+        return params.session;
+      },
+    },
+  };
+};
+```
+
+No more explaining. Go figure!
+
+Ah, meh, that was a long one! Sh\*t got too real that I forgot to make even more jokes. But can't
+lie the hat-trick joke was too good. Then following it with that GIF where the third Spider-Man
+dropped in just to talk about the third attempt at a solution that does the trick. The third time
+is, really, always the charm.
+
+{/* _[SDK]: Software Development Kit _[API]: Application Programming Interface _[DAU]: Daily Active */}
+{/* Users _[MAU]: Monthly Active Users */}
+
+[auth0]: https://auth0.com/
+[oauth2]: https://oauth.net/2/
+[open-id]: https://openid.net/developers/how-connect-works/
+[next-auth]: https://next-auth.js.org/
+[easter-egg]: https://en.wikipedia.org/wiki/Easter_egg_(media)
+[mentioned-this]: https://github.com/nextauthjs/next-auth/discussions/945#discussioncomment-7325094
+[no-sign-up-discussion]: https://github.com/nextauthjs/next-auth/discussions/945
+[next-auth-oauth-flow]: https://next-auth.js.org/configuration/providers/oauth
+[next-auth-callbacks]: https://next-auth.js.org/configuration/callbacks
+[next-auth-credentials-provider]: https://next-auth.js.org/configuration/providers/credentials
+[nextjs-13-route-handler]:
+  https://nextjs.org/docs/app/building-your-application/routing/route-handlers
+[declaration-merging]: https://www.typescriptlang.org/docs/handbook/declaration-merging.html
+[next-auth-typescript-guide]: https://next-auth.js.org/getting-started/typescript
+[google-tokeninfo-endpoint]:
+  https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint
+[next-auth-database-strategy]: https://next-auth.js.org/configuration/options#session
