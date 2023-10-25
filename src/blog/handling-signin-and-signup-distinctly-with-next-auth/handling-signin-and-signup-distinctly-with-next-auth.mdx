@@ -451,12 +451,12 @@ declare module 'next-auth' {
   /** Returned by `useSession`, `getSession`, and `getServerSession` */
   interface Session {
     user: AppSessionUser;
-    tokens?: Token;
+    tokens?: AppToken;
   }
 
   interface User {
     /** Only present when using credentials provider */
-    tokens?: Token;
+    tokens?: AppToken;
   }
 }
 
