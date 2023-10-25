@@ -1,6 +1,8 @@
 const { shouldTransform, getHTML } = require('gatsby-remark-embedder/dist/transformers/GIPHY')
 const parse5 = require('parse5')
 
+const SITE_URL = 'https://www.calebpitan.com'
+
 module.exports = {
   trailingSlash: 'never',
   siteMetadata: {
@@ -12,7 +14,7 @@ module.exports = {
       `as a proprietor not a tenant. A place where I write about all the things I can think of,`,
       `and sometimes, even those I can't think of.`,
     ].join(' '),
-    siteUrl: 'https://www.calebpitan.com',
+    siteUrl: SITE_URL,
   },
 
   plugins: [
@@ -192,8 +194,9 @@ module.exports = {
       options: {
         entryLimit: 5000,
         serialize: ({ path, modifiedGmt }) => {
+          console.log(path, modifiedGmt)
           return {
-            url: path + '/',
+            url: SITE_URL + path + '/',
             lastmod: modifiedGmt,
           }
         },
