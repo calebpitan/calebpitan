@@ -32,6 +32,8 @@ const BlogWrapper = ({ children }) => {
             minHeight: `100vh`,
             background: `var(--bg)`,
             color: `var(--fg-alt)`,
+            maxWidth: `1920px`,
+            marginInline: `auto`,
           }}
         >
           {children}
