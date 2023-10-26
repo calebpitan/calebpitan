@@ -2,7 +2,7 @@
 title: Handling OAuth 2 Sign-In and  Sign-Up Distinctly with NextAuth.js
 author: Caleb Adepitan
 date: 2023-10-25T13:15:00.000Z
-last-modified: 2023-10-25T13:15:00.000Z
+last-modified: 2023-10-26T13:00:00.000Z
 featuredImage: access-control.jpg
 desc: |-
   I think it's bad UX to implicitly create an account for a user when they only wish to sign in. 
@@ -12,6 +12,10 @@ tags:
   - authentication
   - oauth
   - oauth2
+  - NextAuth.js
+  - Next.js
+  - nextjs
+  - next-auth
 collection:
   - Next.js
   - JavaScript
@@ -490,7 +494,7 @@ get the user's identity by calling another function with it that returns the use
 subset of the data from the user account object is returned from this function:
 
 ```typescript:title=options.ts {numberLines: 21}
-const authorize = async (credentials: SignInCredentials, _req: any) => {
+const authorizeHandler = async (credentials: SignInCredentials, _req: any) => {
   const { data: token } = await authenticateAccountService(credentials)
   const { data: identity } = await identifyUserAccountService({
     headers: { Authorization: getAuthorization(token) },
@@ -637,7 +641,7 @@ export const getAuthOptions: (intent: AuthIntent) => AuthOptions = (intent) => {
         },
         async authorize(credentials: SignInCredentials | undefined, req) {
           if (!credentials) return null;
-          return await authorize(credentials, req)
+          return await authorizeHandler(credentials, req)
         },
       }),
     ],
