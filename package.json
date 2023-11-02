@@ -61,7 +61,7 @@
     "gatsby-remark-shiki": "^0.2.1",
     "gatsby-remark-smartypants": "^5.24.0",
     "gatsby-source-filesystem": "^4.24.0",
-    "gatsby-transformer-remark": "^5.24.0",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^4.24.0",
     "lodash": "^4.17.21",
     "node-fetch": "^3.2.10",
