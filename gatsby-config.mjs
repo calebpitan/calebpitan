@@ -1,9 +1,11 @@
-const { shouldTransform, getHTML } = require('gatsby-remark-embedder/dist/transformers/GIPHY')
-const parse5 = require('parse5')
+import { shouldTransform, getHTML } from 'gatsby-remark-embedder/dist/transformers/GIPHY.js'
+import * as parse5 from 'parse5'
+import  remarkGfm from 'remark-gfm'
+import * as sass from 'sass'
 
 const SITE_URL = 'https://www.calebpitan.com'
 
-module.exports = {
+const config =  {
   trailingSlash: 'never',
   siteMetadata: {
     title: `Caleb Adepitan`,
@@ -24,24 +26,25 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${__dirname}/src/images`,
+        path: `./src/images`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `pages`,
-        path: `${__dirname}/src/pages/`,
+        path: `./src/pages/`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `posts`,
-        path: `${__dirname}/src/blog/`,
+        path: `./src/blog/`,
       },
     },
 
+    `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     // `gatsby-transformer-json`,
@@ -62,7 +65,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sass`,
       options: {
-        implementation: require('sass'),
+        implementation: sass,
         // Override the file regex for SASS
         sassRuleTest: /\.global\.s(a|c)ss$/,
         // Override the file regex for CSS modules
@@ -79,6 +82,9 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
+        mdxOptions: {
+          remarkPlugins: [remarkGfm]
+        },
         gatsbyRemarkPlugins: [
           `gatsby-remark-smartypants`,
           { resolve: `gatsby-remark-images`, options: { maxWidth: 1200 } },
@@ -203,3 +209,5 @@ module.exports = {
     },
   ],
 }
+
+export default config
