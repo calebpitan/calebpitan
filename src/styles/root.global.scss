@@ -85,7 +85,7 @@
   --fg-muted: #{$fg-muted-night};
   --fg-faded: #b1bac0;
   --fg-blend: #{$fg-blend-night};
-  --fg-inline-code: #c792ea;
+  --fg-inline-code: #86874f;
 
   --selection: var(--theme-color-35);
   --shade: #{$shade-night};
@@ -97,6 +97,7 @@
   --presentation-stop-alpha: #{transparentize($bg-night, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-night, 0.1)};
   --presentation-stop-gamma: var(--bg-article);
+  --border-color: #303132;
 }
 
 @mixin light-theme {
@@ -124,7 +125,7 @@
   --fg-muted: #{$fg-muted-day};
   --fg-faded: #b1bac0;
   --fg-blend: #{$fg-blend-day};
-  --fg-inline-code: #ad2896;
+  --fg-inline-code: #3b5988;
 
   --selection: var(--theme-color-15);
   --shade: #{$shade-day};
@@ -136,11 +137,15 @@
   --presentation-stop-alpha: #{transparentize($bg-day, 0.5)};
   --presentation-stop-beta: #{transparentize($bg-day, 0.1)};
   --presentation-stop-gamma: var(--bg-article);
+  --border-color: #edf2f7;
 }
 
 html {
   &.dark {
     @include night-theme;
+    main[data-article='blog'] img {
+      filter: brightness(0.7);
+    }
   }
 
   &.light {
@@ -151,6 +156,11 @@ html {
 @media (prefers-color-scheme: dark) {
   html {
     @include night-theme;
+    &:not(.light) {
+      main[data-article='blog'] img {
+        filter: brightness(0.7);
+      }
+    }
   }
 }
 
@@ -248,6 +258,7 @@ code {
   border-radius: 5px;
   word-break: break-word;
   font-family: var(--font-family-code);
+  font-weight: 700;
 }
 
 .compact-content {
@@ -295,7 +306,7 @@ div:has(> iframe.giphy-embed) {
  * the <article> element <main> child
  */
 
-main {
+main[data-article='blog'] {
   blockquote:not([class]) {
     color: var(--fg-blend);
     border-left: 5px solid currentColor;
@@ -308,10 +319,10 @@ main {
     }
   }
 
-  p,
-  ul,
-  ol,
-  iframe {
+  & > p,
+  & > ul,
+  & > ol,
+  & > iframe {
     margin-bottom: var(--paragraph-margin-bottom);
   }
 
@@ -399,7 +410,7 @@ code[class*='language-'] {
 
 pre[class*='language-'],
 pre {
-  font-size: 1rem;
+  font-size: 0.875rem;
   margin: 0 0 var(--paragraph-margin-bottom);
   padding: 1em;
   overflow: auto;
@@ -462,7 +473,7 @@ pre {
  */
 
 .gatsby-highlight pre[class*='language-'].line-numbers {
-  padding: 1em 5em;
+  // padding: 1em 5em;
   padding-left: 0;
   overflow: auto;
   display: grid;
