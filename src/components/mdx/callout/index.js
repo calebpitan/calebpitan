@@ -2,7 +2,7 @@ import * as React from 'react'
 import { MdInfoOutline, MdErrorOutline } from 'react-icons/md'
 import { FiAlertTriangle } from 'react-icons/fi'
 
-import { gcx } from '../../utils'
+import { gcx } from '../../../utils'
 
 import * as callout from './callout.mod.scss'
 
@@ -17,15 +17,14 @@ const Signal = {
   },
 }
 
-const Callout = ({ type = 'info', message, children }) => {
+export const Callout = ({ type = 'info', message, children }) => {
   return (
     <div className={cx('callout', type)}>
       <span className={cx('signal')}>{Signal.getSignal(type)}</span>
       <div className={cx('calloutInner')}>
-        <p>{children || message}</p>
+        {children || message}
       </div>
     </div>
   )
 }
 
-export default Callout
