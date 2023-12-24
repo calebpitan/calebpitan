@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Img from 'gatsby-image'
+import {GatsbyImage} from 'gatsby-plugin-image'
 
 import SubjectImage from '../../subject-image'
 import { gcx } from '../../../utils'
@@ -71,7 +71,7 @@ const Presentation = ({
             <div className={cx('dFlex', 'alignItemsCenter', 'mrAuto')}>
               <div className={cx('metaItem')}>
                 <SubjectImage className={cx('authorAvatar')}>
-                  <Img fluid={authorAvatar.childImageSharp.fluid} />
+                  <GatsbyImage image={authorAvatar.childImageSharp.gatsbyImageData} />
                 </SubjectImage>
               </div>
 

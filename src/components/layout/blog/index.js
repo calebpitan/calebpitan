@@ -6,19 +6,18 @@ import { Link } from 'gatsby'
 import SEO from '../../seo'
 import Presentation from './presentation'
 import { gcx, formatLargeNumber, existsInFavorite, saveFavorite } from '../../../utils'
-import Layout from '..'
+import Layout from '../index'
 import { useAvatar, useFav } from '../../hooks'
 
 import IntentShare from './share'
 import RecentPost from '../../recent-post'
 import H from '../../heading'
 import Tape from '../../tape'
-import Blockquote from '../../blockquote'
-import Callout from '../../callout'
+import {Blockquote, Callout, Table} from '../../mdx'
 
 import * as blog from './blog.mod.scss'
 
-const shortcodes = { Link, SEO, Callout, Blockquote }
+const shortcodes = { table: Table, Link, SEO, Callout, Blockquote }
 
 const cx = gcx(blog)
 
@@ -131,7 +130,7 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
           />
 
           <div className={cx('article')}>
-            <main className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')} role="main">
+            <main data-article="blog" className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')} role="main">
               <MDXProvider components={shortcodes}>{children}</MDXProvider>
             </main>
           </div>
@@ -171,6 +170,7 @@ export const pageQuery = graphql`
         slug
         featuredImage {
           childImageSharp {
+            gatsbyImageData(layout: FIXED, quality: 80, width: 800)
             fixed(width: 800, quality: 80) {
               ...GatsbyImageSharpFixed_withWebp
             }

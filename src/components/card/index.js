@@ -6,7 +6,7 @@ import { gcx } from '../../utils'
 import H from '../heading'
 
 import SubjectImage from '../subject-image'
-import Img from 'gatsby-image'
+import {GatsbyImage} from 'gatsby-plugin-image'
 
 import * as card from './card.mod.scss'
 
@@ -29,7 +29,7 @@ const Card = ({ title, excerpt, author, avatar, slug, date, className, height })
 
       <div className={cx('dFlex', 'alignItemsCenter', 'cardMeta', 'mtAuto')}>
         <SubjectImage className={cx('cardAvatar')} avatar>
-          <Img fluid={avatar.childImageSharp.fluid} draggable={false} />
+          <GatsbyImage image={avatar.childImageSharp.gatsbyImageData} draggable={false} />
         </SubjectImage>
 
         <div className={cx('dFlex', 'flexColumn', 'mt3')}>

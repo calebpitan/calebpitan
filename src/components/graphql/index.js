@@ -7,7 +7,7 @@ export const First6ixPosts = ({ children }) => {
       query={graphql`
         query {
           allMdx(
-            sort: { fields: frontmatter___date, order: DESC }
+            sort: { frontmatter: { date: DESC } }
             limit: 6
             filter: { frontmatter: { publish: { eq: true } } }
           ) {

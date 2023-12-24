@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Img from 'gatsby-image'
+import {GatsbyImage} from 'gatsby-plugin-image'
 
 import Layout from '../components/layout'
 import SEO from '../components/seo'
@@ -28,7 +28,7 @@ const IndexPage = () => {
       <div className={cx('dMdFlex')}>
         <div className={cx('px3')}>
           <SubjectImage>
-            <Img fluid={avatar.childImageSharp.fluid} draggable={false} />
+            <GatsbyImage image={avatar.childImageSharp.gatsbyImageData} draggable={false} />
           </SubjectImage>
 
           <div className={cx('px3')}>

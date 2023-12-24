@@ -82,7 +82,7 @@ export const allMdxFragment = graphql`
 export const pageQuery = graphql`
   query {
     allMdx(
-      sort: { fields: frontmatter___date, order: DESC }
+      sort: { frontmatter: { date: DESC } }
       limit: 20
       filter: { frontmatter: { publish: { eq: true } } }
     ) {

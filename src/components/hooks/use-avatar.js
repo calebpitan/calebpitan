@@ -7,6 +7,7 @@ const useAvatar = () => {
         relativePath: { eq: "81153E5A-244B-459D-8B8D-E3AB6355C0AD.jpeg" }
       ) {
         childImageSharp {
+          gatsbyImageData(layout: FULL_WIDTH, quality: 100, aspectRatio: 0.75)
           fluid(maxWidth: 600, quality: 100) {
             ...GatsbyImageSharpFluid_withWebp_tracedSVG
           }

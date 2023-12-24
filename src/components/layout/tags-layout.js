@@ -73,7 +73,7 @@ export const pageQuery = graphql`
   query TagsQuery($tag: String) {
     allMdx(
       limit: 2000
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { tags: { in: [$tag] }, publish: { eq: true } } }
     ) {
       totalCount

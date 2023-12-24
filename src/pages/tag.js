@@ -55,7 +55,7 @@ const Tag = ({
 export const pageQuery = graphql`
   query {
     allMdx(limit: 2000, filter: { frontmatter: { publish: { eq: true } } }) {
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
         totalCount
       }
