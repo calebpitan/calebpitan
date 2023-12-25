@@ -131,6 +131,7 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
 
           <div className={cx('article')}>
             <main
+              id="article"
               data-article="blog"
               className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')}
               role="main"
