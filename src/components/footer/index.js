@@ -14,18 +14,10 @@ const Footer = () => {
       <div className={cx('mt5')}></div>
       <footer className={cx('footer', 'pb4')}>
         <FindMeOn />
-        <div
-          className={cx(
-            'footerContent',
-            'dFlex',
-            'flexColumn',
-            'alignItemsCenter',
-            'p3'
-          )}
-        >
+        <div className={cx('footerContent', 'dFlex', 'flexColumn', 'alignItemsCenter', 'p3')}>
           <p className={cx('textCenter')}>
-            Built with all the love in the world and outside it. I mean aliens
-            are capable of love too!
+            Built with all the love in the world and outside it. I mean aliens are capable of love
+            too!
           </p>
           &copy; Caleb Adepitan {new Date().getFullYear()}
         </div>

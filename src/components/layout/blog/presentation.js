@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {GatsbyImage} from 'gatsby-plugin-image'
+import { GatsbyImage } from 'gatsby-plugin-image'
 
 import SubjectImage from '../../subject-image'
 import { gcx } from '../../../utils'
@@ -62,11 +62,7 @@ const Presentation = ({
               {title}
             </span>
 
-            <div
-              className={cx('articleDescription', 'textMuted', 'mtN3', 'mb4')}
-            >
-              {desc}
-            </div>
+            <div className={cx('articleDescription', 'textMuted', 'mtN3', 'mb4')}>{desc}</div>
 
             <div className={cx('dFlex', 'alignItemsCenter', 'mrAuto')}>
               <div className={cx('metaItem')}>

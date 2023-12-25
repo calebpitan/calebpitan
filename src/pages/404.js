@@ -9,10 +9,7 @@ import RecentPost from '../components/recent-post'
 const LostInMars = () => {
   return (
     <Layout>
-      <SEO
-        title="404: Not found"
-        meta={[{ name: `robots`, content: `noindex` }]}
-      />
+      <SEO title="404: Not found" meta={[{ name: `robots`, content: `noindex` }]} />
       <div
         style={{
           maxWidth: `var(--compact-width-small)`,
@@ -24,9 +21,8 @@ const LostInMars = () => {
         <div style={{ textAlign: `center` }}>
           <H as="1">404 Unlocked!</H>
           <p style={{ fontSize: `1.2rem` }}>
-            Oh, ooops! Fellow Martian, seems your rover stopped pinging the
-            radar, but I'm glad to tell; you just discovered a fourohfour
-            artefact.
+            Oh, ooops! Fellow Martian, seems your rover stopped pinging the radar, but I'm glad to
+            tell; you just discovered a fourohfour artefact.
           </p>
         </div>
 

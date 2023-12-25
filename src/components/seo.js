@@ -18,17 +18,7 @@ const TWITTER_USER = `@realongman`
 
 const THEME = getTheme()
 
-function SEO({
-  description,
-  lang,
-  themeMode,
-  meta,
-  keywords = [],
-  title,
-  image,
-  isHome,
-  url,
-}) {
+function SEO({ description, lang, themeMode, meta, keywords = [], title, image, isHome, url }) {
   const [prefersDarkScheme, setPrefersDarkScheme] = React.useState(() => {
     return typeof window !== 'undefined'
       ? window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -49,20 +39,18 @@ function SEO({
   }, [])
 
   const theme = React.useContext(ThemeContext)
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-            siteUrl
-          }
+  const { site } = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          title
+          description
+          author
+          siteUrl
         }
       }
-    `
-  )
+    }
+  `)
 
   const { icon } = useIcon()
   const defaultImage = icon.childImageSharp.fixed.src
@@ -147,8 +135,8 @@ function SEO({
             theme === 'light'
               ? '#ffffff'
               : theme === 'dark' || prefersDarkScheme
-              ? '#010001'
-              : '#ffffff',
+                ? '#010001'
+                : '#ffffff',
         },
       ]
         .concat(og, twitter)

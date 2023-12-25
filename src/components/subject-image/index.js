@@ -48,14 +48,8 @@ const SubjectImage = ({ children, className }) => {
   const flexWidth = refWidth - widthFlex
   const flexHeight = refHeight - heightFlex
 
-  const erx = scaleSizeToViewBox(
-    flexWidth / 2 + refWidth * PADDING_RATE,
-    refWidth
-  )
-  const ery = scaleSizeToViewBox(
-    flexHeight / 2 + refHeight * PADDING_RATE,
-    refHeight
-  )
+  const erx = scaleSizeToViewBox(flexWidth / 2 + refWidth * PADDING_RATE, refWidth)
+  const ery = scaleSizeToViewBox(flexHeight / 2 + refHeight * PADDING_RATE, refHeight)
   const ecx = scaleSizeToViewBox(erx + (refWidth - erx * 2) / 2, refWidth)
   const ecy = scaleSizeToViewBox(ery + (refHeight - ery * 2) / 2, refHeight)
 

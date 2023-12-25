@@ -6,7 +6,7 @@ import { gcx } from '../../utils'
 import H from '../heading'
 
 import SubjectImage from '../subject-image'
-import {GatsbyImage} from 'gatsby-plugin-image'
+import { GatsbyImage } from 'gatsby-plugin-image'
 
 import * as card from './card.mod.scss'
 

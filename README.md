@@ -2,6 +2,6 @@
 
 Hello there!
 
-Yikes! 
+Yikes!
 
 You are psychic, you READ ME!

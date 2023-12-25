@@ -10,8 +10,7 @@ import { gcx } from '../utils'
 
 const cx = gcx()
 
-const sortAtoZ = (a, b) =>
-  a.fieldValue.toLowerCase() > b.fieldValue.toLowerCase() ? 1 : -1
+const sortAtoZ = (a, b) => (a.fieldValue.toLowerCase() > b.fieldValue.toLowerCase() ? 1 : -1)
 
 const Tag = ({
   data: {
@@ -26,14 +25,7 @@ const Tag = ({
         <Tape />
 
         <div>
-          <ul
-            className={cx(
-              'dFlex',
-              'flexWrap',
-              'justifyContentEvenly',
-              'listUnstyled'
-            )}
-          >
+          <ul className={cx('dFlex', 'flexWrap', 'justifyContentEvenly', 'listUnstyled')}>
             {group.sort(sortAtoZ).map(tag => (
               <li
                 className={cx('flexShrink0', 'mr2')}

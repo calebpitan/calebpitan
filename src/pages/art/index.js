@@ -81,17 +81,12 @@ const ArtPage = ({ data }) => {
       </style>
       <div className={cx('galaxy', 'dFlex', 'flexColumn')}>
         <div className={cx('artHero', 'px3', 'py5', 'mxAuto')}>
-          <H
-            as="1"
-            className={cx('textCenter', 'fontWeightBold', 'heroHeading')}
-            serif={true}
-          >
+          <H as="1" className={cx('textCenter', 'fontWeightBold', 'heroHeading')} serif={true}>
             Absorb the art to heart
           </H>
           <p>
-            Every thing around us has some intrinsic values that takes a
-            creative mind to explore. Even engineering is an art, tell me what's
-            not.
+            Every thing around us has some intrinsic values that takes a creative mind to explore.
+            Even engineering is an art, tell me what's not.
           </p>
           <div
             className={cx(
@@ -122,40 +117,30 @@ const ArtPage = ({ data }) => {
         </div>
 
         <div className={cx('artLayer')}>
-          <div
-            className={cx('artImages', 'py5', 'mx4', 'mxMd5')}
-            style={{ '--columns': columns }}
-          >
+          <div className={cx('artImages', 'py5', 'mx4', 'mxMd5')} style={{ '--columns': columns }}>
             {new Array(columns).fill(0).map((_, columnIndex) => {
               const rows = edges.splice(0, elementsPerColumn.current)
               return (
                 <div key={columnIndex}>
-                  {rows.map(
-                    ({ node: { childImageSharp, relativePath } }, rowIndex) => {
-                      return (
-                        <div
-                          className={cx('artImageView', 'my4')}
-                          key={relativePath}
-                          onClick={() =>
-                            handleClick(
-                              elementsPerColumn.current * columnIndex + rowIndex
-                            )
-                          }
-                        >
-                          <Img
-                            fluid={childImageSharp.fluid}
-                            draggable={false}
-                          />
-                          {/* <div className={cx('artImageCaption')}>
+                  {rows.map(({ node: { childImageSharp, relativePath } }, rowIndex) => {
+                    return (
+                      <div
+                        className={cx('artImageView', 'my4')}
+                        key={relativePath}
+                        onClick={() =>
+                          handleClick(elementsPerColumn.current * columnIndex + rowIndex)
+                        }
+                      >
+                        <Img fluid={childImageSharp.fluid} draggable={false} />
+                        {/* <div className={cx('artImageCaption')}>
                           <span>
                             Yes! Here is a very dope caption for this art, wow
                             don't
                           </span>
                         </div> */}
-                        </div>
-                      )
-                    }
-                  )}
+                      </div>
+                    )
+                  })}
                 </div>
               )
             })}

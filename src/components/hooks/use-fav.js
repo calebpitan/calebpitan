@@ -6,16 +6,13 @@ const useFav = () => {
   return React.useMemo(
     () => ({
       async fav(title, postUrl) {
-        const res = await fetch(
-          `${FIREBASE_CLOUD_FUNCTIONS_BASEURL}/favorite/`,
-          {
-            method: 'POST',
-            body: JSON.stringify({ stunt: kebabCase(title), postUrl }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const res = await fetch(`${FIREBASE_CLOUD_FUNCTIONS_BASEURL}/favorite/`, {
+          method: 'POST',
+          body: JSON.stringify({ stunt: kebabCase(title), postUrl }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         return await res.json()
       },
 
@@ -33,16 +30,13 @@ const useFav = () => {
       },
 
       async favTotalCount() {
-        const res = await fetch(
-          `${FIREBASE_CLOUD_FUNCTIONS_BASEURL}/favorite`,
-          {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const res = await fetch(`${FIREBASE_CLOUD_FUNCTIONS_BASEURL}/favorite`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         return await res.json()
       },
     }),

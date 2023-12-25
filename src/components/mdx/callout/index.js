@@ -21,10 +21,7 @@ export const Callout = ({ type = 'info', message, children }) => {
   return (
     <div className={cx('callout', type)}>
       <span className={cx('signal')}>{Signal.getSignal(type)}</span>
-      <div className={cx('calloutInner')}>
-        {children || message}
-      </div>
+      <div className={cx('calloutInner')}>{children || message}</div>
     </div>
   )
 }
-

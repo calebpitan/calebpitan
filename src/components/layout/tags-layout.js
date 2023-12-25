@@ -13,9 +13,7 @@ const cx = gcx()
 const TagsLayout = ({ pageContext, data }) => {
   const { tag } = pageContext
   const { edges, totalCount } = data.allMdx
-  const tagHeader = `${totalCount} post${
-    totalCount === 1 ? '' : 's'
-  } tagged "${tag}"`
+  const tagHeader = `${totalCount} post${totalCount === 1 ? '' : 's'} tagged "${tag}"`
 
   return (
     <Layout>

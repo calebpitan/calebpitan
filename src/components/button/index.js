@@ -13,31 +13,13 @@ const BUTTONS = {
   LARGE: 'btnLarge',
 }
 
-const Button = ({
-  children,
-  className,
-  text,
-  size,
-  alt,
-  link,
-  to,
-  disabled,
-  ...rest
-}) => {
+const Button = ({ children, className, text, size, alt, link, to, disabled, ...rest }) => {
   return !link ? (
-    <button
-      className={cx('btn', size, { normal: alt }, className)}
-      disabled={disabled}
-      {...rest}
-    >
+    <button className={cx('btn', size, { normal: alt }, className)} disabled={disabled} {...rest}>
       {children || text}
     </button>
   ) : (
-    <Link
-      to={to}
-      className={cx('btn', size, { link, normal: alt }, className)}
-      {...rest}
-    >
+    <Link to={to} className={cx('btn', size, { link, normal: alt }, className)} {...rest}>
       {children || text}
     </Link>
   )
@@ -45,17 +27,10 @@ const Button = ({
 
 Button.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]),
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   text: PropTypes.string,
   size: PropTypes.oneOf([BUTTONS.SMALL, BUTTONS.MED, BUTTONS.LARGE]),
-  variant: PropTypes.oneOf([
-    BUTTONS.PRIMARY,
-    BUTTONS.SECONDARY,
-    BUTTONS.NORMAL,
-  ]),
+  variant: PropTypes.oneOf([BUTTONS.PRIMARY, BUTTONS.SECONDARY, BUTTONS.NORMAL]),
   alt: PropTypes.bool,
   link: PropTypes.bool,
   to: PropTypes.string,

@@ -4,9 +4,7 @@ import PropTypes from 'prop-types'
 import * as tape from './tape.mod.scss'
 
 const Tape = ({ small }) => {
-  return (
-    <div className={small ? tape.tapeSmall : tape.tape} aria-hidden="true" />
-  )
+  return <div className={small ? tape.tapeSmall : tape.tape} aria-hidden="true" />
 }
 
 Tape.propTypes = {

@@ -13,7 +13,7 @@ import IntentShare from './share'
 import RecentPost from '../../recent-post'
 import H from '../../heading'
 import Tape from '../../tape'
-import {Blockquote, Callout, Table} from '../../mdx'
+import { Blockquote, Callout, Table } from '../../mdx'
 
 import * as blog from './blog.mod.scss'
 
@@ -130,7 +130,11 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
           />
 
           <div className={cx('article')}>
-            <main data-article="blog" className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')} role="main">
+            <main
+              data-article="blog"
+              className={cx('articleContentMain', 'px3', 'pxMd5', 'pt5', 'pb3')}
+              role="main"
+            >
               <MDXProvider components={shortcodes}>{children}</MDXProvider>
             </main>
           </div>

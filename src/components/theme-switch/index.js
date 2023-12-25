@@ -1,9 +1,5 @@
 import * as React from 'react'
-import {
-  MdBrightnessAuto,
-  MdBrightnessHigh,
-  MdBrightness4,
-} from 'react-icons/md'
+import { MdBrightnessAuto, MdBrightnessHigh, MdBrightness4 } from 'react-icons/md'
 
 import Button from '../button'
 import { ThemeContext, useThemeToggle } from '../wrapper'
@@ -44,8 +40,7 @@ const ThemeSwitch = () => {
   const getNextTheme = () => {
     const orderOfThemeSelection = Object.values(THEMES)
     const indexOfNextTheme =
-      (orderOfThemeSelection.indexOf(currentTheme) + 1) %
-      orderOfThemeSelection.length
+      (orderOfThemeSelection.indexOf(currentTheme) + 1) % orderOfThemeSelection.length
     const nextTheme = orderOfThemeSelection[indexOfNextTheme]
     return nextTheme
   }

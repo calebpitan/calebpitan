@@ -49,7 +49,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         }
       }
       tagsGroup: allMdx(limit: 2000, filter: { frontmatter: { publish: { eq: true } } }) {
-        group(field: { frontmatter: { tags: SELECT } } ) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           fieldValue
         }
       }
