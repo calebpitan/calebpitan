@@ -5,7 +5,7 @@
  */
 code[class*='language-'],
 pre[class*='language-'] {
-  color: #abb2bf;
+  color: var(--code-block-color);
   font-style: normal;
   background: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -55,7 +55,7 @@ pre[class*='language-'] {
 
 :not(pre) > code[class*='language-'],
 pre[class*='language-'] {
-  background: #141414;
+  background: var(--code-block-bgcolor);
 }
 
 /* Inline code */
@@ -69,21 +69,21 @@ pre[class*='language-'] {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #5c6370;
+  color: var(--code-block-comment);
 }
 
 .token.punctuation {
-  color: #abb2bf;
+  color: var(--code-block-punctuation);
 }
 
 .token.selector,
 .token.tag {
-  color: #f07178;
+  color: var(--code-block-tag);
 }
 
 .token.class-name,
 .token.builtin {
-  color: #ffcb6b;
+  color: var(--code-block-builtin);
 }
 
 .token.property,
@@ -93,14 +93,14 @@ pre[class*='language-'] {
 .token.symbol,
 .token.attr-name,
 .token.prefix.deleted {
-  color: #f78c6c;
+  color: var(--code-block-deleted);
 }
 
 .token.string,
 .token.char,
 .token.attr-value,
 .token.prefix.inserted {
-  color: #bcf0c0;
+  color: var(--code-block-inserted);
 }
 
 .token.operator,
@@ -108,24 +108,24 @@ pre[class*='language-'] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #56b6c2;
+  color: var(--code-block-operator);
 }
 
 .token.atrule,
 .token.keyword {
-  color: #c792ea;
+  color: var(--code-block-keyword);
 }
 
 .token.function {
   color: #87aff4;
-  color: #82aaff;
+  color: var(--code-block-function);
 }
 
 .token.regex,
 .token.important,
 .token.variable {
   color: #c678dd; /* Leave this we don't know all of what it affects yet */
-  color: #00bff9;
+  color: var(--code-block-variable);
 }
 
 .token.important,
@@ -175,7 +175,7 @@ pre.line-numbers > code {
 
 .line-numbers-rows > span:before {
   content: counter(linenumber);
-  color: #5c6370;
+  color: var(--code-block-line-number-color);
   display: block;
   padding-right: 0.8em;
   text-align: right;
@@ -195,9 +195,9 @@ pre.line-numbers > code {
 }
 
 .token.deleted-sign.deleted {
-  background-color: rgba(247, 140, 108, 0.1);
+  background-color: var(--code-block-deleted-bgcolor);
 }
 
 .token.inserted-sign.inserted {
-  background-color: rgba(188, 240, 192, 0.1);
+  background-color: var(--code-block-inserted-bgcolor);
 }
