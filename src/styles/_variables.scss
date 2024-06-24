@@ -43,8 +43,8 @@ $bg-night-tint: lighten(
 $fg-day: $black;
 $fg-night: $white;
 
-$fg-muted-day: #3e5666;
-$fg-muted-night: #babfc0;
+$fg-muted-day: rgba(#3e5666, 0.5);
+$fg-muted-night: rgba(#babfc0, 0.5);
 
 $fg-blend-day: #848d94;
 $fg-blend-night: #8a8a8a;

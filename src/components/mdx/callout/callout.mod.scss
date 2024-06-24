@@ -6,9 +6,17 @@
   margin-bottom: var(--paragraph-margin-bottom);
   border-radius: 3px;
   position: relative;
+}
 
-  p {
-    margin: 0;
+.callout-inner > * + * {
+  &:not(:last-child) {
+    margin-bottom: var(--paragraph-margin-bottom);
+  }
+
+  &:last-child:has([class*='language']) {
+    margin-bottom: -1rem;
+    display: block;
+    width: 100%;
   }
 }
 

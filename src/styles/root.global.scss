@@ -119,7 +119,7 @@
   --fg: #{$fg-night};
   --fg-alt: #{$fg-alt-night};
   --fg-muted: #{$fg-muted-night};
-  --fg-faded: #b1bac0;
+  --fg-faded: rgba(177, 186, 192);
   --fg-blend: #{$fg-blend-night};
   --fg-inline-code: #86874f;
 
@@ -135,7 +135,9 @@
   --presentation-stop-gamma: var(--bg-article);
   --border-color: #303132;
 
-  @include code-block-night()
+  --gif-embedder-frame-bg: var(--code-block-bgcolor);
+
+  @include code-block-night();
 }
 
 @mixin light-theme {
@@ -177,7 +179,9 @@
   --presentation-stop-gamma: var(--bg-article);
   --border-color: #edf2f7;
 
-  @include code-block-light()
+  --gif-embedder-frame-bg: var(--code-block-bgcolor);
+
+  @include code-block-light();
 }
 
 html {
@@ -336,7 +340,8 @@ div:has(> iframe.giphy-embed) {
   height: 480px !important;
   padding-bottom: 0 !important;
   margin-block-end: var(--paragraph-margin-bottom) !important;
-  background-color: #000000;
+  background-color: var(--gif-embedder-frame-bg);
+  border-radius: 1rem;
   pointer-events: none;
 }
 
@@ -418,6 +423,77 @@ main[data-article='blog'] {
 
 .gatsby-highlight {
   transform: translate(0);
+  position: relative;
+
+  &:hover .codeblock-toolbar {
+    opacity: 1;
+  }
+
+  div:has(.codeblock-toolbar) {
+    top: 0.625em;
+    right: 0;
+    position: absolute;
+
+    @media (min-width: $md) {
+      right: 0.625em;
+    }
+  }
+
+  & .codeblock-toolbar {
+    opacity: 0;
+    z-index: 1;
+    display: flex;
+    position: relative;
+    align-items: center;
+    border-radius: 0.125em;
+    color: var(--fg-muted);
+    justify-content: flex-end;
+    padding: 0.25em 0.25em 0.25em 0.5em;
+    transition: opacity ease-in-out 0.4s;
+    font-family: var(--font-family-code);
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: rgba(100, 100, 100, 0.1);
+    height: 32px;
+
+    & > * + * {
+      margin-inline-start: 0.25em;
+    }
+
+    & > .language-name {
+      font-size: 0.75em;
+      line-height: 1;
+      text-transform: capitalize;
+      opacity: 0.8;
+    }
+
+    & > .divider {
+      display: block;
+      width: 1px;
+      height: 100%;
+      background: var(--bg-alt);
+      margin-block: -0.25em;
+    }
+
+    & > .copy-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.125em;
+      background-color: transparent;
+      color: currentColor;
+      border: 1px solid transparent;
+      border-radius: 0.125em;
+      opacity: 0.8;
+
+      &:hover {
+        background-color: rgba(100, 100, 100, 0.2);
+      }
+
+      &:active {
+        background-color: rgba(100, 100, 100, 0.4);
+      }
+    }
+  }
 }
 
 .gatsby-highlight-code-line {
@@ -452,7 +528,7 @@ pre {
   margin: 0 0 var(--paragraph-margin-bottom);
   padding: 1em;
   overflow: auto;
-  border-radius: 5px;
+  border-radius: 0.5em;
   width: auto;
 
   @media (max-width: $lmd) {
