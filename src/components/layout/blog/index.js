@@ -21,6 +21,13 @@ const shortcodes = { table: Table, Link, SEO, Callout, Blockquote }
 
 const cx = gcx(blog)
 
+const COPY_SVG = `
+<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+  <rect width="336" height="336" x="128" y="128" fill="none" stroke-linejoin="round" stroke-width="32" rx="57" ry="57"></rect>
+  <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="m383.5 128 .5-24a56.16 56.16 0 0 0-56-56H112a64.19 64.19 0 0 0-64 64v216a56.16 56.16 0 0 0 56 56h24"></path>
+</svg>
+`
+
 const runAnimation = () => {
   const options = { root: null, rootMargin: '0px', threshold: 0.9 }
   const codeTitles = document.querySelectorAll('.ninja-code-title')
@@ -45,6 +52,41 @@ const runAnimation = () => {
   return () => observer.disconnect()
 }
 
+const addCodeblockToolbar = () => {
+  /** @type {NodeListOf<HTMLDivElement>} */
+  const codeblockContainers = document.querySelectorAll('div.gatsby-highlight')
+  codeblockContainers.forEach(codeblockContainer => {
+    const langauge = codeblockContainer.dataset['language']
+
+    const container = document.createElement('div')
+    const toolbar = document.createElement('div')
+    const label = document.createElement('div')
+    const divider = document.createElement('div')
+    const copyButton = document.createElement('button')
+
+    toolbar.classList.add('codeblock-toolbar')
+
+    copyButton.classList.add('copy-button')
+    copyButton.innerHTML = COPY_SVG
+    copyButton.addEventListener('click', () => {
+      const code = codeblockContainer.querySelector('pre[class*=language-]').textContent
+      navigator.clipboard.writeText(code)
+    })
+
+    divider.classList.add('divider')
+
+    label.classList.add('language-name')
+    label.innerText = langauge
+
+    toolbar.appendChild(label)
+    toolbar.appendChild(divider)
+    toolbar.appendChild(copyButton)
+    container.appendChild(toolbar)
+
+    codeblockContainer.insertBefore(container, codeblockContainer.firstChild)
+  })
+}
+
 const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
 
 const BlogLayout = ({ data: { mdx, site }, children }) => {
@@ -63,7 +105,14 @@ const BlogLayout = ({ data: { mdx, site }, children }) => {
       .catch(() => {})
   }, [favCount, mdx.frontmatter.title])
 
-  useEnhancedEffect(() => runAnimation(), [])
+  useEnhancedEffect(() => {
+    addCodeblockToolbar()
+    const animationCleanup = runAnimation()
+
+    return () => {
+      animationCleanup()
+    }
+  }, [])
 
   const { title, date, desc, featuredImage } = mdx.frontmatter
   const author = mdx.frontmatter.author || site.siteMetadata.author
