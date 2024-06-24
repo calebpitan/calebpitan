@@ -3,6 +3,5 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "files.autoSave": "onWindowChange",
-  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace ",
   "grammarly.files.include": ["**/readme.md", "**/README.md", "**/*.txt", "*.md", "**/*.mdx"]
 }
