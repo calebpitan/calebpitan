@@ -1,0 +1,595 @@
+---
+title: 'My Swift, SwiftUI, and iOS Development Journey'
+author: Caleb Adepitan
+date: 2024-06-16T21:30:00.000Z
+last-modified: 2023-12-26T02:25:00.000Z
+featuredImage: ios-development.jpg
+desc: |-
+  The very beginning of the documentation of my Swift, SwiftUI and native iOS development
+  endeavors, strides, and conquests, as I make them in real time.
+tags:
+  - ios
+  - swift
+  - swiftui
+collection:
+  - iOS
+  - Algorithms
+publish: true
+slug: my-swift-and-ios-development-journey
+---
+
+Photo by [RichardHorvath][photo-credit] on [Unsplash][photo-source]
+
+Hi guys ☕️☕️! So I've decided to pick up native app development after all these years and I'm
+excited to have chosen iOS and SwiftUI as my platform and tooling. I'm not entirely new to native
+app dev, as I've had past experiences with the Android platform back in the Java + XML days. I can't
+say I enjoyed the experience then, so, now I've come full circle with myself again and I've found a
+platform and tooling (language included) I know (not think) I will enjoy.
+
+I picked up a 100-day course by Paul Hudson on [Hacking With Swift][hacking-with-swift], and I can't
+lie, I've been out-pacing the course, to tell you how much I've been enjoying it, or not.
+
+I've familiarized myself with most of the language syntax and patterns as it seems to have quite
+some unconventional syntax and some language designs that I think were thought out of the box. I
+wouldn't also fail to mention that I see a lot of similarities between Swift and Rust; now I can't
+tell which of both languages pioneered the ideas common to them. Anyways, I learned Rust first, so
+I'm just going to ignorantly believe Rust pioneered these ideas.
+
+I've always wanted to do iOS development, and I don't know what exactly about the platform has been
+enticing me. So I started taking a look at Swift in years past but with no serious commitments. Fast
+forward to 2024: I wanted to start writing servers in Ruby, so I started reading some docs. So so
+many things I want to do, but Darwinism always takes charge, not scale of preference or opportunity
+cost, now, 'cause it's mostly out of my control; more like natural selection—nature's own choosing.
+I see the hand of God in these things, ha! Long story short, I lost track of the—oh, and it was Ruby
+on Rails, I believed you already knew that—I lost track of the Ruby on Rails doc I was studying and
+just last week out of boredom and idleness I fired up my XCode, found the Hacking With Swift course,
+created a playground and it's been working for me so far. I guess Ruby on Rails would come another
+time. Even better nothing stops me from learning both simultaneously. I could be writing a simple
+iOS application and writing a server for it in Rails. After all, I learn best by doing rather than
+spending time reading docs only.
+
+https://media.giphy.com/media/xUPGGIrDARqhi2mghO/giphy.gif?cid=790b761179bhudlwfiwa3zb60n7m9ibo7ezxnjm9js8w0kg6&ep=v1_gifs_search&rid=giphy.gif&ct=g
+
+I believe the reason I've been out-pacing the course schedule is that I've been learning variables,
+constants, control flow, functions, classes, etc. I find these parts so boring because the idea is
+the same across programming languages and Swift ain't my first language. I'm so eager to get to the
+interesting parts. When do I get to build a UI, anyone?
+
+Here are some of the similarities I've seen between Swift and Rust:
+
+## Immutability
+
+First, just as you see in Rust, immutability is a first-hand concept in Swift also. _Values_ created
+with the `let` keyword are immutable, and that could mean a lot of things: variables declared with
+`let` cannot be re-assigned and for as long as they hold a value type, rather than a reference type,
+mutating operations cannot be performed, even a method that causes mutation to the value they hold
+cannot be called. They'd have to be declared with a `var` to call a mutating function or perform
+mutating operations. For this reason, Swift has a keyword, `mutating`, for marking methods that
+mutate state, just as Rust has a `mut` keyword.
+
+```swift
+struct Node {
+    let symbol: String
+    var code: Int
+}
+```
+
+We have just defined a struct (There are structs in Rust too, but that may not count, as C has
+always had struct). This struct declares a constant variable, `symbol`, and a...variable variable,
+`code`, 🥴. Now watch what happens when we create some `Node` structures and assign them to a `let`
+and `var` variable each.
+
+```swift {numberLines: true}
+let node1 = Node(symbol: "sym", code: 1)
+var node2 = Node(symbol: "bol", code: 2)
+
+// highlight-start
+node1.code = 2
+node2.code = 1
+// highlight-end
+```
+
+Line `4` would cause a compile error because although the field in the structure we tried to change
+is declared with `var`, that is, it is mutable; the variable `node1` was declared as immutable.
+That's dicey because we are not changing `node1` we are only changing `code` inside `node1`. But
+structs are value types, not reference types, which means anytime you move them around or you write
+to them, a copy is made. This copy has to be reassigned to our original `node1` variable but that
+would be impossible because it was declared with `let` marking it as immutable, which prevents it
+from being reassigned. This generally means that to allow changing a mutable state `Node.code` in
+our struct we have to assign the value to a mutable variable declared with `var`. That is why line
+`5` would work just fine.
+
+You might wanna [take a look at this article that explains Copy-on-Write (CoW) in
+Swift][copy-on-write-in-swift]
+
+## Enums and Pattern Matching
+
+Just like I've seen in Rust, enumerations in Swift are super-packed and surpass my regular idea of
+enums. For example in TypeScript and/or Python we get a Union type using the pipe (`|`) operator or
+the `Union[Int, None]` type for example in some versions of Python. You know what? Swift doesn't
+have this but you could achieve the same functionality using an enum, who'd have thought? I've only
+ever seen enums packed with this much power in Rust. So what we can do is create some type of "type
+monad"
+
+```swift
+enum Either<This, That> {
+    case this(This)
+    case that(That)
+}
+```
+
+The power of enum in Swift becomes more evident when you combine it with [Pattern
+Matching][pattern-matching]
+
+```swift
+func findUser(using idOrEmail: Either<Int, String>) {
+    switch idOrEmail {
+    case .this(let id):
+        print("Find user with ID \(id)")
+    case .that(let email):
+        print("Find user with email address \(email)")
+    }
+}
+```
+
+We can call our `findUser` function giving it an ID (integer) or an email address (string) wrapped
+in a `Either` type, that's basically an enum.
+
+```swift
+// First call using the ID
+findUser(using: Either.this(1))
+
+// Second call using the email address
+findUser(using: Either.that("caleb@example.com"))
+```
+
+The first time I saw this style of programming was when I was learning Rust and I enjoyed these
+ideas. If you've ever come across Rust then you must at least know of `Option`, `Some`, and `None`,
+similar also to Swift's `Optional`. Same way you could pattern-match those types in Rust, so also in
+Swift. Enum in Swift is so good it's how you define errors in your application.
+
+## Protocols and Traits
+
+The foundational programming construct commonly called "interface" is termed "protocol" and "trait"
+in Swift and Rust, respectively. Like in Rust, interfaces or traits or protocols can be adopted
+incrementally, and there's more to them than meets the eye. For example, you may define all your
+core functionalities in Rust and for each of the traits you need your struct to conform to you
+implement them separately at a later time. So also in Swift, there are extensions and you could have
+defined your type and later adopt certain protocols using extensions.
+
+```swift
+class Node {
+    let symbol: String
+    let weight: Int
+    let left: Node?
+    let right: Node?
+    var code: Int
+
+    init(symbol: String, weight: Int, left: Node? = nil, right: Node? = nil) {
+        self.weight = freq
+        self.symbol = symbol
+        self.left = left
+        self.right = right
+        self.code = -1
+    }
+}
+```
+
+We have just defined a `Node` struct, and now that we think about it we want it to conform to the
+`Comparable` protocol so we can compare two nodes. So we can go ahead and use extensions just as you
+would the `impl [Trait] for [Struct] { ... }` in Rust.
+
+```swift
+extension Node: Comparable {
+    static func == (lhs: Node, rhs: Node) -> Bool {
+        return lhs.weight == rhs.weight
+    }
+
+    static func < (lhs: Node, rhs: Node) -> Bool {
+        return lhs.weight < rhs.weight
+    }
+}
+```
+
+For me this is nice; and if nothing at all, it's a practical example of one of [SOLID][solid]
+principles—Open-Closed Principle—which is the "Open for Extension; Closed for Modification". We can
+see that we don't have to reach into the source to modify the functionalities of the `Node` struct
+before we can build upon its functionalities. Take for example one of Swift's standard library is
+short of a feature we think would be great to have. We don't have to go look for the source code of
+this standard library and modify it just to add our desired feature to it, we could just extend it
+from anywhere and Bob's our cousin :)
+
+<Callout type="info">
+  **Bonus**: Notice I've defined `Node` using `class` and not `struct`? This is because the type
+  holds a reference to itself in a recursive manner and structs are value types rather than reference types; their
+  size has to be known statically, unlike reference types whose sizes can be dynamically evaluated.
+  A similar thing occurs in Rust, where you have to wrap the type holding a reference to itself 
+  in a `Box` since Rust doesn't even have classes
+
+```rust
+pub struct Node {
+    symbol: String
+    weight: i32
+    left: Option<Box<Node>>,
+    right: Option<Box<Node>>,
+    code: i32,
+}
+```
+
+You may check out this [SO answer][self-referencing-struct-on-so] regarding Swift
+
+</Callout>
+
+And that wraps some of the similarities between Rust and Swift I've seen over the one-week course of
+learning Swift. You can tweet to me @relaongman if there are any more you find interesting.
+
+## A more practical use of Swift
+
+To help consolidate my knowledge of Swift so far, I gave myself a task. The task was to build an
+[Huffman tree][huffman-tree] using Swift. I'm going to drop the result of that task here, but I
+won't be explaining the algorithms because that isn't what this is about, maybe just some language
+features I've employed to perform the task.
+
+```swift
+import Foundation
+```
+
+This is the first line. The "Foundation" library, I noticed, does a lot of foundational things like
+providing extensions to various types; an example is `String`. For example, the `String` method
+`appending` is only available when I have this import statement present. I'm going to believe the
+"Foundation" library defines some extensions on the `String` type.
+
+Other than that is me defining my implementation for a priority queue using structs. A [priority
+queue][priority-queue] or a min-heap is essential for building a Huffman tree.
+
+```swift:title=HuffmanTree.swift {numberLines: true}
+struct PriorityQueue<T: Comparable> {
+    private(set) var heap: Array<T> = []
+    private let comparator: (T, T) -> Bool
+
+    init(comparator: @escaping (T, T) -> Bool) {
+        self.comparator = comparator
+    }
+
+    var size: Int {
+        return heap.count
+    }
+
+    var isEmpty: Bool {
+        return heap.isEmpty
+    }
+
+    func peek() -> T? {
+        return heap.first
+    }
+
+    mutating func enqueue(value: T) {
+        heap.append(value)
+        siftup(heap.count - 1)
+    }
+
+    mutating func dequeue() -> T? {
+        guard !heap.isEmpty else { return nil }
+
+        if heap.count == 1 { return heap.removeLast() }
+
+        let root = heap[0]
+        heap[0] = heap.removeLast()
+        siftdown(0)
+        return root
+    }
+
+    private mutating func siftup(_ from: Int) {
+        var node = from
+        var parent = (node - 1) >> 1
+
+        while node > 0 && comparator(heap[node], heap[parent]) {
+            heap.swapAt(node, parent)
+            node = parent
+            parent = (node - 1) >> 1
+        }
+    }
+
+    private mutating func siftdown(_ from: Int, to: Int? = nil) {
+        var node = from
+        var left = (node << 1) + 1
+        var right = left + 1
+        var parent = node
+        let end = to ?? heap.count - 1
+
+        while left <= end {
+            if comparator(heap[left], heap[parent]) { parent = left }
+            if right <= end && comparator(heap[right], heap[parent]) { parent = right }
+
+            guard parent != node else { return }
+
+            heap.swapAt(node, parent)
+            node = parent
+            left = (node << 1) + 1
+            right = left + 1
+        }
+    }
+}
+```
+
+We have defined our implementation for a priority queue in a struct. Using a generic `T` we also
+allow our queue to hold any value, hence generic, as long as it conforms to a protocol called
+`Comparable`. This means we don't care whatever is being added to the queue we only care that
+_such-ever_ can be compared to each other using comparison operators such as `<` for _less than_,
+`==` for _equals to_, `>` for _greater than_, and combinations like `<=` and `>=`.
+
+As an initializer for our struct, it takes a closure which is used to compare any two values from
+our queue, hence the reason why we need the values `T` in our queue to be at least comparable.
+
+Something about this closure in our `init` method that may seem strange is the `@escaping`
+annotation. What does it do? It lets Swift know that this closure being passed to the init function
+or method "escapes" the context of this method. Simply put, the closure may not be executed until
+after the `init` method has run and returned but may be stored and called from another context other
+than that of the method or function it was originally passed to.
+
+You can see why it's important to know that, right? Because if you're coming from languages like
+JavaScript, Python, etc, as I am, you know you can just pass callbacks or closures around loosely.
+
+Other than that, we've got getters `size` and `isEmpty` implemented to find out the size of items in
+our queue and whether our queue is empty.
+
+Notice the `private(set)` syntax used when defining the `heap` field on the priority queue. This
+means the heap is publicly available for viewing, but mutations to it are in-house. We put the heap
+behind a show glass because we want whoever is passing by to see it but only people inside the house
+can touch it. We've also labeled every method that modifies the state of our structure with a
+`mutating` attribute. This lets the Swift compiler know what methods can be called when an instance
+of our structure is assigned to a `let` declaration and/or a `var` declaration, alluding to an
+explanation I made earlier when talking about [immutability being a first-hand
+concept][immutability] in Swift, like Rust.
+
+I also like the fact that function parameters are labeled in Swift, like we could have keyword args
+in Python. Take this Python code for example:
+
+```python
+# Since `*` in function params in Python marks *vargs and only **kwargs can come after
+# *vargs, it makes sense that after an empty *vargs marked by "*" other params have to
+# be keyword args.
+
+def gcd(*, a: int, b: int):
+    a, b = (b, a) if b > a else (a, b)
+    if b == 0:
+        return a
+    return gcd(a=a % b, b=b)
+
+def main():
+    print(gcd(a=108, b=144))
+```
+
+In the above Python code you're not allowed to call `gcd` without passing the parameter labels.
+Doing so will result in a `TypeError`:
+
+```
+>>> gcd(108,144)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: gcd() takes 0 positional arguments but 2 were given
+```
+
+This helps reduce ambiguity and bugs while also improving DX especially when there are parameters of
+the same type following each other. You do not have to always go to the function declaration to
+check the order in which the ambiguous parameters (by type) are to be passed. Unfortunately,
+JavaScript and even Rust, a more modern language, lack this. It's very easy to lose track of which
+parameter is which when the parameter size begins to grow, having similar types as seen above.
+
+Talking about parameter labels, Swift one-ups Python in that it is possible to alias parameter
+labels, which is very useful when passing arguments to the function. It helps the function call to
+read out more intuitively but at the cost of verbosity.
+
+```swift
+func brushTeeth(using material: String) {
+    print("Brushing teeth using \(material)")
+}
+
+brushTeeth(using: "Peroxide")
+brushTeeth(using: "Mouthwash")
+brushTeeth(using: "Toothbrush")
+```
+
+The parameter alias usually reads out intuitively at the call site but may not necessarily make
+sense inside the implementation as seen above. Imagine if we had to do:
+
+```swift
+func brushTeeth(using: String) {
+    print("Brushing teeth using \(using)")
+}
+
+// or to circumvent that...
+
+func brushTeeth(material: String) {
+    print("Brushing teeth using \(material)")
+}
+
+// ...but this
+
+brushTeeth(material: "Peroxide")
+```
+
+Without aliasing, sometimes, the parameter name either makes sense to whoever declares the function
+or whoever is calling it, but not both at the same time. Not that any of it is bad, it's just better
+with the alias, but at the cost of verbosity. So just like any other thing in life, it's a
+trade-off.
+
+That brings me to: ignoring parameter labels by aliasing them with an underscore `_` as seen in some
+of our methods, like `siftup` in our priority queue struct
+
+<Callout type="info">
+  But why do arguments still gotta be positional in Swift even when using parameter labels?
+
+```
+🚫 Argument 'a' must precede argument 'b'
+```
+
+</Callout>
+
+Other than all of what I've mentioned, I do not think anything looks too strange for anyone coming
+from a different programming language background such as mine—
+
+Ah, guards!
+
+Guards are just a way of incentivizing developers to use [early return][early-return] rather than an
+unduly complex, difficult-to-read `if-else` branch. Guards check the condition necessary for
+execution to continue and provide an else block which must either return or throw when the condition
+isn't met.
+
+Now that all of that is settled maybe we can move on with our Huffman tree and see if there are more
+stuff to swiftly untangle.
+
+```swift:title=HuffmanTree.swift
+class Node {
+    let symbol: String
+    let weight: Int
+    var code: String
+    let left: Node?
+    let right: Node?
+
+    init(symbol: String, weight: Int, left: Node? = nil, right: Node? = nil) {
+        self.weight = weight
+        self.symbol = symbol
+        self.left = left
+        self.right = right
+        self.code = ""
+    }
+}
+
+extension Node: Comparable {
+    static func == (lhs: Node, rhs: Node) -> Bool {
+        return lhs.weight == rhs.weight
+    }
+
+    static func < (lhs: Node, rhs: Node) -> Bool {
+        return lhs.weight < rhs.weight
+    }
+}
+```
+
+Nothing to see here, just implementing comparison operators for our node for conformance's sake.
+
+```swift:title=HuffmanTree.swift
+func characterFrequency(_ text: String) -> [Character: Int] {
+    var dict = Dictionary<Character, Int>()
+
+    for i in text.indices {
+        let char = text[i]
+        // highlight-next-line
+        dict[char, default: 0] += 1
+    }
+
+    return dict
+}
+```
+
+Nothing to see here, also, other than dictionaries having a way to specify default value when
+accessed, in case the key does not exist or is undefined. Something [TC39][tc39] never thought of.
+_Just saying...don't come at me_. When was `Map` added to JavaScript? Yet I have to do:
+
+```typescript
+function doSomethingWithMap(map: Map<string, number>) {
+  map.get('key') ?? 0
+  // not `map.get("key", 0)`
+}
+```
+
+Back to Huffman tree:
+
+```swift:title=HuffmanTree.swift
+func huffmanTree(_ charFreq: [Character: Int]) -> Node {
+    // highlight-start
+    var q = PriorityQueue<Node> { $0 < $1 }
+    charFreq.forEach({ q.enqueue(value: Node(symbol: String($0), weight: $1)) })
+    // highlight-end
+
+    while q.size > 1 {
+        let left = q.dequeue()!
+        let right = q.dequeue()!
+
+        let node = Node(
+            symbol: left.symbol.appending(right.symbol),
+            weight: left.weight + right.weight,
+            left: left,
+            right: right
+        )
+
+        q.enqueue(value: node)
+    }
+    return q.heap[0]
+}
+```
+
+I love this syntax of passing closures! Very simple! `$0` and `$1` are positional parameters for the
+signature `(T, T) -> Bool` in the init function of the priority queue struct; you don't even have to
+open a parenthesis. You can see a similar closure with positional parameters in the following line,
+in the `forEach` method call. We didn't have to open a parenthesis, but I did so in contrast to the
+previous line. This adjusts our priority queue to treat lower values as higher priority.
+
+```swift:title=HuffmanTree.swift
+func traverse(node: Node, val: String = "", collect: (Node) -> Void) -> Void {
+    // highlight-start
+    node.left.map { traverse(node: $0, val: "\(val)0", collect: collect) }
+    node.right.map { traverse(node: $0, val: "\(val)1", collect: collect) }
+    // highlight-end
+
+    guard node.left == nil && node.right == nil else { return }
+    node.code = val
+
+    return collect(node)
+}
+
+func main() {
+    let text = "The quick brown fox jumps over the lazy dog. The quick blue cat sits by the window."
+    let charFreq = characterFrequency(text)
+    let tree = huffmanTree(charFreq)
+    var collection = Array<(String, String)>()
+
+    traverse(node: tree) { node in
+        // highlight-next-line
+        print(node)
+        collection.append((symbol: node.symbol, code: node.code))
+    }
+
+    // Do whatever you like with collection, compression, whatever...
+}
+
+main()
+```
+
+Both `node.left` and `node.right` are `Optional`. `.map` is a way of unwrapping optionals as you
+would `unwrap` in Rust. If the optional contains a value, the value is passed to the closure passed
+to the mapping function, otherwise, the mapping function is not called. I think this is clean!
+
+One last thing: instances of classes in Swift unlike structs aren't very informational when printed.
+One thing is to implement the `CustomStringConvertible` to print a human-readable format of a class
+instance. Rust has an equivalent called `Debug` where you could just annotate types with
+`#[derive(Debug)]` or implement it yourself if necessary.
+
+I would show the code example here, but it's not my code so I'll just provide the link to the
+[implementation I saw on another blogpost][printing-classes-in-swift]. It's eight years ago as of
+the time of writing and I do not know if there's a better way to do this now, I'm relatively new to
+Swift, but it works.
+
+That's it guys. It's a wrap! Maybe I should have titled this "A Fool's Perspective of Swift in
+Contrast—Pros and Cons".
+
+_Quod scripsi, scripsi._
+
+[hacking-with-swift]: https://www.hackingwithswift.com/100/swiftui
+[photo-credit]:
+  https://unsplash.com/@ricvath?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+[photo-source]:
+  https://unsplash.com/photos/red-yellow-and-pink-abstract-painting-RAZU_R66vUc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+[copy-on-write-in-swift]: https://arturgruchala.com/copy-on-write-in-swift-explained-with-examples
+[pattern-matching]:
+  https://docs.swift.org/swift-book/documentation/the-swift-programming-language/patterns/
+[solid]: https://en.wikipedia.org/wiki/SOLID
+[self-referencing-struct-on-so]: https://stackoverflow.com/a/63965336/8124214
+[huffman-tree]: https://en.wikipedia.org/wiki/Huffman_coding
+[priority-queue]: https://en.wikipedia.org/wiki/Priority_queue
+[immutability]: #immutability
+[early-return]: https://medium.com/swlh/return-early-pattern-3d18a41bba8
+[tc39]: https://tc39.es
+[printing-classes-in-swift]:
+  https://medium.com/swift-programming/struct-style-printing-of-classes-in-swift-7ee34f1c975a
